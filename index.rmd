@@ -8,34 +8,29 @@ output:
     toc_depth: 4
     thumbnails: TRUE
     anchor_sections: FALSE
-    default_style: "dark"
+    default_style: "light"
 ---
 
 ```{r, echo=FALSE, eval = TRUE}
 htmltools::img(src = "assets/ESFStacked_FullColor.png", alt = 'banner', style = 'position:absolute; top:0; right:0; padding:10px; width:150px')
 ```
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DTFGD3SPTQ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-DTFGD3SPTQ');
-</script>
-
 > ## Course Materials
 >
 > This page contains lectures,assignments and other resources, and will expand as the semester progresses.  
 
-**Instructors:** Drs. [**Hyatt Green**](https://www.esf.edu/faculty/green/index.php) (Illick 201) and [**Dr. Elie Gurarie**](https://www.esf.edu/faculty/gurarie/) (Illick 206)
+**Instructors:** [**Dr. Hyatt Green**](https://www.esf.edu/faculty/green/index.php) (Illick 201) and [**Dr. Elie Gurarie**](https://www.esf.edu/faculty/gurarie/) (Illick 206)
 
 **Office hours:**  TBD
 
 **Locations and Times:** 
 
 - Lecture: Baker 309; MW 10:35-11:30
+
+
+# Week 1
+
+- [Lecture 0: Intro to R](lectures/01-R-Intro/R-Intro.html)
 
   
 <!-- 
