@@ -1,7 +1,7 @@
 ---
-title: Introduction to R and Reproducible Research
-author: Hyatt Green
-date: Jan 13, 2025
+title: "Introduction to R and Reproducible Research"
+author: Hyatt Green (and a little Elie Gurarie)
+date: Jan 12, 2026
 output: 
   ioslides_presentation:
     fig_width: 7
@@ -23,20 +23,25 @@ Today {.centered}
 Course Info
 ----
 
-**Credits**: Two    
-**Meets**: MW, 10:35-11:30am     
-**Meeting Location**: 309 Baker    
-**Instructor**: Hyatt Green    
-**Email**: hgreen@esf.edu    
-**Phone**: 315-470-4814    
-**Office**: 201 Illick Hall    
-**Office hours**: W 2-3pm
+|**Hyatt Green**|**Elie Gurarie**|
+---|------------------------------|------------------------------|
+| Email: hgreen@esf.edu | Email: egurarie@esf.edu |
+| Phone: 315-470-4814 | Phone: 315-470-3817 |
+| Office: 201 Illick Hall | Office: 206 Illick Hall |
+| Office hours: W 1-2pm | Office hours: M 2-3pm |
 
-**Teaching Asst.**: NA   
-**Email**:
+**Credits**: 2    
+**Meets**: MW, 10:35-11:30am | 309 Baker    
+**Course Materials Website**: https://eligurarie.github.io/EFB654
+
 
 Go to Syllabus
 ----
+
+<center> 
+https://eligurarie.github.io/EFB654/syllabus.html
+</center>
+
 
 My Research and R
 ----
@@ -108,6 +113,9 @@ What does R do?
 > - statistics
  - plotting
  - data handling, manipulation, and efficient storage
+ - drafting
+ - designing websites
+ - developing interactive tools
  - you can make R do pretty much anything (see [r.bloggers](http://www.r-bloggers.com))
 
 Advantages of R
