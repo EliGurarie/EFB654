@@ -1,5 +1,5 @@
 ---
-title: "Introduction to R and Reproducible Research"
+title: "**Introduction to R and Reproducible Research**"
 subtitle: "EFB 645/496: Spring 2026"
 author: "**SYLLABUS**"
 output: 
@@ -23,6 +23,8 @@ output:
 | Phone: 315-470-4814 | Phone: 315-470-3817 |
 | Office: 201 Illick Hall | Office: 206 Illick Hall |
 | Office hours: W 1-2pm | Office hours: M 2-3pm |
+
+Course materials webpage: https://eligurarie.github.io/EFB654/
 
 ---
 

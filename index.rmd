@@ -1,5 +1,5 @@
 ---
-title: "Introduction to R and Reproducible Research"
+title: "**Introduction to R and Reproducible Research**"
 subtitle: "EFB 645: Spring 2026"
 author: "[Hyatt Green](https://www.esf.edu/faculty/green/index.php) and [Elie Gurarie](https://eligurarie.github.io/)"
 output: 
