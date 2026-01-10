@@ -1,5 +1,5 @@
 ---
-title: "**Introduction to R and Reproducible Research**"
+title: "**Intro to R and Reproducible Research**"
 subtitle: "EFB 645: Spring 2026"
 author: "[Hyatt Green](https://www.esf.edu/faculty/green/index.php) and [Elie Gurarie](https://eligurarie.github.io/)"
 output: 
@@ -11,7 +11,7 @@ output:
 ---
 
 ```{r, echo=FALSE, eval = TRUE}
-htmltools::img(src = "assets/esflogo.png", alt = 'banner', style = 'position:absolute; top:0; right:0; padding:10px; width:150px')
+htmltools::img(src = "assets/esflogo.png", alt = 'banner', style = 'position:absolute; top:0; right:0; padding:10px; width:100px')
 ```
 
 > ## Course Materials
