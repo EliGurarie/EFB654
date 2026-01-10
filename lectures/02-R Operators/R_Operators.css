@@ -1,0 +1,11 @@
+.title-slide {
+  background-color: #EDE0CF;
+}
+
+.small {
+  font-size: 16px;
+}
+
+.small pre, .small code {
+  font-size: 16px;
+}

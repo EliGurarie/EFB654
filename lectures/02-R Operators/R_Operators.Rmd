@@ -1,0 +1,543 @@
+---
+title: R Operators
+date: Jan 15, 2025
+output: 
+  ioslides_presentation:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+    widescreen: true
+    css: R_Operators.css
+---
+
+
+R Operators and some basic utility functions
+----
+
+ - More on R operators
+ - Assigning variables
+ - Common functions in the `base` package
+ - Built-in datasets
+
+Basic R Operators
+----
+
+ - Typically one or a few character long functions. 
+ - These are special characters and usually can't be used in any other way. 
+ - The symbols are *reserved* for specific functions
+
+```
+<-  =  :  +  -  *  /  **  ^  >  <  >=  <=  ==  !=  !  &  |  %in%  %>%
+```
+
+Assignment
+----
+Assignment can be thought of as storing information in an **object** of a chosen name. Can simply use `<-` or `=` to assign. An object name can be as simple as one letter or one number:
+```{r, results='hold'}
+x <- 5
+y = "five"
+x
+y
+```
+`<-` is preferable to `=` because it shows the directionality of the assignment. Also, `=` could be confused with `==` (we'll get to that).
+
+<!--That's not terribly useful in most cases. We assign values to variables to do lots of things, but one convenience of doing this is storing large values to much more simple symbols that we can handle easily.
+-->
+
+## {.smaller}
+
+To show assignment, we will use the built-in constant `LETTERS` but store it under a smaller object name.
+
+```{r}
+LETTERS
+```
+```{r}
+x <- LETTERS
+x
+```
+
+Storing the **character** vs the built-in constant
+```{r}
+#Different than
+x <- "LETTERS"
+x
+```
+
+`:`
+----
+Assign a regular sequence of integers
+
+```{r}
+z<-1:9
+y<-1:10000
+z
+y
+```
+
+Arithmetic
+----
+
+Simple addition, subtraction, multiplication, and division:
+```{r, results='hold'}
+#Assign values
+x <- 5
+y <- 20
+x + y   #   +    Addition
+x - y   #   -    Subtraction
+x * y   #   *    Multiplication
+y / x   #   /    Division
+```
+
+Exponents
+----
+
+These are the same:
+```{r, results='hold'}
+y ^ x
+y ** x
+```
+
+Parentheses
+----
+
+```{r, results='hold'}
+y ^ x - 2
+y ^ (x - 2)
+```
+
+Non-mathematical 'print' behavior of parentheses
+
+```{r}
+x <- 5
+```
+
+```{r}
+(x <- 5)
+```
+
+Logical Operators
+----
+
+<!--
+We always find ourselves asking if certain things are `TRUE` or `FALSE`. This allows us to take certain actions if values are of a certain type are within a certain range.
+-->
+
+Logical operators always produce `TRUE`, `FALSE`, or `NA` (Not Available).
+
+```{r, results='hold'}
+x
+y
+x > y
+x < y
+```
+
+Evaluation over a numeric vector
+----
+
+```{r, results='hold'}
+x
+z
+```
+```{r, results='hold'}
+x < z
+z > x
+```
+
+More logicals over a numeric vector
+----
+
+```{r}
+z >= x  # `greater than or equal to'
+z <= x  # `less than or equal to'
+```
+
+More logicals over a numeric vector
+----
+
+```{r}
+z == x  # `exactly equal to'
+z != x  # `not equal to' 
+```
+`!=` is different than `!`
+```{r}
+!(z != x)  # `not equal to' 
+```
+`!` flips the logical from `TRUE` to `FALSE` or from `FALSE` to `TRUE`
+
+<!--
+, so a red flag goes up in my mind. I think 'evaluate the logical expression inside the exclamation and then take the opposite'.
+-->
+
+Operators to combine logical statements
+----
+
+ `|`, 'OR', "pipe" or "bar", checks if *either* statment is TRUE.  
+ `&`, 'AND', checks if *both* statements are TRUE.
+ 
+```{r, results='hold'}
+x
+y
+```
+
+```{r, results='hold'}
+x == 6
+y == 21
+x == 6 | y == 21
+```
+
+----
+```{r}
+x == 5 | y == 21 # Either must be TRUE
+x == 6 | y == 20 # Same
+x == 6 & y == 20
+x == 5 & y == 20 # Both must be TRUE
+```
+
+Exercise
+----
+
+Predict the output of this statement.
+```{r, results='hide'}
+isTRUE(!!x == y & !(x == x | y == y))
+```
+
+Exercise
+----
+
+Predict the output of this statement.
+```{r}
+isTRUE(!!x == y & !(x == x | y == y))
+```
+
+
+Pipes
+----
+
+<div style="float: left; width: 48%;">
+
+### magrittr Pipe `%>%`
+
+Requires loading package:
+
+```{r message = FALSE}
+library(magrittr)
+```
+
+```{r}
+# Traditional nesting
+sqrt(sum(1:10))
+```
+
+```{r}
+1:10 %>% sum %>% sqrt
+```
+
+</div>
+
+<div style="float: right; width: 48%;"  >
+
+
+<center> 
+
+![](https://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)<br>
+
+René Magritte </center>
+
+</div>
+
+
+
+
+Specialized Operators: Pipeline Operators
+----
+
+<div style="float: left; width: 48%;">
+
+### magrittr Pipe `%>%`
+
+```{r}
+1:10 %>% sum %>% sqrt
+```
+
+```{r}
+16 %>% sqrt %>% log
+```
+
+</div>
+
+<div style="float: right; width: 48%;"  >
+
+### Native Pipe `|>` (R 4.1+)
+
+Built-in, no package needed:
+
+```{r}
+1:10 |> sum() |> sqrt()
+```
+
+```{r}
+16 |> sqrt() |> log()
+```
+
+</div>
+
+
+
+
+Built-in arithmetic functions
+====
+
+Roots, logarithms, etc.
+----
+
+```{r}
+x <- -5
+x <- abs(x) # absolute value
+x
+sqrt(x) # square root
+```
+
+Roots, logarithms, etc.
+----
+
+```{r, results='hold'}
+27^(1/3) # Cube root
+log(x) # base 'e'
+log10(x) # base 10
+```
+
+Rounding, etc.
+----
+
+```{r, results='hold'}
+xr<-log10(x)
+xr
+round(xr, 3)
+round(xr, 2) #What's going on here?
+```
+
+Functions that always produce integers
+----
+
+```{r}
+xr
+floor(xr)
+ceiling(xr)
+trunc(xr)
+```
+
+Built-in datasets
+----
+
+ - `data()`
+
+Built-in datasets
+----
+
+<!--
+R has a trove of data to use for purposes like this or for testing your own functions. Is actually part of the `datasets` package, which is automatically loaded when you start R. When you want to go fish out some data you need to look in the datasets package. Load a built-in dataset using the function `data`.
+
+There is a dataset called `mtcars`. To find out more about this dataset without loading it you can query the help pages just like you can a function and this will load all the available information about a particular dataset.
+-->
+
+ - R has tons of built-in datasets (use `data()` to see all)
+ - found in the `datasets` **package** (automatically installed and loaded with R)
+ - can query dataset with `?`
+
+Let's look at the `mtcars` dataset help page...
+```{r eval=F}
+?mtcars
+```
+ 
+##
+
+Load the dataset and view the top of it:
+```{r}
+data(mtcars)
+head(mtcars)
+```
+
+----
+
+**How long does it take cars from 1974 to go a quarter mile?**
+
+<!--Maybe we want to compare current times to the time from 1973-74. Maybe Motor Trend released these same numbers on cars from 2017 and we don't really care about *which* cars go faster or slower, but more about the change in engineering or consumer preference that leads to a change in acceleration. 
+-->
+
+ - First, can we access the `qsec` data within the mtcars dataset? Let's try:
+
+```{r, eval=FALSE}
+qsec #Doesn't work. Object not found.
+```
+
+We have to tell R specifically *where* to find `qsec`.
+```{r}
+mtcars$qsec
+```
+
+More on `$` later ...
+
+Built-in basic statistical functions
+====
+
+Built-in basic statistical functions
+----
+
+Mean (long-hand)
+
+```{r, results='hold'}
+sum(mtcars$qsec)
+length(mtcars$qsec) 
+sum(mtcars$qsec)/length(mtcars$qsec) # Mean long hand
+```
+
+Built-in basic statistical functions
+----
+
+Mean, median, and std deviation
+```{r, results='hold'}
+mean(mtcars$qsec)
+median(mtcars$qsec)
+sd(mtcars$qsec)
+```
+
+Mean and removing NAs
+----
+
+```{r}
+fluor<-as.numeric(c(9736, 28, 72, 845, "Undetected", 549, 103))
+fluor
+mean(fluor)
+mean(fluor, na.rm=T)
+```
+ - `na.rm` methods for `sum()`, `median()`, `sd()`, `var()`, etc.
+
+Built-in basic statistical functions
+----
+
+Min, max, and range
+```{r}
+min(mtcars$qsec)
+max(mtcars$qsec)
+range(mtcars$qsec)
+```
+ - Also have `na.rm` methods
+ 
+`unique()`
+----
+
+What if we wanted to look at all *unique* values in a particular column, say, the number of cylinders in car engines. This gives us the nonredundant values within `cyl`.
+```{r}
+unique(mtcars$cyl)
+```
+
+----
+
+Now, try it on your own. 
+
+In the `trees` dataset, *are there* measured trees that had heights equal to the mean of all heights in the dataset? 
+
+<div class="notes">
+
+Here's **one** way to do it.
+```{r, echo=TRUE, eval=TRUE}
+data(trees)
+unique(trees$Height == mean(trees$Height))
+```
+</div>
+
+Managing the work space
+====
+
+
+Managing the work space
+----
+ 
+ - `ls()`
+ - `rm()`
+
+Cleaning the work space
+----
+
+<!-- We can view the mess we left behind with the function -->
+ 
+`ls()` *lists* the objects we've created or imported.
+ 
+```{r}
+ls()
+```
+
+Delete or "Remove" Objects
+----
+
+```{r}
+rm(x)
+```
+
+```{r}
+ls()
+```
+
+Questions?
+----
+
+<!--
+Stop here
+
+
+Saving the workspace 
+----
+
+To save the remaining objects we can use the function `save()` or the short-cut `save.image()`.
+
+ - The 'image' is everything current in the workspace. 
+ - Be sure you are in the desired directory with `getwd()`. Use `setwd()` to change.
+
+```{r, eval=FALSE}
+getwd()
+save.image(file="R_Basics_01_24_16.Rdata")
+list.files()
+```
+
+The extension ".Rdata" is typically used for R workspaces.   
+`save.image()` saves in binary, so your data is stored really efficiently.
+
+Saving the history
+----
+
+We can also save the commands we entered into the console by saving our *history*. This doesn't save data or results *from* the commands, just the commands themselves.
+
+```{r, eval=FALSE}
+savehistory(file="R_Basics_01_24_16.Rhistory")
+```
+
+".Rhistory" or ".Rhist" are typically used for history extensions.
+
+----
+
+After checking that the files exist, we can feel confident about removing all the objects, or *'clearing the workspace'*.
+
+```{r, eval=FALSE}
+rm(list=ls())
+```
+
+Read `?rm` to prevent unintentionally deleting objects
+
+----
+
+Let's say we want to go back into that workspace and history.
+
+ - Use the `load()` or `loadhistory()` functions
+ 
+```{r, eval=FALSE}
+load("R_Basics_01_24_16.Rdata")
+ls() # to confirm
+loadhistory("R_Basics_01_24_16.Rhistory")
+
+# OK looks fine, clear the workspace again
+rm(list=ls())
+```
+
+Now you can go work on something else without mixing up different objects from other projects that you may have coincidentally given the same name.
+
+-->
