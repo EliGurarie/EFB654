@@ -1,5 +1,5 @@
 ---
-title: "**Introduction to R and Reproducible Research**"
+title: "Introduction to R and Reproducible Research"
 subtitle: "EFB 645/496: Spring 2026"
 author: "**SYLLABUS**"
 output: 
@@ -24,37 +24,27 @@ output:
 | Office: 201 Illick Hall | Office: 206 Illick Hall |
 | Office hours: W 1-2pm | Office hours: M 2-3pm |
 
-Course materials webpage: https://eligurarie.github.io/EFB654/
-
 ---
 
 ## Course Description
 
-Although technological advances and automation, from next-generation sequencing at the molecular scale to remote sensing of global phenomena at the macro-scale, have revolutionized research in many fields, they have also dramatically increased the size and number of typical datasets. R allows us to wield such large datasets and, thus, draw conclusions from potentially useful data in many cases. At the same time, scientists can also do a better job of ensuring validity of their analysis and communicating their results. The purpose of this course is to familiarize students with R and associated tools to a) allow handling and analysis of large or complex data and b) promote good practices for reproducible research.
+Although technological advances and automation, from next-generation sequencing at the molecular scale to remote sensing of global phenomena at the macro-scale, have revolutionized research in many fields, they have also dramatically increased the size and number of typical datasets. R allows us to wield such large datasets and, thus, draw conclusions from potentially useful data. At the same time, scientists can also do a better job of ensuring validity of their analysis and communicating their results. The purpose of this course is to familiarize students with R and associated tools to a) allow handling and analysis of large or complex data and b) promote good practices for reproducible research.
 
 R, a statistical programming language and environment, offers capabilities to analyze data sets, big or small. RMarkdown, an authoring format, allows you to embed your R work (data summaries, stats, plots, etc.) within plain text. The two are linked together by `knitr` which evaluates and translates any R code or results embedded in a RMarkdown document so it's readable by a translator (e.g. pdfLaTeX, pandoc). Separately, these programs are extremely useful, but using them together will, in the end, help you accomplish many of the following *research* objectives.
 
 - Drastically improve reproducibility of your analyses
 - Save hours, days, or weeks of your time by automating your analysis
-- Improve your document's appearance which really does impress people
+- Improve your document's appearance (which really does impress people)
 - Organizes your work and ideas so that they are more accessible to you or others
 - Imbeds your analysis methods along side your raw data and final results so they can be evaluated as a single body of work simultaneously
 
-These tools are also dramatically changing the way we communicate science for the better. Analyses can be more easily thoroughly criticized. Figures look better. Coauthors or colleagues don't have to depend on your honesty (or competency). They can take your data and your functions and easily demonstrate to themselves that you did things right or wrong *OR* make some of their own tweaks and show you why their way is better.
-
-Because these tools can be difficult to learn, especially if you don't have any coding experience, this course is intended to get you over that initial hump so you can explore R's packages and RMarkdown's capabilities on your own. If you're ever discouraged and think that R is too difficult or may not be useful I want to emphasize the enormous competitive advantage you will have over someone without these skills when it comes to getting into graduate school, getting a postdoc, or even a tenure-track position.
-
 ### Course Organization
 
-We'll start learning both R and RMarkdown simultaneously. Luckily, R Studio makes the RMarkdown part fairly easy (e.g., 'Knit') so we'll primarily be learning the R language. Learning R is sort of like learning a language like French, Spanish, etc.—you lose it unless you use it. Entonces, there will be frequent in class and out of class exercises in addition to the final project. See Section: Evaluation for a point break-down.
+We'll start learning both R and RMarkdown simultaneously. Dr. Green will cover foundational R, then Dr. Gurarie will introduce a few intermediate topics building on that foundation.
 
 ## Background and Motivation
 
-Today's world is flooded with data ...we don't feel right sending students, especially ones that might stay in the sciences, out of ESF without the tools to analyze larger datasets. With the current pressing global issues, environmental scientists in particular will fall under intense scrutiny and need to have the tools to manage and analyze large, complex data sets, and communicate the results of their analyses in an effective and responsible way.
-
-You're a grad student or undergrad involved in research that needs to crunch some data for a paper or your thesis. You're thinking that the final project for this course is a great way to analyze that difficult data set you just produced. This doesn't necessarily have to be a large data set. If you don't have any data from your own research you'll need to find some data to work with soon. You might have read in a recent paper that the analysis you want to recreate was done in R with so-and-so package. You might not have a clue what R is—you just heard it might be something you need to learn. You also have a laptop and have downloaded the required programs and packages for this course. You have lots of time and endless determination to learn R.
-
-If you already use R regularly you will find this course a light refresher, but mostly boring. If this is you, consider giving up your seat for another student that has less experience with R—this course is in high demand.
+Today's world is flooded with data. We don't feel right sending students, especially ones that might stay in the sciences, out of ESF without the tools to analyze larger datasets. With the current pressing global issues, environmental scientists in particular will fall under intense scrutiny and need to have the tools to manage and analyze large, complex data sets, and communicate the results of their analyses in an effective and responsible way.
 
 ## Skill Outcomes
 
@@ -63,15 +53,14 @@ If you already use R regularly you will find this course a light refresher, but 
 - Obtain data summaries
 - Plot basic data summary plots
 - Perform basic built-in statistical functions in R
-- Understand basic model fitting and interpreting results
 - Write unique R functions efficiently
-- Know how R handles special data classes, like dates
-- Understand that there are many highly specialized packages available through R
-- Reach beyond course content to individualize R to your needs
-
-### Reproducible Research
-- Learn basic RMarkdown
 - Demonstrate literate programming
+- Develop custom shiny apps
+- Practice working with spatial data in R
+- Build packages in R
+- Demonstrate effective use of version control (git and Gitub)
+- Be familiar with ways to optimize compute speed  using parallelized code
+- Reach beyond course content to individualize R to your needs
 
 ## Prerequisites
 
@@ -87,10 +76,12 @@ No. LaTeX is a type setting language that enables you to produce good-looking do
 
 ## Use of AI
 
-Use all the AI you need. It's great at generating code that's error free, good at explaining how that code works, but not great experimental design, bringing meaning to results, and a few other important steps where humans are useful, for the time being. I would check out RTutor if you haven't already (http://rtutor.ai).
+Use all the AI you need. It's great at generating code that's error free, good at explaining how that code works, but not great experimental design, bringing meaning to results, and a few other important steps where humans are useful. SU and ESF students have free access to Claude and Gemini.
 
 ## Evaluation
+TBD
 
+<!--
 ### Participation 50%
 
 I expect active participation in all exercises and discussion. I may take attendance at some points, but mostly I'll be gauging student participation as we go.
@@ -132,6 +123,7 @@ Because we have to fit everybody in the allocated presentation days, make sure y
 You will not turn in your presentation for a grade.
 
 It's possible undergrads will not have the opportunity to present due to time constraints. In this case, the final written report will be worth 50% of your grade.
+-->
 
 ## Students with Learning and Physical Disabilities
 
