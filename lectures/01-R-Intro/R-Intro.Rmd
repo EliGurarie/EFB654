@@ -1,6 +1,6 @@
 ---
 title: "Introduction to R and Reproducible Research"
-author: Hyatt Green (and a little Elie Gurarie)
+author: Hyatt Green and Elie Gurarie
 date: Jan 12, 2026
 output: 
   ioslides_presentation:
@@ -35,29 +35,14 @@ Course Info
 **Course Materials Website**: https://eligurarie.github.io/EFB654
 
 
-Go to Syllabus
+Go to DRAFT Syllabus
 ----
 
 <center> 
 https://eligurarie.github.io/EFB654/syllabus.html
 </center>
 
-
-My Research and R
-----
-
-![](./img/CLAM_ORD.jpg)
-
-My Research and R {.columns-2}
-----
-
-![](./img/gull-fig-1.jpg)
-
- - Not an expert in R or statistics, but ...
- - using R most days for 15 years
- - plotting, stats, data wrangling
- - via RStudio
- - Have not published a paper or written a grant *without* using R!
+Big changes coming this week.
 
 This is hard! Why do this?
 ----
@@ -95,7 +80,6 @@ R and Associated Programs
 
 RStudio provides the workspace → RMarkdown documents contain your text and code → knitr processes the R code → Final document is produced (PDF, HTML, etc.)
 
-
 What is R?
 ----
 
@@ -126,6 +110,7 @@ Advantages of R
  - the *latest* analysis tools
  - Large, usually helpful, community of users (see [stackoverflow](https://stackoverflow.com/questions/tagged/r))
  - Tools for communicating results (easily accessible through RStudio)
+ - LLM AI assistants like Claude, Gemini, ChatGPT know R well
 
 Disadvantages of R
 ----
