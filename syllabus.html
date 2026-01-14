@@ -1609,7 +1609,7 @@ effective and responsible way.</p>
 <li>Develop custom shiny apps</li>
 <li>Practice working with spatial data in R</li>
 <li>Build packages in R</li>
-<li>Demonstrate effective use of version control (git and Gitub)</li>
+<li>Demonstrate effective use of version control (git and GitHub)</li>
 <li>Be familiar with ways to optimize compute speed using parallelized
 code</li>
 <li>Reach beyond course content to individualize R to your needs</li>
@@ -1649,65 +1649,252 @@ and Gemini.</p>
 </div>
 <div id="evaluation" class="section level2">
 <h2>Evaluation</h2>
-<p>TBD</p>
-<!--
-### Participation 50%
-
-I expect active participation in all exercises and discussion. I may take attendance at some points, but mostly I'll be gauging student participation as we go.
-
-### Final Project 50%
-
-Your final project will consist of two components: the final written report and the final verbal presentation. You should start with data you produced, if possible. Ideally, I'd like your analysis through this course to end up in your thesis, or some other meaningful place. If you don't have any data of your own to work on, contact me and I might be able to help. **DO NOT** leave this project till the last minute. Start thinking about it today.
-
-Near the beginning of the term we'll meet privately to discuss a dataset you've chosen to make sure it meets the course criteria. At this initial meeting, bring your first and second choices for a final project dataset. **If you don't have your own data, check out the resources in the Resources section of this syllabus**. Keep in mind you'll have to produce some real results from the data by the end of the term, so don't pick a dataset that's too large or complex. On the other hand, if you pick a dataset that's too simple (e.g., a 2×10 data frame), you likely won't be able to demonstrate R proficiency.
-
-#### Important dates for the final project
-
-| Deadline | Purpose | Materials Due |
-|----------|---------|---------------|
-| Feb 12 | Initial data meeting | 1-2 datasets |
-| April 9-28 | Final Presentations | 12-15 minute presentation |
-| May 6 | Final Project Due | Final Report |
-
-#### Final Written Report 30%
-
-The final report is the culmination of all your work in the course. In this document, you'll demonstrate most if not all of the course learning outcomes. It should be constructed using R and knitr and describe in clear detail the background, data collection, analysis methods, results, discussion, and conclusions of your chosen project.
-
-Submit your final project with 1) your (knitted) **pdf** file (preferred, but HTML acceptable), 2) any data in an ".Rdata" file that your source document requires, and 3) your source document ".Rmd" that you used to create your final document.
-
-#### Penalties for late work
-
-| Hours Overdue | Penalty |
-|---------------|---------|
-| 24 | 20% |
-| 48 | 50% |
-| >48 | 100% (no credit given) |
-
-#### Final Verbal Presentation 20%
-
-Your verbal communication, more so than your content, will be evaluated through your final presentation. I prefer you use RMarkdown (through beamer, slidy, or IOslides) for your final presentation, but use PowerPoint if you must. Presentations should be **about 9 minutes leaving about 3 minutes for questions/discussion for a max of about 12 minutes total per presentation**. My hope is that these presentations will be given in-person.
-
-Because we have to fit everybody in the allocated presentation days, make sure you are not delayed by technical difficulties. If you are first to present, please try to show up a few minutes early to set up your presentation.
-
-You will not turn in your presentation for a grade.
-
-It's possible undergrads will not have the opportunity to present due to time constraints. In this case, the final written report will be worth 50% of your grade.
--->
+<div id="homework-60" class="section level3">
+<h3>Homework (60%)</h3>
+<p>Ten homework assignments will be assigned throughout the semester,
+each worth 6% of your final grade. Assignments will reinforce concepts
+and techniques covered in class that week. You may drop your lowest
+homework score.</p>
+<p>Submit your source document (.Rmd) and knitted output as either a
+Word document (.docx) or PDF (converted from HTML).</p>
+</div>
+<div id="final-project-40" class="section level3">
+<h3>Final Project (40%)</h3>
+<p>Your final project demonstrates your ability to apply R skills to a
+real problem. Choose one of two formats:</p>
+<p><strong>Option A: R Package</strong> Build an R package that includes
+at least three custom functions. Your package should include proper
+documentation (roxygen2 comments), a working NAMESPACE, and a README
+explaining the package’s purpose and usage.</p>
+<p><strong>Option B: Shiny Application</strong> Build an interactive
+Shiny app that includes at least three custom functions. Your app should
+solve a meaningful problem or visualize data in a useful way, with a
+clean interface and clear documentation of its functionality.</p>
+<p>Schedule an initial project meeting with Dr. Green or Dr. Gurarie by
+Feb 28 to discuss your project idea.</p>
+</div>
+</div>
+<div id="schedule" class="section level2">
+<h2>Schedule</h2>
+<table style="width:100%;">
+<colgroup>
+<col width="19%" />
+<col width="39%" />
+<col width="23%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Date</th>
+<th>Instructor</th>
+<th>Topic</th>
+<th>HW</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mon Jan 12</td>
+<td>Green</td>
+<td>Orientation, R, RStudio, CRAN, getting help</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Wed Jan 14</td>
+<td>Green</td>
+<td>R operators, built-in functions, saving work</td>
+<td>HW1 assigned</td>
+</tr>
+<tr class="odd">
+<td>Mon Jan 19</td>
+<td>—</td>
+<td><em>MLK Day (no class)</em></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Wed Jan 21</td>
+<td>Green</td>
+<td>Data classes</td>
+<td>HW1 due, HW2 assigned</td>
+</tr>
+<tr class="odd">
+<td>Mon Jan 26</td>
+<td>Green</td>
+<td>Data structures</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Wed Jan 28</td>
+<td>Green</td>
+<td>Indexing vectors</td>
+<td>HW2 due, HW3 assigned</td>
+</tr>
+<tr class="odd">
+<td>Mon Feb 2</td>
+<td>Green</td>
+<td>Indexing matrices, data frames, lists</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Wed Feb 4</td>
+<td>Green</td>
+<td>Source doc formatting; sorting/subsetting data</td>
+<td>HW3 due, HW4 assigned</td>
+</tr>
+<tr class="odd">
+<td>Mon Feb 9</td>
+<td>Green</td>
+<td>Importing/exporting data</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Wed Feb 11</td>
+<td>Green</td>
+<td>Plotting basics I</td>
+<td>HW4 due, HW5 assigned</td>
+</tr>
+<tr class="odd">
+<td>Mon Feb 16</td>
+<td>—</td>
+<td><em>No class (instructors away)</em></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Wed Feb 18</td>
+<td>—</td>
+<td><em>No class (instructors away)</em></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Mon Feb 23</td>
+<td>Green</td>
+<td>Plotting basics II, ggplot2 intro</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Wed Feb 25</td>
+<td>Green</td>
+<td>Summarizing data</td>
+<td>HW5 due, HW6 assigned</td>
+</tr>
+<tr class="odd">
+<td>Mon Mar 2</td>
+<td>Green</td>
+<td>Aggregating and merging data</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Wed Mar 4</td>
+<td>Green</td>
+<td>Writing/debugging functions</td>
+<td>HW6 due</td>
+</tr>
+<tr class="odd">
+<td>Mar 8-15</td>
+<td>—</td>
+<td><em>Spring Break (no class)</em></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Mon Mar 16</td>
+<td>Gurarie</td>
+<td>Git and GitHub</td>
+<td>HW7 assigned</td>
+</tr>
+<tr class="odd">
+<td>Wed Mar 18</td>
+<td>Gurarie</td>
+<td>Loops and apply</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Mon Mar 23</td>
+<td>Gurarie</td>
+<td>Shiny I: basics</td>
+<td>HW7 due, HW8 assigned</td>
+</tr>
+<tr class="odd">
+<td>Wed Mar 25</td>
+<td>Gurarie</td>
+<td>Shiny II: reactivity and deployment</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Mon Mar 30</td>
+<td>Gurarie</td>
+<td>Spatial data in R I</td>
+<td>HW8 due, HW9 assigned</td>
+</tr>
+<tr class="odd">
+<td>Wed Apr 1</td>
+<td>Gurarie</td>
+<td>Spatial data in R II</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Mon Apr 6</td>
+<td>Gurarie</td>
+<td>R packages I: structure and documentation</td>
+<td>HW9 due, HW10 assigned</td>
+</tr>
+<tr class="odd">
+<td>Wed Apr 8</td>
+<td>Gurarie</td>
+<td>R packages II: building and testing</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Mon Apr 13</td>
+<td>Gurarie</td>
+<td>Parallelized code</td>
+<td>HW10 due</td>
+</tr>
+<tr class="odd">
+<td>Wed Apr 15</td>
+<td>—</td>
+<td>Project work day / office hours</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Mon Apr 20</td>
+<td>—</td>
+<td>Project work day / office hours</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Wed Apr 23</td>
+<td>—</td>
+<td><strong>Final presentations (5 min + 2 min Q&amp;A)</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Mon Apr 27</td>
+<td>—</td>
+<td><strong>Final presentations</strong></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Final exam slot</td>
+<td>—</td>
+<td><strong>Final presentations</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="students-with-learning-and-physical-disabilities" class="section level2">
 <h2>Students with Learning and Physical Disabilities</h2>
-<p>SUNY-ESF works with the Office of Disability Services (ODS) at
+<p>SUNY-ESF works with the Center for Disability Resources (CDR) at
 Syracuse University, who is responsible for coordinating
-disability-related accommodations. Students can contact ODS at 804
+disability-related accommodations. Students can contact CDR at 804
 University Avenue- Room 309, 315-443-4498 to schedule an appointment and
 discuss their needs and the process for requesting accommodations.
 Students may also contact the ESF Office of Student Affairs, 110 Bray
 Hall, 315-470-6660 for assistance with the process. To learn more about
-ODS, visit <a href="http://disabilityservices.syr.edu" class="uri">http://disabilityservices.syr.edu</a>. Authorized
+CDR, visit <a href="https://disabilityresources.syr.edu" class="uri">https://disabilityresources.syr.edu</a>. Authorized
 accommodation forms must be in the instructor’s possession one week
 prior to any anticipated accommodation. Since accommodations may require
 early planning and generally are not provided retroactively, please
-contact ODS as soon as possible.</p>
+contact CDR as soon as possible.</p>
 </div>
 <div id="academic-dishonesty-statement" class="section level2">
 <h2>Academic Dishonesty Statement</h2>
@@ -1723,18 +1910,16 @@ scripts.</p>
 <p>Academic dishonesty is a sign of disrespect and breach of trust
 between a student, one’s fellow students, or the instructor(s). By
 registering for courses at ESF you acknowledge your awareness of the ESF
-Code of Student Conduct (<a href="http://www.esf.edu/students/handbook/StudentHB.05.pdf" class="uri">http://www.esf.edu/students/handbook/StudentHB.05.pdf</a>),
+Code of Student Conduct (<a href="https://www.esf.edu/student-affairs/handbook/current/code-of-conduct.php" class="uri">https://www.esf.edu/student-affairs/handbook/current/code-of-conduct.php</a>),
 in particular academic dishonesty includes but is not limited to
 plagiarism and cheating, and other forms of academic misconduct. The
 Academic Integrity Handbook contains further information and guidance
-(<a href="http://www.esf.edu/students/integrity/" class="uri">http://www.esf.edu/students/integrity/</a>). Infractions of
-the academic integrity code may lead to academic penalties as per the
-ESF Grading Policy (<a href="http://www.esf.edu/provost/policies/documents/GradingPolicy.11.12.2013.pdf" class="uri">http://www.esf.edu/provost/policies/documents/GradingPolicy.11.12.2013.pdf</a>).</p>
+(<a href="https://www.esf.edu/student-affairs/handbook/current/appendix-b.php" class="uri">https://www.esf.edu/student-affairs/handbook/current/appendix-b.php</a>).</p>
 </div>
 <div id="downloading-r-and-rstudio" class="section level2">
 <h2>Downloading R and RStudio</h2>
 <p>To download R visit: <a href="http://www.r-project.org/" class="uri">http://www.r-project.org/</a><br />
-To download R Studio visit: <a href="http://www.rstudio.org" class="uri">http://www.rstudio.org</a></p>
+To download RStudio visit: <a href="https://posit.co/download/rstudio-desktop/" class="uri">https://posit.co/download/rstudio-desktop/</a></p>
 </div>
 <div id="getting-started-with-r-and-rstudio" class="section level2">
 <h2>Getting Started with R and RStudio</h2>
@@ -1759,7 +1944,7 @@ problem we can help you figure it out.</p>
 <h2>Getting Started with LaTeX</h2>
 <div id="downloading-latex" class="section level3">
 <h3>Downloading LaTeX</h3>
-<p>To download LaTeX visit: <a href="http://latex-project.org/ftp.html" class="uri">http://latex-project.org/ftp.html</a></p>
+<p>To download LaTeX visit: <a href="https://www.latex-project.org/get/" class="uri">https://www.latex-project.org/get/</a></p>
 </div>
 </div>
 <div id="downloadinstall-help" class="section level2">
@@ -1807,12 +1992,6 @@ Beamer Theme Matrix: <a href="https://www.hartwork.org/beamer-theme-matrix/" cla
 Slidify tutorial: <a href="https://www.uvm.edu/rsenr/vtcfwru/R/fledglings/14_Slideshows.html" class="uri">https://www.uvm.edu/rsenr/vtcfwru/R/fledglings/14_Slideshows.html</a><br />
 Another Slidify tutorial: <a href="http://slidify.github.io/workshops/tutorials/03/#21" class="uri">http://slidify.github.io/workshops/tutorials/03/#21</a></p>
 </div>
-<div id="minimal-working-examples" class="section level4">
-<h4>Minimal Working Examples</h4>
-<p>Minimal Working Examples (general): <a href="http://stackoverflow.com/help/mcve" class="uri">http://stackoverflow.com/help/mcve</a><br />
-Minimal Working Examples (from R-bloggers): <a href="http://www.r-bloggers.com/minimal-reproducible-examples/" class="uri">http://www.r-bloggers.com/minimal-reproducible-examples/</a><br />
-Minimal Working Examples (from StackOverflow): <a href="http://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example" class="uri">http://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example</a></p>
-</div>
 <div id="spatial-analysis" class="section level4">
 <h4>Spatial Analysis</h4>
 <p>spatial cheatsheet: <a href="http://www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html" class="uri">http://www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html</a><br />
@@ -1832,8 +2011,7 @@ Networks in R: <a href="http://kateto.net/network-visualization" class="uri">htt
 </div>
 <div id="data" class="section level3">
 <h3>Data</h3>
-<p>Inside-R post: <a href="http://www.inside-r.org/howto/finding-data-internet" class="uri">http://www.inside-r.org/howto/finding-data-internet</a><br />
-rOpenSci: Packages to get data: <a href="http://ropensci.org/packages/" class="uri">http://ropensci.org/packages/</a></p>
+<p>rOpenSci: Packages to get data: <a href="https://ropensci.org/packages/" class="uri">https://ropensci.org/packages/</a></p>
 </div>
 </div>
 

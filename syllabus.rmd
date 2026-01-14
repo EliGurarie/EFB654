@@ -49,6 +49,7 @@ Today's world is flooded with data. We don't feel right sending students, especi
 ## Skill Outcomes
 
 ### R
+
 - Get data into and out of R
 - Obtain data summaries
 - Plot basic data summary plots
@@ -58,8 +59,8 @@ Today's world is flooded with data. We don't feel right sending students, especi
 - Develop custom shiny apps
 - Practice working with spatial data in R
 - Build packages in R
-- Demonstrate effective use of version control (git and Gitub)
-- Be familiar with ways to optimize compute speed  using parallelized code
+- Demonstrate effective use of version control (git and GitHub)
+- Be familiar with ways to optimize compute speed using parallelized code
 - Reach beyond course content to individualize R to your needs
 
 ## Prerequisites
@@ -79,55 +80,64 @@ No. LaTeX is a type setting language that enables you to produce good-looking do
 Use all the AI you need. It's great at generating code that's error free, good at explaining how that code works, but not great experimental design, bringing meaning to results, and a few other important steps where humans are useful. SU and ESF students have free access to Claude and Gemini.
 
 ## Evaluation
-TBD
 
-<!--
-### Participation 50%
+### Homework (60%)
 
-I expect active participation in all exercises and discussion. I may take attendance at some points, but mostly I'll be gauging student participation as we go.
+Ten homework assignments will be assigned throughout the semester, each worth 6% of your final grade. Assignments will reinforce concepts and techniques covered in class that week. You may drop your lowest homework score.
 
-### Final Project 50%
+Submit your source document (.Rmd) and knitted output as either a Word document (.docx) or PDF (converted from HTML).
 
-Your final project will consist of two components: the final written report and the final verbal presentation. You should start with data you produced, if possible. Ideally, I'd like your analysis through this course to end up in your thesis, or some other meaningful place. If you don't have any data of your own to work on, contact me and I might be able to help. **DO NOT** leave this project till the last minute. Start thinking about it today.
+### Final Project (40%)
 
-Near the beginning of the term we'll meet privately to discuss a dataset you've chosen to make sure it meets the course criteria. At this initial meeting, bring your first and second choices for a final project dataset. **If you don't have your own data, check out the resources in the Resources section of this syllabus**. Keep in mind you'll have to produce some real results from the data by the end of the term, so don't pick a dataset that's too large or complex. On the other hand, if you pick a dataset that's too simple (e.g., a 2×10 data frame), you likely won't be able to demonstrate R proficiency.
+Your final project demonstrates your ability to apply R skills to a real problem. Choose one of two formats:
 
-#### Important dates for the final project
+**Option A: R Package**
+Build an R package that includes at least three custom functions. Your package should include proper documentation (roxygen2 comments), a working NAMESPACE, and a README explaining the package's purpose and usage.
 
-| Deadline | Purpose | Materials Due |
-|----------|---------|---------------|
-| Feb 12 | Initial data meeting | 1-2 datasets |
-| April 9-28 | Final Presentations | 12-15 minute presentation |
-| May 6 | Final Project Due | Final Report |
+**Option B: Shiny Application**
+Build an interactive Shiny app that includes at least three custom functions. Your app should solve a meaningful problem or visualize data in a useful way, with a clean interface and clear documentation of its functionality.
 
-#### Final Written Report 30%
+Schedule an initial project meeting with Dr. Green or Dr. Gurarie by Feb 28 to discuss your project idea.
 
-The final report is the culmination of all your work in the course. In this document, you'll demonstrate most if not all of the course learning outcomes. It should be constructed using R and knitr and describe in clear detail the background, data collection, analysis methods, results, discussion, and conclusions of your chosen project.
+## Schedule
 
-Submit your final project with 1) your (knitted) **pdf** file (preferred, but HTML acceptable), 2) any data in an ".Rdata" file that your source document requires, and 3) your source document ".Rmd" that you used to create your final document.
-
-#### Penalties for late work
-
-| Hours Overdue | Penalty |
-|---------------|---------|
-| 24 | 20% |
-| 48 | 50% |
-| >48 | 100% (no credit given) |
-
-#### Final Verbal Presentation 20%
-
-Your verbal communication, more so than your content, will be evaluated through your final presentation. I prefer you use RMarkdown (through beamer, slidy, or IOslides) for your final presentation, but use PowerPoint if you must. Presentations should be **about 9 minutes leaving about 3 minutes for questions/discussion for a max of about 12 minutes total per presentation**. My hope is that these presentations will be given in-person.
-
-Because we have to fit everybody in the allocated presentation days, make sure you are not delayed by technical difficulties. If you are first to present, please try to show up a few minutes early to set up your presentation.
-
-You will not turn in your presentation for a grade.
-
-It's possible undergrads will not have the opportunity to present due to time constraints. In this case, the final written report will be worth 50% of your grade.
--->
+| Date | Instructor | Topic | HW |
+|------|------------|-------|-----|
+| Mon Jan 12 | Green | Orientation, R, RStudio, CRAN, getting help | |
+| Wed Jan 14 | Green | R operators, built-in functions, saving work | HW1 assigned |
+| Mon Jan 19 | — | *MLK Day (no class)* | |
+| Wed Jan 21 | Green | Data classes | HW1 due, HW2 assigned |
+| Mon Jan 26 | Green | Data structures | |
+| Wed Jan 28 | Green | Indexing vectors | HW2 due, HW3 assigned |
+| Mon Feb 2 | Green | Indexing matrices, data frames, lists | |
+| Wed Feb 4 | Green | Source doc formatting; sorting/subsetting data | HW3 due, HW4 assigned |
+| Mon Feb 9 | Green | Importing/exporting data | |
+| Wed Feb 11 | Green | Plotting basics I | HW4 due, HW5 assigned |
+| Mon Feb 16 | — | *No class (instructors away)* | |
+| Wed Feb 18 | — | *No class (instructors away)* | |
+| Mon Feb 23 | Green | Plotting basics II, ggplot2 intro | |
+| Wed Feb 25 | Green | Summarizing data | HW5 due, HW6 assigned |
+| Mon Mar 2 | Green | Aggregating and merging data | |
+| Wed Mar 4 | Green | Writing/debugging functions | HW6 due |
+| Mar 8-15 | — | *Spring Break (no class)* | |
+| Mon Mar 16 | Gurarie | Git and GitHub | HW7 assigned |
+| Wed Mar 18 | Gurarie | Loops and apply | |
+| Mon Mar 23 | Gurarie | Shiny I: basics | HW7 due, HW8 assigned |
+| Wed Mar 25 | Gurarie | Shiny II: reactivity and deployment | |
+| Mon Mar 30 | Gurarie | Spatial data in R I | HW8 due, HW9 assigned |
+| Wed Apr 1 | Gurarie | Spatial data in R II | |
+| Mon Apr 6 | Gurarie | R packages I: structure and documentation | HW9 due, HW10 assigned |
+| Wed Apr 8 | Gurarie | R packages II: building and testing | |
+| Mon Apr 13 | Gurarie | Parallelized code | HW10 due |
+| Wed Apr 15 | — | Project work day / office hours | |
+| Mon Apr 20 | — | Project work day / office hours | |
+| Wed Apr 23 | — | **Final presentations (5 min + 2 min Q&A)** | |
+| Mon Apr 27 | — | **Final presentations** | |
+| Final exam slot | — | **Final presentations** | |
 
 ## Students with Learning and Physical Disabilities
 
-SUNY-ESF works with the Office of Disability Services (ODS) at Syracuse University, who is responsible for coordinating disability-related accommodations. Students can contact ODS at 804 University Avenue- Room 309, 315-443-4498 to schedule an appointment and discuss their needs and the process for requesting accommodations. Students may also contact the ESF Office of Student Affairs, 110 Bray Hall, 315-470-6660 for assistance with the process. To learn more about ODS, visit http://disabilityservices.syr.edu. Authorized accommodation forms must be in the instructor's possession one week prior to any anticipated accommodation. Since accommodations may require early planning and generally are not provided retroactively, please contact ODS as soon as possible.
+SUNY-ESF works with the Center for Disability Resources (CDR) at Syracuse University, who is responsible for coordinating disability-related accommodations. Students can contact CDR at 804 University Avenue- Room 309, 315-443-4498 to schedule an appointment and discuss their needs and the process for requesting accommodations. Students may also contact the ESF Office of Student Affairs, 110 Bray Hall, 315-470-6660 for assistance with the process. To learn more about CDR, visit https://disabilityresources.syr.edu. Authorized accommodation forms must be in the instructor's possession one week prior to any anticipated accommodation. Since accommodations may require early planning and generally are not provided retroactively, please contact CDR as soon as possible.
 
 ## Academic Dishonesty Statement
 
@@ -135,26 +145,28 @@ Academic dishonesty in any form will not be tolerated. This includes, but is not
 
 Checks for plagarism from your peers and internet resources will be performed routinely. I'm actually pretty proud of my plagarism checker R scripts.
 
-Academic dishonesty is a sign of disrespect and breach of trust between a student, one's fellow students, or the instructor(s). By registering for courses at ESF you acknowledge your awareness of the ESF Code of Student Conduct (http://www.esf.edu/students/handbook/StudentHB.05.pdf), in particular academic dishonesty includes but is not limited to plagiarism and cheating, and other forms of academic misconduct. The Academic Integrity Handbook contains further information and guidance (http://www.esf.edu/students/integrity/). Infractions of the academic integrity code may lead to academic penalties as per the ESF Grading Policy (http://www.esf.edu/provost/policies/documents/GradingPolicy.11.12.2013.pdf).
+Academic dishonesty is a sign of disrespect and breach of trust between a student, one's fellow students, or the instructor(s). By registering for courses at ESF you acknowledge your awareness of the ESF Code of Student Conduct (https://www.esf.edu/student-affairs/handbook/current/code-of-conduct.php), in particular academic dishonesty includes but is not limited to plagiarism and cheating, and other forms of academic misconduct. The Academic Integrity Handbook contains further information and guidance (https://www.esf.edu/student-affairs/handbook/current/appendix-b.php).
 
 ## Downloading R and RStudio
 
 To download R visit: http://www.r-project.org/  
-To download R Studio visit: http://www.rstudio.org
+To download RStudio visit: https://posit.co/download/rstudio-desktop/
 
 ## Getting Started with R and RStudio
 
 ### Windows
+
 On the Windows download page, click on base. Download the installer, Download the latest stable verison of R for Windows. It will take a few minutes to download, and I recommend you save it to your desktop (instead of running it directly from the web). Once the download is complete, double-click the icon to start the installation. Simple questions are posed during the installation. Accept the default settings.
 
 ### Mac OS X
+
 The R Project page provides some helpful advice depending on your version of the Mac OS. Follow the instructions, and if there is a problem we can help you figure it out.
 
 ## Getting Started with LaTeX
 
 ### Downloading LaTeX
 
-To download LaTeX visit: http://latex-project.org/ftp.html
+To download LaTeX visit: https://www.latex-project.org/get/
 
 ## Download/Install Help
 
@@ -191,21 +203,19 @@ R-bloggers: http://www.r-bloggers.com
 RTutor: http://rtutor.ai
 
 #### Authoring Formats
+
 R Markdown v2: http://rmarkdown.rstudio.com  
 Beamer Theme Matrix: https://www.hartwork.org/beamer-theme-matrix/  
 Slidify tutorial: https://www.uvm.edu/rsenr/vtcfwru/R/fledglings/14_Slideshows.html  
 Another Slidify tutorial: http://slidify.github.io/workshops/tutorials/03/#21
 
-#### Minimal Working Examples
-Minimal Working Examples (general): http://stackoverflow.com/help/mcve  
-Minimal Working Examples (from R-bloggers): http://www.r-bloggers.com/minimal-reproducible-examples/  
-Minimal Working Examples (from StackOverflow): http://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example
-
 #### Spatial Analysis
+
 spatial cheatsheet: http://www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html  
 spatial tutorial: https://github.com/Robinlovelace/Creating-maps-in-R
 
 #### Miscellaneous
+
 Another R course for Python Programmers: https://ramnathv.github.io/pycon2014-r/  
 Debugging in R: http://www.stats.uwo.ca/faculty/murdoch/software/debuggingR/  
 qqplot2 quick reference: http://zevross.com/blog/2014/08/04/beautiful-plotting-in-r-a-ggplot2-cheatsheet-3/  
@@ -217,5 +227,4 @@ Networks in R: http://kateto.net/network-visualization
 
 ### Data
 
-Inside-R post: http://www.inside-r.org/howto/finding-data-internet  
-rOpenSci: Packages to get data: http://ropensci.org/packages/
+rOpenSci: Packages to get data: https://ropensci.org/packages/
