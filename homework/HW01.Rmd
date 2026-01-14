@@ -1,0 +1,156 @@
+---
+title: "Homework 1: Getting Started with R and RMarkdown"
+author: "Your Name Here"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Instructions
+
+Complete all exercises below by filling in your answers in the designated spaces. When finished:
+
+1. Save this .Rmd file
+2. Knit the document to HTML (click the "Knit" button or press Ctrl+Shift+K / Cmd+Shift+K)
+3. Submit **both** your .Rmd file and the knitted Word/PDF (HTMLs are not 'uploadable', but can be converted to PDF) to Blackboard
+
+**Due:** Wednesday, January 21 by 11:59 PM
+
+---
+
+## Part 1: About You
+
+### Question 1 (1 point)
+
+Tell us about yourself! In the space below, write a few paragraphs covering:
+
+- Your name and program (undergraduate major or graduate department)
+- Your research interests or thesis/dissertation topic (if applicable)
+- Your prior experience with programming or statistical software (R, Python, Excel, etc.)
+- What you hope to get out of this course
+
+*Delete this text and write your response here.*
+
+---
+
+### Question 2 (0.5 points)
+
+Then, in a sentence, tell us what subject area and packages within TaskViews you're most interested in.
+
+*Delete this text and write your response here.*
+
+---
+
+## Part 2: Basic R Operators
+
+For each question below, write R code in the provided code chunk and interpret the results.
+
+### Question 3 (1 points)
+
+Use R as a calculator to compute the following. Show your code and the output.
+
+a) $25 + 17$
+b) $144 / 12$
+c) $8^3$ (8 cubed)
+d) The square root of 256 (hint: use `sqrt()` or the exponent 0.5)
+
+```{r q3}
+# Write your code here
+
+```
+
+---
+
+### Question 4 (1 point)
+
+R has several comparison operators that return `TRUE` or `FALSE`. Predict what each of the following will return, then run the code to check your prediction.
+
+a) `5 > 3`
+b) `10 == 11`
+c) `7 != 7`
+d) `15 >= 15`
+
+```{r q4}
+# Write your code here
+
+```
+
+In your own words, explain what the `==` and `!=` operators do:
+
+*Delete this text and write your explanation here.*
+
+---
+
+### Question 5 (0.5 points)
+
+Create three variables:
+
+- `x` assigned the value 10
+- `y` assigned the value 3
+- `z` assigned the result of `x` times `y`
+
+Then print the value of `z`.
+
+```{r q5}
+# Write your code here
+
+```
+
+---
+
+### Question 6 (1 point)
+
+The modulo operator `%%` returns the remainder after division. For example, `10 %% 3` returns `1` because 10 divided by 3 is 3 with a remainder of 1. 
+
+a) What does `17 %% 5` return? Run the code and explain why.
+b) What does `20 %% 4` return? Explain why.
+c) How could you use the modulo operator to determine if a number is even or odd? Demonstrate with an example.
+
+```{r q6}
+# Write your code here
+
+```
+
+*Delete this text and write your explanations here.*
+
+---
+
+### Question 7 (1 point)
+
+The `&` (AND) operator returns `TRUE` only if *both* conditions are true. The `|` (OR) operator returns `TRUE` if *either* condition is true.
+
+Given `a <- 10` and `b <- 20`, predict what each expression will return, then run the code to check:
+
+a) `a > 5 & b > 25`
+b) `a > 5 | b > 25`
+c) `a == 10 & b == 20`
+
+```{r q7}
+# Write your code here
+
+```
+
+In your own words, explain the difference between `&` and `|`:
+
+*Delete this text and write your explanation here.*
+
+---
+
+## Submission Checklist
+
+Before submitting, make sure you have:
+
+- [ ] Filled in your name in the author field at the top
+- [ ] Answered all questions
+- [ ] Successfully knitted your document to HTML (or Word/PDF)
+- [ ] Uploaded both your .Rmd file AND your knitted output to Blackboard
+
+---
+
+*This homework is worth 5.5 points total.*

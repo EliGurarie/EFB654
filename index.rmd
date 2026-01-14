@@ -16,7 +16,7 @@ htmltools::img(src = "assets/esflogo.png", alt = 'banner', style = 'position:abs
 
 > ## Course Materials
 >
-> This page contains lectures,assignments and other resources, and will expand as the semester progresses.  
+> This page contains lectures,assignments and other resources, and will expand as the semester progresses.  For Homework Submissions and Discussion Boards see the [Blackboard Course Page](https://blackboard.syracuse.edu/ultra/courses/_564691_1/outline)  
 
 **Instructors:** [**Dr. Hyatt Green**](https://www.esf.edu/faculty/green/index.php) (Illick 201) and [**Dr. Elie Gurarie**](https://www.esf.edu/faculty/gurarie/) (Illick 206)
 
@@ -41,6 +41,14 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - [Lecture 0: Intro to R](lectures/01-R-Intro/R-Intro.html)
 - [Lecture 1: Operators](lectures/02-R Operators/R_Operators.html)
 
+# Homeworks 
 
-<img src="assets/Rlogo.svg" height="100" style="margin-right: 30px;">
-<img src="assets/RStudio_logo_flat.svg" height="100">
+Submit all assignments to the Blackboard page
+
+- [Homework 1](homework/HW01.Rmd)  (due Jan 21)
+  - (Note: this is an `Rmd` file which you will download, modify, knit, and upload.)  
+
+
+
+<img src="assets/Rlogo.svg" height="50" style="margin-right: 30px;">
+<img src="assets/RStudio_logo_flat.svg" height="50">
