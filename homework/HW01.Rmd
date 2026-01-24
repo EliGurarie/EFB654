@@ -1,11 +1,15 @@
 ---
-title: "Homework 1: Getting Started with R and RMarkdown"
+title: 'Homework 1: Getting Started with R and RMarkdown'
 author: "Your Name Here"
 date: "`r Sys.Date()`"
-output: 
+output:
+  word_document:
+    toc: true
   html_document:
     toc: true
     toc_float: true
+  pdf_document:
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
@@ -61,7 +65,7 @@ c) $8^3$ (8 cubed)
 d) The square root of 256 (hint: use `sqrt()` or the exponent 0.5)
 
 ```{r q3}
-# Write your code here
+# test
 
 ```
 

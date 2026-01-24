@@ -41,6 +41,8 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - [Lecture 0: Intro to R](lectures/01-R-Intro/R-Intro.html)
 - [Lecture 1: Operators](lectures/02-R Operators/R_Operators.html)
 - [Lecture 2: Data Classes](lectures/03-Data-Classes/Data-Classes.html)
+  - Lecture for Jan 21 *and* 26 (remote).
+  - [quant_prog.R function](functions/quant_prog.R)
 
 # Homeworks 
 
