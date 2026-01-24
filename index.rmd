@@ -42,6 +42,7 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - [Lecture 1: Operators](lectures/02-R Operators/R_Operators.html)
 - [Lecture 2: Data Classes](lectures/03-Data-Classes/Data-Classes.html)
   - Lecture for Jan 21 *and* 26 (remote).
+  - [Link for remote access](https://syracuseuniversity.zoom.us/j/91687106324)
   - [quant_prog.R function](functions/quant_prog.R)
 
 # Homeworks 
