@@ -77,7 +77,7 @@ No. LaTeX is a type setting language that enables you to produce good-looking do
 
 ## Use of AI
 
-Use all the AI you need. It's great at generating code that's error free, good at explaining how that code works, but not great experimental design, bringing meaning to results, and a few other important steps where humans are useful. SU and ESF students have free access to Claude and Gemini.
+Use all the AI you need. It's great at generating code that's error free, good at explaining how that code works, but not great at experimental design, bringing meaning to results, and a few other important steps where humans are useful. SU and ESF students have free access to Claude and Gemini.
 
 ## Evaluation
 
@@ -108,7 +108,7 @@ Schedule an initial project meeting with Dr. Green or Dr. Gurarie by Feb 28 to d
 | Mon Jan 19 | — | *MLK Day (no class)* | |
 | Wed Jan 21 | Green | Data classes | HW1 due, HW2 assigned |
 | Mon Jan 26 | Green | Data structures | |
-| Wed Jan 28 | Green/Gurarie | Review 'Quantum Progress' exercise; Indexing vectors; knitr options | HW2 due, HW3 assigned |
+| Wed Jan 28 | Green/Gurarie | Review 'Quantum Progress' exercise; Data Structures ; knitr options | HW2 due, HW3 assigned |
 | Mon Feb 2 | Green | Indexing matrices, data frames, lists | |
 | Wed Feb 4 | Green | Source doc formatting; sorting/subsetting data | HW3 due, HW4 assigned |
 | Mon Feb 9 | Green | Importing/exporting data | |
@@ -156,7 +156,7 @@ Key Protections:
  - Your data is protected under FERPA and is never used to train AI models
  - AI analysis informs instruction but does not determine grades
  - All grading decisions are made by the instructor through independent review
- - You may opt out or request human-only review at any time
+ - You may opt out or request human-only assessment at any time
  - You may appeal any grade within 5 business days if you believe AI analysis influenced it unfairly
 
 Above all, we will follow Stanford's AI Golden Rule: "Use or share AI outputs as you would have others use or share output with you". 
@@ -186,6 +186,7 @@ AI Analysis Workflow:
 
 
 -->
+
 
 ## Downloading R and RStudio
 

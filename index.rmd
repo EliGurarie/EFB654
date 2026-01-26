@@ -44,7 +44,8 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - Lecture for Jan 21 *and* 26 (remote).
   - [Link for remote access](https://syracuseuniversity.zoom.us/j/91687106324)
   - [quant_prog.R function](functions/quant_prog.R)
-
+ - [Lecture 3: Data Structures](lectures/04-Data-Structures/Data-Structures.html)
+  - [Birds.R function](lectures/04-Data-Structures/Birds.R)
 
 # Homeworks 
 
