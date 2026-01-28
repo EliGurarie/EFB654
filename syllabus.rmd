@@ -167,7 +167,7 @@ For questions about AI use in this course, contact the instructors.
 AI Analysis Workflow:
 
 1. Download homework from Blackboard
-2. Upload batch to Claude (ESF enterprise) for pattern analysis. Use the schell script to concantenate. Sonnet 4.5 will be faster, more cost effective, and better at this more defined task compared to Opus 4.5.
+2. Upload batch to Claude (ESF enterprise) for pattern analysis. Use the shell script to concatenate. Sonnet 4.5 will be faster, more cost effective, and better at this more defined task compared to Opus 4.5.
   + Prompt: "Analyze this batch of R homeworks for common patterns relative to these skill sub-objectives:
      - Valid R syntax. Effectiveness - does the code do what is asked of it?
      - Completeness. Does the code complete the task?
@@ -183,7 +183,6 @@ AI Analysis Workflow:
 4. Independently grade each assignment using rubric
 5. Use AI insights to inform: class discussion topics, additional examples needed
 6. All grades determined through human judgment; AI = advisory input only
-
 
 -->
 
