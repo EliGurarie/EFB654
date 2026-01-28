@@ -1642,10 +1642,10 @@ presentation using beamer.</p>
 <div id="use-of-ai" class="section level2">
 <h2>Use of AI</h2>
 <p>Use all the AI you need. It’s great at generating code that’s error
-free, good at explaining how that code works, but not great experimental
-design, bringing meaning to results, and a few other important steps
-where humans are useful. SU and ESF students have free access to Claude
-and Gemini.</p>
+free, good at explaining how that code works, but not great at
+experimental design, bringing meaning to results, and a few other
+important steps where humans are useful. SU and ESF students have free
+access to Claude and Gemini.</p>
 </div>
 <div id="evaluation" class="section level2">
 <h2>Evaluation</h2>
@@ -1724,8 +1724,9 @@ Feb 28 to discuss your project idea.</p>
 </tr>
 <tr class="even">
 <td>Wed Jan 28</td>
-<td>Green</td>
-<td>Indexing vectors</td>
+<td>Green/Gurarie</td>
+<td>Review ‘Quantum Progress’ exercise; Data Structures ; knitr
+options</td>
 <td>HW2 due, HW3 assigned</td>
 </tr>
 <tr class="odd">
@@ -1915,6 +1916,54 @@ in particular academic dishonesty includes but is not limited to
 plagiarism and cheating, and other forms of academic misconduct. The
 Academic Integrity Handbook contains further information and guidance
 (<a href="https://www.esf.edu/student-affairs/handbook/current/appendix-b.php" class="uri">https://www.esf.edu/student-affairs/handbook/current/appendix-b.php</a>).</p>
+</div>
+<div id="ai-assisted-learning-analytics" class="section level2">
+<h2>AI-Assisted Learning Analytics</h2>
+<p>This course uses Claude AI (via ESF’s enterprise agreement with
+Anthropic) to analyze homework submissions and identify class-wide
+learning patterns. This approach aligns with SUNY’s Faculty Advisory
+Council on Teaching and Technology (<a href="https://soar.suny.edu/bitstreams/77a56a43-fc22-43e6-9b9d-b7abe491351a/download">FACT2</a>
+guidelines for responsible AI integration in higher education, which
+emphasize transparent use, human oversight, and student agency. We will
+use Sonnet 4.5 versus more advanced and computationally-intense models
+like Opus 4.5.</p>
+<p>Key Protections:</p>
+<ul>
+<li>Your data is protected under FERPA and is never used to train AI
+models</li>
+<li>AI analysis informs instruction but does not determine grades</li>
+<li>All grading decisions are made by the instructor through independent
+review</li>
+<li>You may opt out or request human-only assessment at any time</li>
+<li>You may appeal any grade within 5 business days if you believe AI
+analysis influenced it unfairly</li>
+</ul>
+<p>Above all, we will follow Stanford’s AI Golden Rule: “Use or share AI
+outputs as you would have others use or share output with you”.</p>
+<p>For questions about AI use in this course, contact the
+instructors.</p>
+<!--
+AI Analysis Workflow:
+
+1. Download homework from Blackboard
+2. Upload batch to Claude (ESF enterprise) for pattern analysis. Use the shell script to concatenate. Sonnet 4.5 will be faster, more cost effective, and better at this more defined task compared to Opus 4.5.
+  + Prompt: "Analyze this batch of R homeworks for common patterns relative to these skill sub-objectives:
+     - Valid R syntax. Effectiveness - does the code do what is asked of it?
+     - Completeness. Does the code complete the task?
+     - Logical approach. There are many ways to code some problems. Is the approach more-or-less straightforward?
+     - Code efficiency. Is the code efficient? Are there unnecessary steps
+     - Code reproducibility. (e.g., can the code be applied to a similar problem with minimal changes?)
+     - Human readability. (e.g., the use of spaces, newlines; comments when helpful; avoid over-nesting and long lines of code)
+    Analyze the ".Rmd" document from each student and provide:
+     - aggregate class-level insights
+     - a table listing issues for each student, the relevant skill sub-objective, the error or issue as completed by the student (copied), and the correct way to do it.
+     - a horizontal barplot with bars for each skill sub-objective also showing lines for 80 and 90% class achievement."
+3. Instructor review AI-generated report for: common errors, misconception patterns, skill or learning objective gaps
+4. Independently grade each assignment using rubric
+5. Use AI insights to inform: class discussion topics, additional examples needed
+6. All grades determined through human judgment; AI = advisory input only
+
+-->
 </div>
 <div id="downloading-r-and-rstudio" class="section level2">
 <h2>Downloading R and RStudio</h2>

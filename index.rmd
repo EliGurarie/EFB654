@@ -36,7 +36,7 @@ Perhaps the most important immediate need is to download and install R and Rstud
 
 # Lectures and Labs
 
-## Module 1 - Intro | Operators | Data Types
+## Module 1 - Intro | Operators | Data Types and Structures
 
 - [Lecture 0: Intro to R](lectures/01-R-Intro/R-Intro.html)
 - [Lecture 1: Operators](lectures/02-R Operators/R_Operators.html)
@@ -44,6 +44,9 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - Lecture for Jan 21 *and* 26 (remote).
   - [Link for remote access](https://syracuseuniversity.zoom.us/j/91687106324)
   - [quant_prog.R function](functions/quant_prog.R)
+  
+- [Lecture 3: Data Structures (Jan 28)](lectures/04-Data-Structures/Data-Structures.html)
+  - [Birds.R function](lectures/04-Data-Structures/Birds.R)
 
 ## Tools and Tricks in Reproducible Research
 
@@ -58,6 +61,7 @@ Submit all assignments to the Blackboard page
   - (Note: this is an `Rmd` file which you will download, modify, knit, and upload.)  
 - [Homework 02](homework/HW02.html)  (due Jan 28)
   - (Note: this is an `html` file. You will start your *own* `Rmd` file from scratch to complete the questions. Then you will knit and upload.)
+- [Homework 03](homework/HW03.html)  (due Feb 4)
 
 
 <img src="assets/Rlogo.svg" height="50" style="margin-right: 30px;">

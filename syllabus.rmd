@@ -77,7 +77,7 @@ No. LaTeX is a type setting language that enables you to produce good-looking do
 
 ## Use of AI
 
-Use all the AI you need. It's great at generating code that's error free, good at explaining how that code works, but not great experimental design, bringing meaning to results, and a few other important steps where humans are useful. SU and ESF students have free access to Claude and Gemini.
+Use all the AI you need. It's great at generating code that's error free, good at explaining how that code works, but not great at experimental design, bringing meaning to results, and a few other important steps where humans are useful. SU and ESF students have free access to Claude and Gemini.
 
 ## Evaluation
 
@@ -108,7 +108,7 @@ Schedule an initial project meeting with Dr. Green or Dr. Gurarie by Feb 28 to d
 | Mon Jan 19 | — | *MLK Day (no class)* | |
 | Wed Jan 21 | Green | Data classes | HW1 due, HW2 assigned |
 | Mon Jan 26 | Green | Data structures | |
-| Wed Jan 28 | Green | Indexing vectors | HW2 due, HW3 assigned |
+| Wed Jan 28 | Green/Gurarie | Review 'Quantum Progress' exercise; Data Structures ; knitr options | HW2 due, HW3 assigned |
 | Mon Feb 2 | Green | Indexing matrices, data frames, lists | |
 | Wed Feb 4 | Green | Source doc formatting; sorting/subsetting data | HW3 due, HW4 assigned |
 | Mon Feb 9 | Green | Importing/exporting data | |
@@ -146,6 +146,46 @@ Academic dishonesty in any form will not be tolerated. This includes, but is not
 Checks for plagarism from your peers and internet resources will be performed routinely. I'm actually pretty proud of my plagarism checker R scripts.
 
 Academic dishonesty is a sign of disrespect and breach of trust between a student, one's fellow students, or the instructor(s). By registering for courses at ESF you acknowledge your awareness of the ESF Code of Student Conduct (https://www.esf.edu/student-affairs/handbook/current/code-of-conduct.php), in particular academic dishonesty includes but is not limited to plagiarism and cheating, and other forms of academic misconduct. The Academic Integrity Handbook contains further information and guidance (https://www.esf.edu/student-affairs/handbook/current/appendix-b.php).
+
+## AI-Assisted Learning Analytics
+
+This course uses Claude AI (via ESF's enterprise agreement with Anthropic) to analyze homework submissions and identify class-wide learning patterns. This approach aligns with SUNY's Faculty Advisory Council on Teaching and Technology ([FACT2](https://soar.suny.edu/bitstreams/77a56a43-fc22-43e6-9b9d-b7abe491351a/download) guidelines for responsible AI integration in higher education, which emphasize transparent use, human oversight, and student agency. We will use Sonnet 4.5 versus more advanced and computationally-intense models like Opus 4.5.
+
+Key Protections:
+
+ - Your data is protected under FERPA and is never used to train AI models
+ - AI analysis informs instruction but does not determine grades
+ - All grading decisions are made by the instructor through independent review
+ - You may opt out or request human-only assessment at any time
+ - You may appeal any grade within 5 business days if you believe AI analysis influenced it unfairly
+
+Above all, we will follow Stanford's AI Golden Rule: "Use or share AI outputs as you would have others use or share output with you". 
+
+For questions about AI use in this course, contact the instructors.
+
+<!--
+AI Analysis Workflow:
+
+1. Download homework from Blackboard
+2. Upload batch to Claude (ESF enterprise) for pattern analysis. Use the shell script to concatenate. Sonnet 4.5 will be faster, more cost effective, and better at this more defined task compared to Opus 4.5.
+  + Prompt: "Analyze this batch of R homeworks for common patterns relative to these skill sub-objectives:
+     - Valid R syntax. Effectiveness - does the code do what is asked of it?
+     - Completeness. Does the code complete the task?
+     - Logical approach. There are many ways to code some problems. Is the approach more-or-less straightforward?
+     - Code efficiency. Is the code efficient? Are there unnecessary steps
+     - Code reproducibility. (e.g., can the code be applied to a similar problem with minimal changes?)
+     - Human readability. (e.g., the use of spaces, newlines; comments when helpful; avoid over-nesting and long lines of code)
+    Analyze the ".Rmd" document from each student and provide:
+     - aggregate class-level insights
+     - a table listing issues for each student, the relevant skill sub-objective, the error or issue as completed by the student (copied), and the correct way to do it.
+     - a horizontal barplot with bars for each skill sub-objective also showing lines for 80 and 90% class achievement."
+3. Instructor review AI-generated report for: common errors, misconception patterns, skill or learning objective gaps
+4. Independently grade each assignment using rubric
+5. Use AI insights to inform: class discussion topics, additional examples needed
+6. All grades determined through human judgment; AI = advisory input only
+
+-->
+
 
 ## Downloading R and RStudio
 

@@ -1,0 +1,269 @@
+---
+title: R Data Structures
+date: Jan 28, 2026
+output: 
+  ioslides_presentation:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+    widescreen: true
+---
+
+Two-or-more-dimensional Data Structures and Classes
+----
+
+ - Dataframes
+ - Lists
+ - Matrices
+ - Arrays
+ 
+Data Frames
+====
+
+Data Frames
+----
+
+"...tightly coupled collections of variables...used as the fundamental data structure by most of `R`'s modeling software."---`data.frame()` help page.
+
+ - Extremely common
+ - Combine most types of data classes (e.g., characters, factors, numeric)
+ - `mtcars` and `trees` datasets were dataframes
+ - create our own
+    + "tag = value"
+    + data imported into R is most often imported into a `data.frame`
+ - **Most important rule for data frames: they must be rectangular.** 
+    + All columns and rows must have the same length.
+    + Missing values are filled with `NA` to help with this.
+ 
+<!--
+Data frames are one of the most common data structure you'll work with in R. They're a special data class where you can combine all of the data classes we've talked about so far in one rectangular, well-organized data object. `mtcars` and the `trees` datasets we worked with before are data frames. 
+
+There is only one big rule with dataframes: all the columns have to have the same length.
+
+We've seen some built-in data frames, but let's make our own small one. There are a few ways. The first is to create vectors of the desired data with function `data.frame`.
+-->
+
+----
+
+```{r}
+Birds <- data.frame(Type = c("BirdofPrey", "BirdofPrey", "SongBird", 
+                             "Shorebird", "Flightless", "SongBird", 
+                             "Flightless"),
+                    Num. = c(3, 15, 42, 8, 0, 29, 17),
+                    Extinct = c(F,F,F,F,T,F,F), 
+                    row.names = c("Eagle", "Hawk", "Bluebird", 
+                                "Egret", "Dodo", "Blue Jay", "Kiwi"))
+```
+
+Copy the Birds data frame from Blackboard for the remaining exercises.
+
+----
+
+<!--
+Whenever you have unique identifiers it's helpful to make them the row names using the argument `row.names`. This way you can access them by name easily. Considering we entered this data in by hand, it's good to look over the data frame to make sure everything makes sense.
+-->
+
+```{r}
+Birds
+```
+
+----
+
+Did `data.frame()` do what we wanted?
+
+```{r error=TRUE}
+median(Num.)
+```
+
+```{r}
+median(Birds$Num.)
+```
+
+----
+
+```{r}
+class(Birds$Type)
+class(Birds$Num.)
+```
+
+----
+
+It's extremely useful to be able access the names of a data frame. For a data frame, `names()` or `colnames()` gives column or variable names. `rownames()` returns row names.
+```{r}
+names(Birds)
+colnames(Birds)
+rownames(Birds)
+```
+
+Lists
+====
+
+Lists
+----
+
+Data frames are actually lists with equal length vectors. They're just displayed differently.
+```{r, results='hold'}
+class(Birds) # Can be user defined, but has defaults
+typeof(Birds) # Unchangable
+class(Birds)<-"BirdFrame" # Arbitrary, I just made that up.
+```
+While data frames are probably the most common structure for temporary data storage and viewing, lists are probably most often used for more complex data. They are extremely flexible and useful, but a little tricky to work with.
+
+----
+
+Let's look at our `Birds` data frame transformed to a list:
+```{r}
+as.list(Birds)
+```
+It's the same exact information, just not as pretty. 
+<!--
+What rule do you suspect R might let us break now we've converted from a dataframe to a list? We can throw out that rule about equal lengths per vector.
+--> 
+
+
+Side note: `as.` functions
+----
+
+```{r}
+?as.vector
+?as.numeric
+?as.list
+# etc.
+```
+
+```{r, eval=FALSE}
+as.list(Birds)
+```
+
+<!--
+Whenever you see `as.` in front of a function the function tries to take an existing object and *coerce* it to a different data structure. In this specific case we're not asking R to do a whole lot of thinking because a data frame is just a repackaged list. Depending on what you're trying to convert to and from, the coersion may not work.
+-->
+
+----
+
+An example:
+```{r, error=TRUE}
+as.numeric(Birds)
+```
+Why doesn't this work?
+
+----
+
+Let's create our own list. First, find some values to use.
+```{r results='hold'}
+letters
+month.name
+pi
+seq(5, 95, by=10)
+```
+
+----
+
+Use  `list()`  to create a list and remember to use the "tag = value" structure.
+```{r}
+list(alpha = letters, Months = month.name, PI = pi, fives = seq(5, 95, by=10))
+```
+
+Matrices
+====
+
+Matrices
+----
+
+<!--Matrices are similar to data frames in that they are rectangular. -->
+
+ - Also rectangular
+ - **_All_ of the values populating the matrix have to be of the same class** (e.g. character, numeric).
+
+`matrix()`
+----
+<!--
+It's easy to create matrices with function matrix(). Start with a vector and tell the function the dimensions of the matrix and how to start laying down the values.
+-->
+```{r}
+?matrix
+nine<-matrix(1:9, nrow=3) # by column by default
+nine
+nine<-matrix(1:9, nrow=3, byrow=T)
+nine
+```
+
+----
+```{r}
+nine<-matrix(as.character(1:9), nrow=3, byrow=T) # Characters are fine too
+nine
+nine<-matrix(1:9, nrow=3, byrow=T) # Change back to numeric
+nine
+```
+
+----
+
+Trying to mix data types results in (typically) unwanted coersion.
+```{r}
+nine[1,1]
+nine[1,1]<-"Ten" 
+nine
+```
+
+----
+
+Another example, if we try to coerce our `Birds` data frame to a matrix, R changes a few things so that it becomes a valid matrix.
+```{r}
+class(Birds)<-"data.frame"
+as.matrix(Birds)
+```
+
+Matrix dimension names
+----
+
+Similar to a data frame, you can name the rows and columns. In addition, you can name the dimensions, but the names have to be passed as a list.
+```{r}
+nine<-matrix(1:9, nrow=3, byrow=T, 
+  dimnames=list(Foo=LETTERS[1:3], Bar=month.abb[1:3]))
+nine
+```
+
+Arrays
+====
+
+Arrays
+----
+
+<!--Arrays are probably the least used data structure in R on average. -->
+
+ - Can be one, two, three or more dimensional. 
+ - A two-dimensional array is the same thing as a matrix
+
+Create arrays by passing a vector and giving a vector of dimensions to function `array`.
+```{r}
+arr1<-array(1:(3^3), dim=rep(3,3), 
+  dimnames=list(Foo=LETTERS[1:3], 
+                Bar=month.abb[1:3], 
+                Stooge=c("Larry", "Moe", "Curly")))
+```
+ 
+## {.smaller}
+
+```{r}
+arr1
+```
+
+Simple Exercise
+----
+
+Make an array from the environmental heterogeneity values in the `BCI.env` dataset available from the `vegan` package.
+
+```{r message=F}
+library(vegan) #might have to install.packages("vegan") first
+data(BCI.env)
+head(BCI.env$EnvHet)
+length(BCI.env$EnvHet)
+```
+
+Simple Exercise
+----
+
+```{r}
+array(BCI.env$EnvHet, dim=c(2,5,5))
+```
+
