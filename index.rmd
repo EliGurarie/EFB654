@@ -45,6 +45,10 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - [Link for remote access](https://syracuseuniversity.zoom.us/j/91687106324)
   - [quant_prog.R function](functions/quant_prog.R)
 
+## Tools and Tricks in Reproducible Research
+
+- [Markdown Basics](lectures/04-Rmarkdown/04_BasicsOfRmarkdown.html)
+- [YAML and chunks](lectures/04-Rmarkdown/04b_AdvancedMarkdown.html)
 
 # Homeworks 
 
