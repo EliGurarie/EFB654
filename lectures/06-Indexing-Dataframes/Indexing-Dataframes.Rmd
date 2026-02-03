@@ -1,0 +1,377 @@
+---
+title: Indexing Data Frames
+date: Feb 04, 2026
+output: 
+  ioslides_presentation:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+    widescreen: true
+    keep_md: true
+---
+
+```{r echo=F}
+knitr::opts_knit$set(keep.md = TRUE)
+```
+
+Short Refresher on Indexing Vectors {.smaller}
+----
+
+```{r}
+data(islands)
+length(islands)
+islands
+```
+
+Index a vector with its **INDEX** (always an **INTEGER**)
+----
+
+```{r}
+islands[3]
+islands[3:6]
+islands[-c(1,2)] #REMOVE values "Africa" and "Antarctica"
+```
+
+Index a vector by **NAME**
+----
+
+```{r}
+islands["Asia"]
+islands[c("Asia", "Java")]
+```
+
+Index a vector with **LOGICALS**
+----
+
+First create a logical vector
+```{r}
+log.vec<-islands > 100 & islands < 1000 # TRUE for islands > 100 & less than 1000
+str(log.vec)
+log.vec
+```
+
+Index a vector with **LOGICALS**
+----
+
+```{r}
+islands[log.vec]
+```
+
+Also remember **"Recycling"**
+----
+
+```{r}
+str(islands) # islands is 48 length
+islands[c(T,F,F,F)] # Our logical vector is 4. Returns every FOURTH element.
+```
+`R` knows to **recycle**.
+
+Indexing Matrices and Data frames
+====
+
+Indexing matrices and data frames
+----
+
+Indexing vectors is a lot like indexing all other R objects.
+
+  - You still use `[`
+  - You can access values by name, index, or logicals
+
+One difference:
+  
+  - Use the format  `x[a,b]` 
+      + where `x` is a matrix or data frame object, 
+      + `a` is the *row* index, 
+      + `b` is the *column* index.
+
+Indexing Matrices by **INDEX**
+----
+
+Let's work with the `volcano` data set.
+
+```{r}
+data(volcano)
+dim(volcano)
+class(volcano)
+```
+
+Indexing Matrices by **INDEX**
+----
+
+Use the `matrix[row, column]` format:
+```{r}
+volcano[1:6, 1:10] # show the first 6 rows and first 10 columns
+```
+
+Indexing Matrices by **INDEX**
+----
+
+Since we know we have `r nrow(volcano)` rows and `r ncol(volcano)` columns we know what possible values we can use to index `volcano`.
+
+```{r}
+volcano[52:58, 20:25]
+```
+
+Notice what R does when we don't have row names.
+
+Indexing Matrices by **INDEX**
+----
+
+```{r}
+# Returns specified rows within ALL COLUMNS
+volcano[52:58,] # Leave out index for columns
+```
+
+Indexing Matrices by **INDEX**
+----
+
+```{r}
+# Returns specified columns within ALL ROWS
+volcano[,20:25] # Leave out index for columns
+```
+
+Indexing Matrices by **NAME**
+----
+
+```{r}
+mat<-matrix(1:4, 2)
+colnames(mat)<-c("A", "B")
+rownames(mat)<-c("X", "Y")
+mat
+```
+
+```{r}
+mat["Y",]
+```
+
+Indexing dataframes
+----
+
+Let's look at the `dune.env` data set.
+
+```{r warning=FALSE, message=FALSE, eval=-1}
+install.packages("vegan") #IF you don't have it already
+library(vegan)
+```
+
+```{r}
+data(dune.env)
+#head(dune.env, 4) # Can also use head with str()
+str(dune.env)
+```
+
+Indexing dataframes by row
+----
+
+There's a huge difference between accessing a data frame by row *index* vs *row name*.
+
+```{r}
+dune.env[c(1,2,3),] # Access by INDEX
+dune.env[c("1", "2", "3"),] # Access by ROWNAME
+```
+
+Indexing dataframes by **INDEX**
+----
+
+```{r}
+data(varespec)
+varespec[1:10, 1:5] # Taking a look at the upper left chunk of data
+```
+
+Indexing dataframes by **INDEX**
+----
+
+```{r}
+varespec[c(1,2,3), 1:8] # Access by INDEX. (Same as varespec[1:3, 1:8])
+```
+
+Indexing dataframes by **ROWNAME**
+----
+
+```{r}
+varespec[c("1", "2", "3"), 1:8] # Access by ROWNAME
+rownames(varespec) # "1" is not a valid row name in `varespec`
+```
+
+This should be a **warning** to you about what to assign row names to avoid potentially big errors. When possible, assign descriptive, unique, short row names. Often times this is a sample ID.
+
+Remember the `Birds` data frame?
+----
+
+```{r echo=-1}
+source("Birds.R")
+Birds
+```
+
+Each rowname is a unique, descriptive character identifier.
+
+Indexing dataframes by column
+----
+
+You *can* index **columns** by column index, but ...
+
+```{r}
+dune.env[1:3, 3:4]
+```
+
+... it's preferable to use column names when possible---more clear, more **_explicit_**.
+
+```{r}
+dune.env[1:3, c("Management", "Use")]
+```
+
+Accessing whole vectors within a data frame
+----
+
+Use the `$`. After this the result can be worked with just like a vector by appending arguments within `[`.
+
+```{r}
+dune.env$A1
+dune.env$A1[1:5]
+```
+In this form, you have to use the column name.
+
+Accessing whole vectors within a data frame
+----
+
+Use the `$`. After this the result can be worked with just like a vector by appending arguments within `[`.
+
+```{r}
+dune.env$A1[1:5]
+```
+
+```{r}
+dune.env[1:5,"A1"]
+```
+
+----
+
+Using the `varespec` dataset, find the difference in cover values between 'Vaccviti' and 'Cladrang' at each site.
+
+----
+
+Using the `varespec` dataset, find the difference in cover values between 'Vaccviti' and 'Cladrang' at each site.
+
+```{r}
+varespec$Vaccviti-varespec$Cladrang
+```
+
+OR
+
+```{r}
+varespec[,"Vaccviti"]-varespec[,"Cladrang"]
+```
+
+----
+
+Next, find the difference in cover values between 'Vaccviti' and 'Cladrang', but only in sites where the humus layer is less than 2. You will have to use the `varechem` dataset whose rownames ('sites') are the same as `varespec`.
+
+----
+
+Next, find the difference in cover values between 'Vaccviti' and 'Cladrang', but only in sites where the humus layer is less than 2. You will have to use the `varechem` dataset whose rownames ('sites') are the same as `varespec`.
+
+```{r}
+data(varechem)
+varespec[varechem$Humdepth <2,"Vaccviti"]-varespec[varechem$Humdepth <2,"Cladrang"]
+#Note we are using the data in one data frame to index another data frame.
+```
+
+Indexing Lists
+====
+
+Indexing lists
+----
+
+```{r}
+data(dune.env)
+```
+
+Let's make a new list.
+```{r}
+dune.env$A1
+fivenum(dune.env$A1) # See ?fivenum
+```
+
+Indexing lists
+----
+
+```{r}
+dune.env$Management
+table(dune.env$Management) # See ?table
+```
+
+Indexing lists
+----
+
+You can access the elements of a list in very similar ways. Let's make a list first.
+```{r}
+dune.summ<-list(DATA=dune.env, 
+            SUMM.A1=fivenum(dune.env$A1), 
+            TAB.MANAGE=table(dune.env$Management))
+str(dune.summ)
+```
+
+Access list by name
+----
+
+```{r}
+names(dune.summ)
+dune.summ$SUMM.A1 # result of `fivenum(dune.env$A1)`
+dune.summ$TAB.MANAGE # result of `table(dune.env$Management)`
+```
+
+Indexing Lists
+----
+
+We can also access a *copy* of elements within a list by item index.
+```{r}
+dune.summ[2] # Access a copy of the second element in dune.summ
+```
+
+ - produces the item *and its name*
+ 
+Indexing Lists
+----
+
+More useful is to access the *actual* elements. What if we want to access the median (the 3rd element) in SUMM.A1? Three main ways:
+
+```{r}
+dune.summ$SUMM.A1[3]
+```
+
+Indexing Lists: the infamous `[[`
+----
+
+Notice the big difference between these two:
+```{r}
+dune.summ[2] # the element of the list
+dune.summ[[2]] # the actual vector
+```
+
+**Double brackets allow access to the vector itself**, not just the element of the list.
+
+Indexing Lists: the infamous `[[`
+----
+
+```{r }
+dune.summ[2][3]
+dune.summ[[2]][3]
+```
+
+Indexing lists
+----
+
+What if we want to access the **top 5 rows** in `DATA`? You try...
+
+```{r}
+str(dune.summ)
+```
+
+Indexing lists
+----
+
+What if we want to access the **top 5 rows** in `DATA`? First we need access to the actual data frame. After that, it's just like working with a normal data frame.
+
+```{r}
+dune.summ[["DATA"]][1:5,]
+```

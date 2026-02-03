@@ -51,7 +51,8 @@ Perhaps the most important immediate need is to download and install R and Rstud
 ## Module 2 - Working with data (Indexing | Importing/Exporting | Plotting | Summarizing)
 - [Lecture 4: Indexing Vectors (Feb 2)](lectures/05-Indexing-Vectors/Indexing-Vectors.html)
   - [Top300MF_names.Rdata](lectures/05-Indexing-Vectors/Top300MF_names.Rdata)
-
+- [Lecture 5: Indexing Dataframes (Feb 4)](lectures/06-Indexing-Dataframes/Indexing-Dataframes.html)
+  
 ## Tools and Tricks in Reproducible Research
 
 - [Markdown Basics](lectures/04-Rmarkdown/04_BasicsOfRmarkdown.html)
@@ -66,7 +67,7 @@ Submit all assignments to the Blackboard page
 - [Homework 02](homework/HW02.html)  (due Jan 28)
   - (Note: this is an `html` file. You will start your *own* `Rmd` file from scratch to complete the questions. Then you will knit and upload.)
 - [Homework 03](homework/HW03.html)  (due Feb 4)
-
+- [Homework 04](homework/HW04.html)  (due Feb 11)
 
 <img src="assets/Rlogo.svg" height="50" style="margin-right: 30px;">
 <img src="assets/RStudio_logo_flat.svg" height="50">
