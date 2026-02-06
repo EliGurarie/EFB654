@@ -1,0 +1,363 @@
+---
+title: Importing and Exporting data
+date: Feb 9, 2026
+output: 
+  ioslides_presentation:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+    widescreen: true
+    css: custom.css
+---
+
+Today
+----
+ 
+ - `read.table()` and subfunctions
+ - `write.table()` and `write.csv()`
+ - `readLines()`
+ - `writeLines()`
+ - more about `save()`
+ 
+`read.table()`
+----
+
+A lot of options...
+<PRE>
+read.table(file, header = FALSE, sep = "", quote = "\"'",
+           dec = ".", numerals = c("allow.loss", "warn.loss", "no.loss"),
+           row.names, col.names, as.is = !stringsAsFactors,
+           na.strings = "NA", colClasses = NA, nrows = -1,
+           skip = 0, check.names = TRUE, fill = !blank.lines.skip,
+           strip.white = FALSE, blank.lines.skip = TRUE,
+           comment.char = "#",
+           allowEscapes = FALSE, flush = FALSE,
+           stringsAsFactors = FALSE,
+           fileEncoding = "", encoding = "unknown", text, skipNul = FALSE)
+</PRE>
+
+ - **`file`** = file name you want to read in as a character (in quotes)
+ - **`header`** = does it have a header? (T or F)
+ - **`sep`** = what symbol is separating the values in each column
+
+`read.table()`
+----
+
+...more options...
+<PRE>
+read.table(file, header = FALSE, sep = "", quote = "\"'",
+           dec = ".", numerals = c("allow.loss", "warn.loss", "no.loss"),
+           row.names, col.names, as.is = !stringsAsFactors,
+           na.strings = "NA", colClasses = NA, nrows = -1,
+           skip = 0, check.names = TRUE, fill = !blank.lines.skip,
+           strip.white = FALSE, blank.lines.skip = TRUE,
+           comment.char = "#",
+           allowEscapes = FALSE, flush = FALSE,
+           stringsAsFactors = FALSE,
+           fileEncoding = "", encoding = "unknown", text, skipNul = FALSE)
+</PRE>
+
+ - **`quote`** = What characters are used to denote quotes?
+ - **`dec`** = What's used to denote decimals? Usually "." or ",".
+ - **`row.names`** = which column are the rownames in?
+ - **`col.names`** = specify column names directly
+ 
+`read.table()`
+----
+
+...more options...
+<PRE>
+read.table(file, header = FALSE, sep = "", quote = "\"'",
+           dec = ".", numerals = c("allow.loss", "warn.loss", "no.loss"),
+           row.names, col.names, as.is = !stringsAsFactors,
+           na.strings = "NA", colClasses = NA, nrows = -1,
+           skip = 0, check.names = TRUE, fill = !blank.lines.skip,
+           strip.white = FALSE, blank.lines.skip = TRUE,
+           comment.char = "#",
+           allowEscapes = FALSE, flush = FALSE,
+           stringsAsFactors = FALSE,
+           fileEncoding = "", encoding = "unknown", text, skipNul = FALSE)
+</PRE>
+
+ - **`as.is`** = Which columns to keep strings as factors (prevent conversion)?
+ - **`na.strings`** = What character symbols should be interpreted as NAs?
+ - **`colClasses`** = A vector of classes to be assumed for columns
+ 
+`read.table()`
+----
+
+...more options...
+<PRE>
+read.table(file, header = FALSE, sep = "", quote = "\"'",
+           dec = ".", numerals = c("allow.loss", "warn.loss", "no.loss"),
+           row.names, col.names, as.is = !stringsAsFactors,
+           na.strings = "NA", colClasses = NA, nrows = -1,
+           skip = 0, check.names = TRUE, fill = !blank.lines.skip,
+           strip.white = FALSE, blank.lines.skip = TRUE,
+           comment.char = "#",
+           allowEscapes = FALSE, flush = FALSE,
+           stringsAsFactors = FALSE,
+           fileEncoding = "", encoding = "unknown", text, skipNul = FALSE)
+</PRE>
+
+ - **`nrows`** = How many total rows to read in (after the header, if applicable)
+ - **`skip`** = How many rows to skip before start reading. This includes skipping the header.
+ - **`check.names`** = Makes sure names are valid column names. No special characters, etc.
+ 
+`read.table()`
+----
+
+...more options...
+<PRE>
+read.table(file, header = FALSE, sep = "", quote = "\"'",
+           dec = ".", numerals = c("allow.loss", "warn.loss", "no.loss"),
+           row.names, col.names, as.is = !stringsAsFactors,
+           na.strings = "NA", colClasses = NA, nrows = -1,
+           skip = 0, check.names = TRUE, fill = !blank.lines.skip,
+           strip.white = FALSE, blank.lines.skip = TRUE,
+           comment.char = "#",
+           allowEscapes = FALSE, flush = FALSE,
+           stringsAsFactors = FALSE,
+           fileEncoding = "", encoding = "unknown", text, skipNul = FALSE)
+</PRE>
+
+ - **`fill`** = Should missing values be filled in?
+ - **`strip.white`** = Should spaces or tabs before or after values be removed?
+ - **`blank.lines.skip`** = Should blank rows be ignored?
+ 
+Know the options for `read.table()`
+----
+
+If you know how they work, you will save time by avoiding typing, find-and-replacing, etc.
+
+`read.csv()` and `read.delim()`
+----
+
+".csv" = comma-separated values
+
+<PRE>
+read.csv(file, header = TRUE, sep = ",", quote = "\"",
+         dec = ".", fill = TRUE, comment.char = "", ...)
+</PRE>
+Tab-delimited values
+
+<PRE>
+read.delim(file, header = TRUE, sep = "\t", quote = "\"",
+           dec = ".", fill = TRUE, comment.char = "", ...)
+</PRE>
+
+Wrappers for `read.table()`
+----
+
+
+Access the *object* `read.csv`.
+```{r}
+read.csv
+```
+
+
+Read Puromycin data
+----
+
+List all files in the directory with the extension ".csv"
+```{r}
+list.files(pattern=".csv")
+```
+ 
+"The Puromycin data frame has 23 rows and 3 columns of the reaction velocity versus substrate concentration in an enzymatic reaction involving untreated cells or cells treated with Puromycin."---R help
+ 
+Written as a ".csv" file
+
+<PRE>
+"","conc","rate","state"
+"1",0.02,76,"treated"
+"2",0.02,47,"treated"
+"3",0.06,97,"treated"
+"4",0.06,107,"treated"
+"5",0.11,123,"treated"
+"6",0.11,139,"treated"
+"7",0.22,159,"treated"
+"8",0.22,152,"treated"
+"9",0.56,191,"treated"
+"10",0.56,201,"treated"
+"11",1.1,207,"treated"
+"12",1.1,200,"treated"
+"13",0.02,67,"untreated"
+"14",0.02,51,"untreated"
+"15",0.06,84,"untreated"
+"16",0.06,86,"untreated"
+"17",0.11,98,"untreated"
+"18",0.11,115,"untreated"
+"19",0.22,131,"untreated"
+"20",0.22,124,"untreated"
+"21",0.56,144,"untreated"
+"22",0.56,158,"untreated"
+"23",1.1,160,"untreated"
+</PRE>
+
+Read Puromycin data
+----
+
+```{r}
+pur<-read.csv("Puromycin_data.csv", row.names=1)
+head(pur)
+```
+
+Write Puromycin data 
+----
+
+Change to *tab-delimted text* using `write.table()`
+
+```{r}
+write.table(pur, file = "Puromycin_data.delim", row.names=F, sep= "\t")
+```
+
+ - There is no `write.delim()` function in base R.
+
+<PRE>
+"conc"  "rate"	"state"
+0.02	76	"treated"
+0.02	47	"treated"
+0.06	97	"treated"
+0.06	107	"treated"
+0.11	123	"treated"
+0.11	139	"treated"
+0.22	159	"treated"
+0.22	152	"treated"
+0.56	191	"treated"
+0.56	201	"treated"
+1.1	207	"treated"
+1.1	200	"treated"
+0.02	67	"untreated"
+0.02	51	"untreated"
+0.06	84	"untreated"
+0.06	86	"untreated"
+0.11	98	"untreated"
+0.11	115	"untreated"
+0.22	131	"untreated"
+0.22	124	"untreated"
+0.56	144	"untreated"
+0.56	158	"untreated"
+1.1	160	"untreated"
+</PRE>
+
+`readLines()` 
+----
+
+What if we just downloaded a massive file with an unknown extension, but we think it's text.
+
+```{r}
+file.info("usearch.otus.97.tax")
+```
+
+`readLines()`
+----
+
+```{r}
+tax<-readLines("usearch.otus.97.tax", n=4)
+head(tax)
+```
+
+ - `readLines()` can be used to quickly sample and explore unfamiliar data
+
+`cat()` and `writeLines()`
+----
+
+ - `cat()` = raw flexible output to file or console
+
+```{r}
+month.abb[1:4]
+```
+
+```{r}
+cat(month.abb[1:4])
+```
+
+`cat()` and `writeLines()`
+----
+
+ - `writeLines()` = similar to `cat()`, but default `sep = "\n"`
+```{r}
+month.abb[1:4]
+```
+```{r}
+writeLines(month.abb[1:4])
+```
+
+ - `cat()` is probably not what you want unless you specify `sep`.
+
+Saving big files
+----
+
+Read in "tax" file:
+```{r, results='hold'}
+system.time(tax<-read.delim("usearch.otus.97.tax"))
+dim(tax)
+object.size(tax)
+```
+
+Save as R object with compression
+----
+
+```{r, eval=FALSE}
+save(tax, file = "TAX_data_GZIP.Rdata", compress="gzip")
+```
+
+```{r}
+list.files()
+```
+
+Compressed vs Original
+----
+
+Compressed R object 10X smaller than original text file
+```{r, results='hold'}
+file.info("usearch.otus.97.tax")[1] / 10^6 #Original text file
+file.info("TAX_data_GZIP.Rdata")[1]/ 10^6 # Compressed R object
+```
+ 
+ - Multiple compression methods
+ - Compression adds time for packing and unpacking
+
+Summary
+----
+
+ - Ensure columns have a single class of data only, i.e., either numeric, factor, or character. Get rid of values like "<5".
+ - Know the options of `read.table()` and related functions.
+ - Windows users: check out packages `RExcel`, `xlsx`, `XLConnect`, or `gdata`.
+
+Try it Yourself
+----
+
+ 1. Import the `qPCR-data.txt` file into `R` removing the metadata at the top of the file. 
+ 2. Find the median "CT" of all wells.
+ 3. Save the data frame as a compressed R object.
+ 
+Try it Yourself
+----
+
+1. Import the `qPCR-data.txt` file into `R` removing the metadata at the top of the file. 
+
+I did it this way:
+```{r eval=T}
+dat<-read.delim("qPCR-data.txt", skip=41, na.strings="Undetermined")
+```
+
+Try it Yourself {.smaller}
+----
+
+2.Find the median "CT" of all wells.     
+
+```{r eval=T}
+head(dat[, 1:10])
+median(dat$CT, na.rm=T)
+```
+
+----
+
+3.Save the data frame as a compressed R object.
+
+```{r eval=T}
+save(dat, file="qPCR-data.Rdata", compress = "gzip")
+list.files()
+```

@@ -52,7 +52,10 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - [Lecture 4: Indexing Vectors (Feb 2)](lectures/05-Indexing-Vectors/Indexing-Vectors.html)
   - [Top300MF_names.Rdata](lectures/05-Indexing-Vectors/Top300MF_names.Rdata)
 - [Lecture 5: Indexing Dataframes (Feb 4)](lectures/06-Indexing-Dataframes/Indexing-Dataframes.html)
-  
+- [Lecture 6: Importing and Exporting Data (Feb 9)](lectures/08-Importing-Exporting-Data/Importing-Exporting-Data.html)
+  - [Puromycin_data (csv)](lectures/Puromycin_data.csv)
+  - [qPCR data (txt)](lectures/08-Importing-Exporting-Data/qPCR-data.txt)
+
 ## Tools and Tricks in Reproducible Research
 
 - [Markdown Basics](lectures/04-Rmarkdown/04_BasicsOfRmarkdown.html)
