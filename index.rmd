@@ -55,6 +55,7 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - [Lecture 6: Importing and Exporting Data (Feb 9)](lectures/08-Importing-Exporting-Data/Importing-Exporting-Data.html)
   - [Puromycin_data (csv)](lectures/08-Importing-Exporting-Data/Puromycin_data.csv)
   - [qPCR data (txt)](lectures/08-Importing-Exporting-Data/qPCR-data.txt)
+- [Lecture 7: Plotting Basics (Feb 11)](lectures/09-Plotting-Basics/Plotting_basics.pdf)
 
 ## Tools and Tricks in Reproducible Research
 
