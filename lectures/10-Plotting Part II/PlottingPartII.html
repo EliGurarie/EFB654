@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Base Plotting in R: More Tricks</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Elie Gurarie" />
+    <meta name="date" content="2026-02-18" />
+    <script src="PlottingPartII_files/header-attrs-2.30/header-attrs.js"></script>
+    <link href="PlottingPartII_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="PlottingPartII_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Base Plotting in <strong>R</strong>: More Tricks
+]
+.subtitle[
+## <a href="https://eligurarie.github.io/EFB654/">EFB 654: R and Reproducible Research</a>
+]
+.author[
+### Elie Gurarie
+]
+.date[
+### <strong>February 18, 2026</strong>
+]
+
+---
+
+class: inverse
+
+
+
+
+
+
+
+.pull-left-40[
+## Goal: plotting many dimensions at once
+
+Many layers of information!
+
+- colors
+- sizes
+- labels
+- legends
+- scales
+
+]
+
+.pull-right-60[
+
+&lt;img src="PlottingPartII_files/figure-html/final-plot-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## The data
+.small[
+
+``` r
+wdi &lt;- read.csv("WDI.csv")
+str(wdi)
+```
+
+```
+## 'data.frame':	208 obs. of  16 variables:
+##  $ country    : chr  "India" "China" "United States" "Indonesia" ...
+##  $ iso2c      : chr  "IN" "CN" "US" "ID" ...
+##  $ iso3c      : chr  "IND" "CHN" "USA" "IDN" ...
+##  $ year       : int  2022 2022 2022 2022 2022 2022 2022 2022 2022 2022 ...
+##  $ status     : logi  NA NA NA NA NA NA ...
+##  $ lastupdated: chr  "2026-01-28" "2026-01-28" "2026-01-28" "2026-01-28" ...
+##  $ LifeExp    : num  71.7 78.2 77.4 70.9 67.4 ...
+##  $ GDP        : num  2347 12971 76657 4731 1538 ...
+##  $ Area       : num  2973190 9388210 9147420 1892555 770880 ...
+##  $ Population : int  1425423212 1412175000 334017321 278830529 243700667 223150896 210306415 169384897 144236933 128613117 ...
+##  $ region     : chr  "South Asia" "East Asia &amp; Pacific" "North America" "East Asia &amp; Pacific" ...
+##  $ capital    : chr  "New Delhi" "Beijing" "Washington D.C." "Jakarta" ...
+##  $ longitude  : num  77.2 116.3 -77 106.8 72.8 ...
+##  $ latitude   : num  28.6 40 38.9 -6.2 30.5 ...
+##  $ income     : chr  "Lower middle income" "Upper middle income" "High income" "Upper middle income" ...
+##  $ lending    : chr  "IBRD" "IBRD" "Not classified" "IBRD" ...
+```
+]
+
+---
+
+## Step 1 — a plain scatter plot
+
+.pull-left[
+
+``` r
+plot(wdi$GDP/1e3, wdi$LifeExp)
+```
+
+Very basic. 
+
+- How to deal with clustering? 
+
+]
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/plain-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Step 1b — log scale on x
+
+.pull-left[
+
+``` r
+par(cex.lab = 1.2, las = 1,
+    mgp = c(2, .25, 0), tck = 0.01)
+
+plot(wdi$GDP/1e3, wdi$LifeExp,
+     log  = "x",
+     xlab = "GDP per capita (1000 USD, log scale)",
+     ylab = "Life expectancy (years)")
+```
+
+`log = "x"` applies a log axis  
+(`log = "y"`, `log = "xy"` also work)
+
+`las = 1` — horizontal tick labels  
+`tck = 0.01` — inward ticks  
+`mgp` — controls axis label / tick label / tick line positions
+]
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/logplot-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+.pull-left[
+
+## `par()` reference
+
+
+`bty` controls the **b**ox **ty**pe around the plot:
+
+| value | box drawn |
+|-------|-----------|
+| `"o"` | full box (default) |
+| `"l"` | bottom + left only |
+| `"u"` | bottom + sides |
+| `"c"` | top + sides |
+| `"n"` | no box |
+
+
+``` r
+par(bty = "l")
+plot(wdi$GDP/1e3, wdi$LifeExp, log = "x")
+```
+]
+
+.pull-right[
+Other useful `par()` tweaks for today:
+
+| parameter | what it does |
+|-----------|-------------|
+| `cex.lab` | axis label size |
+| `cex.axis`| tick label size |
+| `mar`     | margins (bottom, left, top, right) |
+| `mgp`     | axis title, tick label, tick line positions |
+| `las`     | tick label orientation |
+| `tck`     | tick length (+inward, −outward) |
+| `family`  | font family (`"serif"`, `"sans"`, `"mono"`) |
+
+
+``` r
+par("mar")   # default margins
+```
+
+```
+## [1] 5.1 4.1 4.1 2.1
+```
+
+``` r
+par("mgp")   # default mgp
+```
+
+```
+## [1] 3 1 0
+```
+]
+
+---
+
+.pull-left[
+
+## Step 2 — size points by population
+.small[
+
+
+``` r
+par(cex.lab = 1.2, las = 1,
+    mgp = c(2, .25, 0), tck = 0.01)
+
+plot(wdi$GDP/1e3, wdi$LifeExp,
+     log  = "x",
+     xlab = "GDP per capita ($1000 USD, log scale)",
+     ylab = "Life expectancy (years)",
+     cex  = sqrt(wdi$Population /
+                 max(wdi$Population,
+                     na.rm = TRUE)) * 15)
+```
+
+]
+
+`cex` controls point size  
+`sqrt()` makes **area** proportional to population  
+
+]
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/cex-pop-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Why `sqrt()`?
+
+--
+
+.pull-left[
+A circle's **area** = π r²
+
+If we set `cex` proportional to population directly, the *radius* scales linearly — but our eye reads **area**.
+
+To make area proportional to population:
+
+`$$r \propto \sqrt{\text{population}}$$`
+
+So we use:
+```r
+cex = sqrt(Population / max_pop) * 15
+```
+
+The `* 15` just scales up to a visible range.
+]
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/sqrt-demo-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+.pull-left[
+## Step 2b — add transparency
+
+.small[
+
+
+``` r
+par(cex.lab = 1.2, las = 1,
+    mgp = c(2, .25, 0), tck = 0.01)
+
+plot(wdi$GDP/1e3, wdi$LifeExp,
+     log  = "x",
+     xlab = "GDP per capita (1000 USD, log scale)",
+     ylab = "Life expectancy (years)",
+     cex  = sqrt(wdi$Population /
+                 max(wdi$Population,
+                     na.rm = TRUE)) * 15,
+     pch  = 21,
+     col  = "grey40",
+     bg   = rgb(0, 0, 0, 0.25))
+```
+]
+`pch = 21` — filled circles with separate border/fill  
+`rgb(r, g, b, alpha)` — alpha: 0 = transparent, 1 = opaque
+
+Transparency reveals overlapping points.
+]
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/transparent-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+
+
+## `rgb()` and color in R
+
+.pull-left[.small[
+
+
+``` r
+# Pure red, 50% transparent
+rgb(1, 0, 0, 0.5)
+
+# Any named color with alpha:
+adjustcolor("steelblue", alpha.f = 0.4)
+
+# scales package convenience function:
+scales::alpha("steelblue", 0.4)
+```
+
+
+``` r
+rgb(1, 0, 0, 0.5)
+```
+
+```
+## [1] "#FF000080"
+```
+
+``` r
+adjustcolor("steelblue", alpha.f = 0.4)
+```
+
+```
+## [1] "#4682B466"
+```
+]]
+
+.pull-right[
+All values 0–1 (or use `maxColorValue = 255`)
+
+&lt;img src="PlottingPartII_files/figure-html/unnamed-chunk-5-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+.pull-left[
+
+## Step 3 — color by region
+
+.small[
+
+``` r
+wdi$region &lt;- factor(wdi$region)
+
+cols &lt;- c(
+  "East Asia &amp; Pacific"        = "steelblue",
+  "Europe &amp; Central Asia"      = "forestgreen",
+  "Latin America &amp; Caribbean"  = "goldenrod",
+  "Middle East &amp; North Africa" = "darkorange",
+  "North America"              = "mediumpurple",
+  "South Asia"                 = "firebrick",
+  "Sub-Saharan Africa"         = "sienna")
+
+cont_col &lt;- cols[match(wdi$region,
+                       levels(wdi$region))]
+
+plot(wdi$GDP/1e3, wdi$LifeExp, log = "x",
+     xlab = "GDP per capita (1000 USD, log scale)",
+     ylab = "Life expectancy (years)",
+     cex  = sqrt(wdi$Population /
+                 max(wdi$Population, na.rm=TRUE))*15,
+     pch = 21, col = cont_col,
+     bg  = scales::alpha(cont_col, .7))
+```
+]]
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/region-col-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## How `match()` maps colors to categories
+.small[
+`levels()` gives factor levels in order
+
+
+``` r
+levels(wdi$region)
+```
+
+```
+## [1] "East Asia &amp; Pacific"        "Europe &amp; Central Asia"     
+## [3] "Latin America &amp; Caribbean"  "Middle East &amp; North Africa"
+## [5] "North America"              "South Asia"                
+## [7] "Sub-Saharan Africa"
+```
+
+`match()` returns each row's position in that ordered list
+
+``` r
+wdi$region[1:20]
+```
+
+```
+##  [1] South Asia                 East Asia &amp; Pacific        North America             
+##  [4] East Asia &amp; Pacific        South Asia                 Sub-Saharan Africa        
+##  [7] Latin America &amp; Caribbean  South Asia                 Europe &amp; Central Asia     
+## [10] Latin America &amp; Caribbean  Sub-Saharan Africa         East Asia &amp; Pacific       
+## [13] East Asia &amp; Pacific        Middle East &amp; North Africa Sub-Saharan Africa        
+## [16] East Asia &amp; Pacific        Middle East &amp; North Africa Europe &amp; Central Asia     
+## [19] Europe &amp; Central Asia      East Asia &amp; Pacific       
+## 7 Levels: East Asia &amp; Pacific Europe &amp; Central Asia ... Sub-Saharan Africa
+```
+
+``` r
+match(wdi$region, levels(wdi$region))[1:20]
+```
+
+```
+##  [1] 6 1 5 1 6 7 3 6 2 3 7 1 1 4 7 1 4 2 2 1
+```
+
+`cols[match(...)]` picks the right color by index
+
+
+``` r
+cols[match(wdi$region, levels(wdi$region))]
+```
+
+```
+##                 South Asia        East Asia &amp; Pacific              North America 
+##                "firebrick"                "steelblue"             "mediumpurple" 
+##        East Asia &amp; Pacific                 South Asia         Sub-Saharan Africa 
+##                "steelblue"                "firebrick"                   "sienna" 
+##  Latin America &amp; Caribbean                 South Asia      Europe &amp; Central Asia 
+##                "goldenrod"                "firebrick"              "forestgreen" 
+##  Latin America &amp; Caribbean         Sub-Saharan Africa        East Asia &amp; Pacific 
+##                "goldenrod"                   "sienna"                "steelblue" 
+##        East Asia &amp; Pacific Middle East &amp; North Africa         Sub-Saharan Africa 
+##                "steelblue"               "darkorange"                   "sienna" 
+##        East Asia &amp; Pacific Middle East &amp; North Africa      Europe &amp; Central Asia 
+##                "steelblue"               "darkorange"              "forestgreen" 
+##      Europe &amp; Central Asia        East Asia &amp; Pacific      Europe &amp; Central Asia 
+##              "forestgreen"                "steelblue"              "forestgreen" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa         Sub-Saharan Africa 
+##              "forestgreen"                   "sienna"                   "sienna" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa        East Asia &amp; Pacific 
+##              "forestgreen"                   "sienna"                "steelblue" 
+##  Latin America &amp; Caribbean        East Asia &amp; Pacific         Sub-Saharan Africa 
+##                "goldenrod"                "steelblue"                   "sienna" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa Middle East &amp; North Africa 
+##              "forestgreen"                   "sienna"               "darkorange" 
+##  Latin America &amp; Caribbean Middle East &amp; North Africa      Europe &amp; Central Asia 
+##                "goldenrod"               "darkorange"              "forestgreen" 
+##                 South Asia              North America Middle East &amp; North Africa 
+##                "firebrick"             "mediumpurple"               "darkorange" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa      Europe &amp; Central Asia 
+##              "forestgreen"                   "sienna"              "forestgreen" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean         Sub-Saharan Africa 
+##                "steelblue"                "goldenrod"                   "sienna" 
+##         Sub-Saharan Africa Middle East &amp; North Africa         Sub-Saharan Africa 
+##                   "sienna"               "darkorange"                   "sienna" 
+##         Sub-Saharan Africa                 South Asia  Latin America &amp; Caribbean 
+##                   "sienna"                "firebrick"                "goldenrod" 
+##         Sub-Saharan Africa        East Asia &amp; Pacific         Sub-Saharan Africa 
+##                   "sienna"                "steelblue"                   "sienna" 
+##         Sub-Saharan Africa         Sub-Saharan Africa Middle East &amp; North Africa 
+##                   "sienna"                   "sienna"               "darkorange" 
+##                 South Asia         Sub-Saharan Africa         Sub-Saharan Africa 
+##                "firebrick"                   "sienna"                   "sienna" 
+##      Europe &amp; Central Asia  Latin America &amp; Caribbean      Europe &amp; Central Asia 
+##              "forestgreen"                "goldenrod"              "forestgreen" 
+##         Sub-Saharan Africa  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
+##                   "sienna"                "goldenrod"                "goldenrod" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa        East Asia &amp; Pacific 
+##              "forestgreen"                   "sienna"                "steelblue" 
+##         Sub-Saharan Africa         Sub-Saharan Africa         Sub-Saharan Africa 
+##                   "sienna"                   "sienna"                   "sienna" 
+##         Sub-Saharan Africa         Sub-Saharan Africa Middle East &amp; North Africa 
+##                   "sienna"                   "sienna"               "darkorange" 
+##  Latin America &amp; Caribbean      Europe &amp; Central Asia  Latin America &amp; Caribbean 
+##                "goldenrod"              "forestgreen"                "goldenrod" 
+## Middle East &amp; North Africa  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
+##               "darkorange"                "goldenrod"                "goldenrod" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia  Latin America &amp; Caribbean 
+##              "forestgreen"              "forestgreen"                "goldenrod" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia        East Asia &amp; Pacific 
+##              "forestgreen"              "forestgreen"                "steelblue" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia Middle East &amp; North Africa 
+##              "forestgreen"              "forestgreen"               "darkorange" 
+##      Europe &amp; Central Asia Middle East &amp; North Africa      Europe &amp; Central Asia 
+##              "forestgreen"               "darkorange"              "forestgreen" 
+##         Sub-Saharan Africa      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##                   "sienna"              "forestgreen"              "forestgreen" 
+##         Sub-Saharan Africa        East Asia &amp; Pacific        East Asia &amp; Pacific 
+##                   "sienna"                "steelblue"                "steelblue" 
+##      Europe &amp; Central Asia Middle East &amp; North Africa      Europe &amp; Central Asia 
+##              "forestgreen"               "darkorange"              "forestgreen" 
+##  Latin America &amp; Caribbean  Latin America &amp; Caribbean      Europe &amp; Central Asia 
+##                "goldenrod"                "goldenrod"              "forestgreen" 
+##      Europe &amp; Central Asia  Latin America &amp; Caribbean         Sub-Saharan Africa 
+##              "forestgreen"                "goldenrod"                   "sienna" 
+##      Europe &amp; Central Asia Middle East &amp; North Africa        East Asia &amp; Pacific 
+##              "forestgreen"               "darkorange"                "steelblue" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen"              "forestgreen" 
+##         Sub-Saharan Africa      Europe &amp; Central Asia  Latin America &amp; Caribbean 
+##                   "sienna"              "forestgreen"                "goldenrod" 
+##        East Asia &amp; Pacific Middle East &amp; North Africa         Sub-Saharan Africa 
+##                "steelblue"               "darkorange"                   "sienna" 
+## Middle East &amp; North Africa Middle East &amp; North Africa  Latin America &amp; Caribbean 
+##               "darkorange"               "darkorange"                "goldenrod" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia        East Asia &amp; Pacific 
+##              "forestgreen"              "forestgreen"                "steelblue" 
+##  Latin America &amp; Caribbean      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##                "goldenrod"              "forestgreen"              "forestgreen" 
+##         Sub-Saharan Africa  Latin America &amp; Caribbean      Europe &amp; Central Asia 
+##                   "sienna"                "goldenrod"              "forestgreen" 
+## Middle East &amp; North Africa         Sub-Saharan Africa      Europe &amp; Central Asia 
+##               "darkorange"                   "sienna"              "forestgreen" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa         Sub-Saharan Africa 
+##              "forestgreen"                   "sienna"                   "sienna" 
+##         Sub-Saharan Africa      Europe &amp; Central Asia         Sub-Saharan Africa 
+##                   "sienna"              "forestgreen"                   "sienna" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia         Sub-Saharan Africa 
+##              "forestgreen"              "forestgreen"                   "sienna" 
+##      Europe &amp; Central Asia Middle East &amp; North Africa        East Asia &amp; Pacific 
+##              "forestgreen"               "darkorange"                "steelblue" 
+##  Latin America &amp; Caribbean      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##                "goldenrod"              "forestgreen"              "forestgreen" 
+##         Sub-Saharan Africa         Sub-Saharan Africa Middle East &amp; North Africa 
+##                   "sienna"                   "sienna"               "darkorange" 
+##        East Asia &amp; Pacific         Sub-Saharan Africa  Latin America &amp; Caribbean 
+##                "steelblue"                   "sienna"                "goldenrod" 
+##        East Asia &amp; Pacific                 South Asia        East Asia &amp; Pacific 
+##                "steelblue"                "firebrick"                "steelblue" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia  Latin America &amp; Caribbean 
+##              "forestgreen"              "forestgreen"                "goldenrod" 
+## Middle East &amp; North Africa                 South Asia         Sub-Saharan Africa 
+##               "darkorange"                "firebrick"                   "sienna" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
+##                "steelblue"                "goldenrod"                "goldenrod" 
+##      Europe &amp; Central Asia        East Asia &amp; Pacific        East Asia &amp; Pacific 
+##              "forestgreen"                "steelblue"                "steelblue" 
+##  Latin America &amp; Caribbean        East Asia &amp; Pacific         Sub-Saharan Africa 
+##                "goldenrod"                "steelblue"                   "sienna" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean      Europe &amp; Central Asia 
+##                "steelblue"                "goldenrod"              "forestgreen" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean        East Asia &amp; Pacific 
+##                "steelblue"                "goldenrod"                "steelblue" 
+##         Sub-Saharan Africa  Latin America &amp; Caribbean        East Asia &amp; Pacific 
+##                   "sienna"                "goldenrod"                "steelblue" 
+##  Latin America &amp; Caribbean  Latin America &amp; Caribbean        East Asia &amp; Pacific 
+##                "goldenrod"                "goldenrod"                "steelblue" 
+##  Latin America &amp; Caribbean  Latin America &amp; Caribbean      Europe &amp; Central Asia 
+##                "goldenrod"                "goldenrod"              "forestgreen" 
+##      Europe &amp; Central Asia  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
+##              "forestgreen"                "goldenrod"                "goldenrod" 
+##              North America      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##             "mediumpurple"              "forestgreen"              "forestgreen" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean        East Asia &amp; Pacific 
+##                "steelblue"                "goldenrod"                "steelblue" 
+##  Latin America &amp; Caribbean  Latin America &amp; Caribbean        East Asia &amp; Pacific 
+##                "goldenrod"                "goldenrod"                "steelblue" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen"              "forestgreen" 
+##  Latin America &amp; Caribbean        East Asia &amp; Pacific        East Asia &amp; Pacific 
+##                "goldenrod"                "steelblue"                "steelblue" 
+##        East Asia &amp; Pacific 
+##                "steelblue"
+```
+]
+
+---
+
+.pull-left[
+
+## Step 4 — add a legend
+
+
+``` r
+par(cex.lab = 1.2, las = 1,
+    mar = c(4, 4, 2, 2),
+    mgp = c(2, .25, 0), tck = 0.01)
+plot(wdi$GDP/1e3, wdi$LifeExp, log = "x",
+     xlab = "GDP per capita (1000 USD, log scale)",
+     ylab = "Life expectancy (years)",
+     cex = sqrt(wdi$Population /
+                max(wdi$Population, na.rm=TRUE))*15,
+     pch = 21, col = cont_col,
+     bg  = scales::alpha(cont_col, .7))
+
+legend("bottomright", title = "Region",
+       legend = levels(wdi$region),
+       pt.bg  = cols,
+       col    = "grey40",
+       pch    = 21,
+       pt.cex = 1.8,
+       bty    = "n")
+```
+]
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/legend-plot-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## `legend()` key arguments
+
+.pull-left[
+
+``` r
+legend(
+  x      = "bottomright", # position or coordinates
+  legend = ...,           # text labels
+  col    = ...,           # point/line colors
+  pch    = ...,           # point character
+  lty    = ...,           # line types (if lines)
+  pt.cex = 2,             # symbol size in legend
+  cex    = 0.9,           # text size
+  bty    = "n",           # no box around legend
+  title  = "Region"       # optional title
+)
+```
+
+Position keywords:  
+`"topleft"`, `"topright"`, `"bottomleft"`, `"bottomright"`, `"top"`, `"right"`, ...
+
+Or give exact coordinates:
+```r
+legend(x = 0.5, y = 60, ...)
+```
+]
+
+.pull-right[
+For **filled** circles (`pch = 21`), use both `col` (border) and `pt.bg` (fill):
+
+
+``` r
+legend("bottomright",
+       legend = levels(wdi$region),
+       pt.bg  = cols,      # fill
+       col    = "grey40",  # border
+       pch    = 21,
+       pt.cex = 1.8,
+       bty    = "n")
+```
+
+`pch 21–25` are **filled** shapes — border color (`col`) and fill (`bg` or `pt.bg`) are independent.
+]
+
+---
+
+
+.pull-left[
+## Step 5 — reorder by population
+.small[
+
+``` r
+# Sort descending so large (populous) countries
+# are drawn first — smaller ones on top
+wdi &lt;- wdi[order(wdi$Population,
+                 decreasing = TRUE), ]
+
+cont_col &lt;- cols[match(wdi$region,
+                       levels(wdi$region))]
+cex_pop  &lt;- sqrt(wdi$Population /
+                 max(wdi$Population,
+                     na.rm = TRUE)) * 15
+
+par(cex.lab = 1.2, las = 1,
+    mar = c(4, 4, 2, 2),
+    mgp = c(2, .25, 0), tck = 0.01)
+plot(wdi$GDP/1e3, wdi$LifeExp, log = "x",
+     xlab = "GDP per capita (1000 USD, log scale)",
+     ylab = "Life expectancy (years)",
+     cex = cex_pop, pch = 21,
+     col = cont_col,
+     bg  = scales::alpha(cont_col, .7))
+legend("bottomright", title = "Region",
+       legend = levels(wdi$region),
+       pt.bg = cols, col = "grey40",
+       pch = 21, pt.cex = 1.8, bty = "n")
+```
+]]
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/reorder-1.png" alt="" style="display: block; margin: auto;" /&gt;
+
+Large countries drawn first → small countries on top and visible.
+]
+
+---
+
+.pull-left[
+## Step 6 — label large countries
+.small[
+
+]
+
+
+
+``` r
+# (continuing from previous slide — plot already drawn)
+f()
+wdi_big &lt;- subset(wdi, Population &gt; 1e8)
+
+text(labels = wdi_big$country,
+     x      = wdi_big$GDP/1e3,
+     y      = wdi_big$LifeExp,
+     cex    = cex_pop[wdi$Population &gt; 1e8] / 5,
+     adj    = 0.5)
+```
+
+`adj = 0.5` — centered on the point  
+(`adj`: 0=left-justified, 1=right-justified)  
+`font = 2` — **bold**  
+`font = 3` — *italic*  
+`pos = 4` — offset to the right of coordinates
+]
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/text-full-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+
+
+.pull-left[
+
+
+## Step 7 — custom grid lines with `abline()`
+.small[
+
+``` r
+# type="n" draws axes but NO points —
+# then add grid, then points on top
+
+plot(..., type = "n")
+
+abline(h = seq(40, 90, 10),
+       col = "grey80", lty = 3)
+abline(v = c(.5, 1, 2, 5, 10, 20, 50, 100),
+       col = "grey80", lty = 3)
+
+points(...)   # drawn on top of grid
+```
+
+`abline(h = ...)` — horizontal lines at given y values  
+`abline(v = ...)` — vertical lines at given x values  
+
+Preferred over `grid()` here because the x-axis is log-scale — `grid()` spaces lines at tick positions, `abline()` lets you choose exact values.
+]]
+
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/grid-show-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+
+.pull-left[
+
+## Step 8 — a second legend for point size
+
+
+
+``` r
+legend("right",
+       title  = "Population (millions)",
+       legend = c(10, 50, 100, NA, 500),
+       pt.cex = sqrt(
+         c(10, 50, 100, NA, 500) * 1e6 /
+         max(wdi$Population, na.rm = TRUE)
+       ) * 15,
+       col   = "darkgrey",
+       pch   = 21,
+       pt.bg = "grey",
+       bty   = "n",
+       ncol  = 1)
+```
+
+Key trick: `pt.cex` uses the **same formula** as the plot, applied to round reference population values.
+
+`NA` entries create blank rows — useful for spacing.
+]
+
+.pull-right[
+&lt;img src="PlottingPartII_files/figure-html/size-legend-show-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## The full code
+
+
+``` r
+wdi &lt;- read.csv("WDI.csv")
+wdi &lt;- wdi[order(wdi$Population, decreasing = TRUE), ]
+wdi$region &lt;- factor(wdi$region)
+
+cols &lt;- c("East Asia &amp; Pacific"        = "steelblue",
+          "Europe &amp; Central Asia"      = "forestgreen",
+          "Latin America &amp; Caribbean"  = "goldenrod",
+          "Middle East &amp; North Africa" = "darkorange",
+          "North America"              = "mediumpurple",
+          "South Asia"                 = "firebrick",
+          "Sub-Saharan Africa"         = "sienna")
+
+cont_col &lt;- cols[match(wdi$region, levels(wdi$region))]
+cex_pop  &lt;- sqrt(wdi$Population / max(wdi$Population, na.rm = TRUE)) * 15
+
+par(cex.lab = 1.2, mar = c(4, 4, 4, 2),
+    mgp = c(2, .25, 0), tck = 0.01,
+    family = "serif", las = 1)
+
+plot(wdi$GDP/1e3, wdi$LifeExp, log = "x",
+     ylab = "Life expectancy (years)",
+     xlab = "GDP per capita (1000 USD, log scale)", type = "n")
+title("Health vs. Wealth by Nations (2020)", cex.main = 2, font.main = 1)
+title(sub = "World Development Indicators (World Bank) - accessed via the WDI package in R)")
+abline(h = seq(40, 90, 5), col = "grey80", lty = 3)
+abline(v = c(.5,1,2,5,10,20,50,100), col = "grey80", lty = 3)
+points(wdi$GDP/1e3, wdi$LifeExp,
+       cex = cex_pop + .5, pch = 21, col = cont_col,
+       bg  = scales::alpha(cont_col, .7))
+legend("bottomright", title = "Region",
+       legend = levels(wdi$region),
+       pt.bg = cols, col = "grey40",
+       pch = 21, pt.cex = 1.8, bty = "n")
+legend("right", title = "Population (millions)",
+       legend = c(10, 50, 100, NA, 500),
+       pt.cex = sqrt(c(10, 50, 100, NA, 500)*1e6 /
+                     max(wdi$Population, na.rm = TRUE))*15,
+       col = "darkgrey", pch = 21, pt.bg = "grey", bty = "n")
+wdi_big &lt;- subset(wdi, Population &gt; 1e8)
+text(labels = wdi_big$country,
+     x = wdi_big$GDP/1e3, y = wdi_big$LifeExp,
+     cex = cex_pop[wdi$Population &gt; 1e8]/5, adj = 0.5)
+```
+
+---
+
+## Summary: dimensions encoded in one plot
+
+| Visual channel | Variable | R tool |
+|----------------|----------|--------|
+| x position (log) | GDP per capita | `log = "x"` |
+| y position | Life expectancy | `plot(x, y)` |
+| Point **size** | Population | `cex = sqrt(pop/max_pop) * 15` |
+| Point **color** | Region | named `cols` + `match()` |
+| Text labels | Country name | `text(labels = ...)` |
+
+**Key functions:**
+
+`par()` · `plot()` · `points()` · `abline()` · `rgb()` · `scales::alpha()` · `match()` · `legend()` · `order()` · `subset()` · `text()` · `title()`
+
+---
+
+## Exercise
+
+Using the `wdi` data make a scatter plot of **latitude** vs. **longitude** 
+
+   - Size points by **Area**
+   - Color the poins by **region**
+   - Make the color transparency *proportional to the density: i.e. Population/Area*
+   - Make the **shape of the point** (e.g. circle, square, triangle ... options in `?points`) reflect the **income bracket**.  
+   - Label the **capitals** of the 20 largest countries
+   - Create a legend labeling the **point types / income brackets** and **region colors**
+   - Make it PRETTY!
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "countIncrementalSlides": false,
+  "highlightLines": true,
+  "ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
