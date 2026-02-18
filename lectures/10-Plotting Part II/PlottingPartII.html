@@ -140,27 +140,6 @@ plot(wdi$GDP/1e3, wdi$LifeExp,
 
 ## `par()` reference
 
-
-`bty` controls the **b**ox **ty**pe around the plot:
-
-| value | box drawn |
-|-------|-----------|
-| `"o"` | full box (default) |
-| `"l"` | bottom + left only |
-| `"u"` | bottom + sides |
-| `"c"` | top + sides |
-| `"n"` | no box |
-
-
-``` r
-par(bty = "l")
-plot(wdi$GDP/1e3, wdi$LifeExp, log = "x")
-```
-]
-
-.pull-right[
-Other useful `par()` tweaks for today:
-
 | parameter | what it does |
 |-----------|-------------|
 | `cex.lab` | axis label size |
@@ -170,6 +149,10 @@ Other useful `par()` tweaks for today:
 | `las`     | tick label orientation |
 | `tck`     | tick length (+inward, −outward) |
 | `family`  | font family (`"serif"`, `"sans"`, `"mono"`) |
+| `bty` | box type (`"o"`, `"l"`, `"u"`, `"c"`, `"n"`)
+]
+
+.pull-right[
 
 
 ``` r
@@ -187,6 +170,17 @@ par("mgp")   # default mgp
 ```
 ## [1] 3 1 0
 ```
+
+Here are some of my preferences:
+
+
+``` r
+par(mar = c(3,3,2,2), 
+    mgp = c(1.5,.25,0), 
+    tck = 0.01, 
+    bty = "l")
+```
+
 ]
 
 ---
@@ -323,7 +317,7 @@ adjustcolor("steelblue", alpha.f = 0.4)
 .pull-right[
 All values 0–1 (or use `maxColorValue = 255`)
 
-&lt;img src="PlottingPartII_files/figure-html/unnamed-chunk-5-1.png" alt="" style="display: block; margin: auto;" /&gt;
+&lt;img src="PlottingPartII_files/figure-html/unnamed-chunk-6-1.png" alt="" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -388,14 +382,17 @@ wdi$region[1:20]
 ```
 
 ```
-##  [1] South Asia                 East Asia &amp; Pacific        North America             
-##  [4] East Asia &amp; Pacific        South Asia                 Sub-Saharan Africa        
-##  [7] Latin America &amp; Caribbean  South Asia                 Europe &amp; Central Asia     
-## [10] Latin America &amp; Caribbean  Sub-Saharan Africa         East Asia &amp; Pacific       
-## [13] East Asia &amp; Pacific        Middle East &amp; North Africa Sub-Saharan Africa        
-## [16] East Asia &amp; Pacific        Middle East &amp; North Africa Europe &amp; Central Asia     
+##  [1] South Asia                 East Asia &amp; Pacific       
+##  [3] North America              East Asia &amp; Pacific       
+##  [5] South Asia                 Sub-Saharan Africa        
+##  [7] Latin America &amp; Caribbean  South Asia                
+##  [9] Europe &amp; Central Asia      Latin America &amp; Caribbean 
+## [11] Sub-Saharan Africa         East Asia &amp; Pacific       
+## [13] East Asia &amp; Pacific        Middle East &amp; North Africa
+## [15] Sub-Saharan Africa         East Asia &amp; Pacific       
+## [17] Middle East &amp; North Africa Europe &amp; Central Asia     
 ## [19] Europe &amp; Central Asia      East Asia &amp; Pacific       
-## 7 Levels: East Asia &amp; Pacific Europe &amp; Central Asia ... Sub-Saharan Africa
+## 7 Levels: East Asia &amp; Pacific ... Sub-Saharan Africa
 ```
 
 ``` r
@@ -414,146 +411,214 @@ cols[match(wdi$region, levels(wdi$region))]
 ```
 
 ```
-##                 South Asia        East Asia &amp; Pacific              North America 
-##                "firebrick"                "steelblue"             "mediumpurple" 
-##        East Asia &amp; Pacific                 South Asia         Sub-Saharan Africa 
-##                "steelblue"                "firebrick"                   "sienna" 
-##  Latin America &amp; Caribbean                 South Asia      Europe &amp; Central Asia 
-##                "goldenrod"                "firebrick"              "forestgreen" 
-##  Latin America &amp; Caribbean         Sub-Saharan Africa        East Asia &amp; Pacific 
-##                "goldenrod"                   "sienna"                "steelblue" 
-##        East Asia &amp; Pacific Middle East &amp; North Africa         Sub-Saharan Africa 
-##                "steelblue"               "darkorange"                   "sienna" 
-##        East Asia &amp; Pacific Middle East &amp; North Africa      Europe &amp; Central Asia 
-##                "steelblue"               "darkorange"              "forestgreen" 
-##      Europe &amp; Central Asia        East Asia &amp; Pacific      Europe &amp; Central Asia 
-##              "forestgreen"                "steelblue"              "forestgreen" 
-##      Europe &amp; Central Asia         Sub-Saharan Africa         Sub-Saharan Africa 
-##              "forestgreen"                   "sienna"                   "sienna" 
-##      Europe &amp; Central Asia         Sub-Saharan Africa        East Asia &amp; Pacific 
-##              "forestgreen"                   "sienna"                "steelblue" 
-##  Latin America &amp; Caribbean        East Asia &amp; Pacific         Sub-Saharan Africa 
-##                "goldenrod"                "steelblue"                   "sienna" 
-##      Europe &amp; Central Asia         Sub-Saharan Africa Middle East &amp; North Africa 
-##              "forestgreen"                   "sienna"               "darkorange" 
-##  Latin America &amp; Caribbean Middle East &amp; North Africa      Europe &amp; Central Asia 
-##                "goldenrod"               "darkorange"              "forestgreen" 
-##                 South Asia              North America Middle East &amp; North Africa 
-##                "firebrick"             "mediumpurple"               "darkorange" 
-##      Europe &amp; Central Asia         Sub-Saharan Africa      Europe &amp; Central Asia 
-##              "forestgreen"                   "sienna"              "forestgreen" 
-##        East Asia &amp; Pacific  Latin America &amp; Caribbean         Sub-Saharan Africa 
-##                "steelblue"                "goldenrod"                   "sienna" 
-##         Sub-Saharan Africa Middle East &amp; North Africa         Sub-Saharan Africa 
-##                   "sienna"               "darkorange"                   "sienna" 
-##         Sub-Saharan Africa                 South Asia  Latin America &amp; Caribbean 
-##                   "sienna"                "firebrick"                "goldenrod" 
-##         Sub-Saharan Africa        East Asia &amp; Pacific         Sub-Saharan Africa 
-##                   "sienna"                "steelblue"                   "sienna" 
-##         Sub-Saharan Africa         Sub-Saharan Africa Middle East &amp; North Africa 
-##                   "sienna"                   "sienna"               "darkorange" 
-##                 South Asia         Sub-Saharan Africa         Sub-Saharan Africa 
-##                "firebrick"                   "sienna"                   "sienna" 
-##      Europe &amp; Central Asia  Latin America &amp; Caribbean      Europe &amp; Central Asia 
-##              "forestgreen"                "goldenrod"              "forestgreen" 
-##         Sub-Saharan Africa  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
-##                   "sienna"                "goldenrod"                "goldenrod" 
-##      Europe &amp; Central Asia         Sub-Saharan Africa        East Asia &amp; Pacific 
-##              "forestgreen"                   "sienna"                "steelblue" 
-##         Sub-Saharan Africa         Sub-Saharan Africa         Sub-Saharan Africa 
-##                   "sienna"                   "sienna"                   "sienna" 
-##         Sub-Saharan Africa         Sub-Saharan Africa Middle East &amp; North Africa 
-##                   "sienna"                   "sienna"               "darkorange" 
-##  Latin America &amp; Caribbean      Europe &amp; Central Asia  Latin America &amp; Caribbean 
-##                "goldenrod"              "forestgreen"                "goldenrod" 
-## Middle East &amp; North Africa  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
-##               "darkorange"                "goldenrod"                "goldenrod" 
-##      Europe &amp; Central Asia      Europe &amp; Central Asia  Latin America &amp; Caribbean 
-##              "forestgreen"              "forestgreen"                "goldenrod" 
-##      Europe &amp; Central Asia      Europe &amp; Central Asia        East Asia &amp; Pacific 
-##              "forestgreen"              "forestgreen"                "steelblue" 
-##      Europe &amp; Central Asia      Europe &amp; Central Asia Middle East &amp; North Africa 
-##              "forestgreen"              "forestgreen"               "darkorange" 
-##      Europe &amp; Central Asia Middle East &amp; North Africa      Europe &amp; Central Asia 
-##              "forestgreen"               "darkorange"              "forestgreen" 
-##         Sub-Saharan Africa      Europe &amp; Central Asia      Europe &amp; Central Asia 
-##                   "sienna"              "forestgreen"              "forestgreen" 
-##         Sub-Saharan Africa        East Asia &amp; Pacific        East Asia &amp; Pacific 
-##                   "sienna"                "steelblue"                "steelblue" 
-##      Europe &amp; Central Asia Middle East &amp; North Africa      Europe &amp; Central Asia 
-##              "forestgreen"               "darkorange"              "forestgreen" 
-##  Latin America &amp; Caribbean  Latin America &amp; Caribbean      Europe &amp; Central Asia 
-##                "goldenrod"                "goldenrod"              "forestgreen" 
-##      Europe &amp; Central Asia  Latin America &amp; Caribbean         Sub-Saharan Africa 
-##              "forestgreen"                "goldenrod"                   "sienna" 
-##      Europe &amp; Central Asia Middle East &amp; North Africa        East Asia &amp; Pacific 
-##              "forestgreen"               "darkorange"                "steelblue" 
-##      Europe &amp; Central Asia      Europe &amp; Central Asia      Europe &amp; Central Asia 
-##              "forestgreen"              "forestgreen"              "forestgreen" 
-##         Sub-Saharan Africa      Europe &amp; Central Asia  Latin America &amp; Caribbean 
-##                   "sienna"              "forestgreen"                "goldenrod" 
-##        East Asia &amp; Pacific Middle East &amp; North Africa         Sub-Saharan Africa 
-##                "steelblue"               "darkorange"                   "sienna" 
-## Middle East &amp; North Africa Middle East &amp; North Africa  Latin America &amp; Caribbean 
-##               "darkorange"               "darkorange"                "goldenrod" 
-##      Europe &amp; Central Asia      Europe &amp; Central Asia        East Asia &amp; Pacific 
-##              "forestgreen"              "forestgreen"                "steelblue" 
-##  Latin America &amp; Caribbean      Europe &amp; Central Asia      Europe &amp; Central Asia 
-##                "goldenrod"              "forestgreen"              "forestgreen" 
-##         Sub-Saharan Africa  Latin America &amp; Caribbean      Europe &amp; Central Asia 
-##                   "sienna"                "goldenrod"              "forestgreen" 
-## Middle East &amp; North Africa         Sub-Saharan Africa      Europe &amp; Central Asia 
-##               "darkorange"                   "sienna"              "forestgreen" 
-##      Europe &amp; Central Asia         Sub-Saharan Africa         Sub-Saharan Africa 
-##              "forestgreen"                   "sienna"                   "sienna" 
-##         Sub-Saharan Africa      Europe &amp; Central Asia         Sub-Saharan Africa 
-##                   "sienna"              "forestgreen"                   "sienna" 
-##      Europe &amp; Central Asia      Europe &amp; Central Asia         Sub-Saharan Africa 
-##              "forestgreen"              "forestgreen"                   "sienna" 
-##      Europe &amp; Central Asia Middle East &amp; North Africa        East Asia &amp; Pacific 
-##              "forestgreen"               "darkorange"                "steelblue" 
-##  Latin America &amp; Caribbean      Europe &amp; Central Asia      Europe &amp; Central Asia 
-##                "goldenrod"              "forestgreen"              "forestgreen" 
-##         Sub-Saharan Africa         Sub-Saharan Africa Middle East &amp; North Africa 
-##                   "sienna"                   "sienna"               "darkorange" 
-##        East Asia &amp; Pacific         Sub-Saharan Africa  Latin America &amp; Caribbean 
-##                "steelblue"                   "sienna"                "goldenrod" 
-##        East Asia &amp; Pacific                 South Asia        East Asia &amp; Pacific 
-##                "steelblue"                "firebrick"                "steelblue" 
-##      Europe &amp; Central Asia      Europe &amp; Central Asia  Latin America &amp; Caribbean 
-##              "forestgreen"              "forestgreen"                "goldenrod" 
-## Middle East &amp; North Africa                 South Asia         Sub-Saharan Africa 
-##               "darkorange"                "firebrick"                   "sienna" 
-##        East Asia &amp; Pacific  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
-##                "steelblue"                "goldenrod"                "goldenrod" 
-##      Europe &amp; Central Asia        East Asia &amp; Pacific        East Asia &amp; Pacific 
-##              "forestgreen"                "steelblue"                "steelblue" 
-##  Latin America &amp; Caribbean        East Asia &amp; Pacific         Sub-Saharan Africa 
-##                "goldenrod"                "steelblue"                   "sienna" 
-##        East Asia &amp; Pacific  Latin America &amp; Caribbean      Europe &amp; Central Asia 
-##                "steelblue"                "goldenrod"              "forestgreen" 
-##        East Asia &amp; Pacific  Latin America &amp; Caribbean        East Asia &amp; Pacific 
-##                "steelblue"                "goldenrod"                "steelblue" 
-##         Sub-Saharan Africa  Latin America &amp; Caribbean        East Asia &amp; Pacific 
-##                   "sienna"                "goldenrod"                "steelblue" 
-##  Latin America &amp; Caribbean  Latin America &amp; Caribbean        East Asia &amp; Pacific 
-##                "goldenrod"                "goldenrod"                "steelblue" 
-##  Latin America &amp; Caribbean  Latin America &amp; Caribbean      Europe &amp; Central Asia 
-##                "goldenrod"                "goldenrod"              "forestgreen" 
-##      Europe &amp; Central Asia  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
-##              "forestgreen"                "goldenrod"                "goldenrod" 
-##              North America      Europe &amp; Central Asia      Europe &amp; Central Asia 
-##             "mediumpurple"              "forestgreen"              "forestgreen" 
-##        East Asia &amp; Pacific  Latin America &amp; Caribbean        East Asia &amp; Pacific 
-##                "steelblue"                "goldenrod"                "steelblue" 
-##  Latin America &amp; Caribbean  Latin America &amp; Caribbean        East Asia &amp; Pacific 
-##                "goldenrod"                "goldenrod"                "steelblue" 
-##      Europe &amp; Central Asia      Europe &amp; Central Asia      Europe &amp; Central Asia 
-##              "forestgreen"              "forestgreen"              "forestgreen" 
-##  Latin America &amp; Caribbean        East Asia &amp; Pacific        East Asia &amp; Pacific 
-##                "goldenrod"                "steelblue"                "steelblue" 
-##        East Asia &amp; Pacific 
-##                "steelblue"
+##                 South Asia        East Asia &amp; Pacific 
+##                "firebrick"                "steelblue" 
+##              North America        East Asia &amp; Pacific 
+##             "mediumpurple"                "steelblue" 
+##                 South Asia         Sub-Saharan Africa 
+##                "firebrick"                   "sienna" 
+##  Latin America &amp; Caribbean                 South Asia 
+##                "goldenrod"                "firebrick" 
+##      Europe &amp; Central Asia  Latin America &amp; Caribbean 
+##              "forestgreen"                "goldenrod" 
+##         Sub-Saharan Africa        East Asia &amp; Pacific 
+##                   "sienna"                "steelblue" 
+##        East Asia &amp; Pacific Middle East &amp; North Africa 
+##                "steelblue"               "darkorange" 
+##         Sub-Saharan Africa        East Asia &amp; Pacific 
+##                   "sienna"                "steelblue" 
+## Middle East &amp; North Africa      Europe &amp; Central Asia 
+##               "darkorange"              "forestgreen" 
+##      Europe &amp; Central Asia        East Asia &amp; Pacific 
+##              "forestgreen"                "steelblue" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen" 
+##         Sub-Saharan Africa         Sub-Saharan Africa 
+##                   "sienna"                   "sienna" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa 
+##              "forestgreen"                   "sienna" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean 
+##                "steelblue"                "goldenrod" 
+##        East Asia &amp; Pacific         Sub-Saharan Africa 
+##                "steelblue"                   "sienna" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa 
+##              "forestgreen"                   "sienna" 
+## Middle East &amp; North Africa  Latin America &amp; Caribbean 
+##               "darkorange"                "goldenrod" 
+## Middle East &amp; North Africa      Europe &amp; Central Asia 
+##               "darkorange"              "forestgreen" 
+##                 South Asia              North America 
+##                "firebrick"             "mediumpurple" 
+## Middle East &amp; North Africa      Europe &amp; Central Asia 
+##               "darkorange"              "forestgreen" 
+##         Sub-Saharan Africa      Europe &amp; Central Asia 
+##                   "sienna"              "forestgreen" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean 
+##                "steelblue"                "goldenrod" 
+##         Sub-Saharan Africa         Sub-Saharan Africa 
+##                   "sienna"                   "sienna" 
+## Middle East &amp; North Africa         Sub-Saharan Africa 
+##               "darkorange"                   "sienna" 
+##         Sub-Saharan Africa                 South Asia 
+##                   "sienna"                "firebrick" 
+##  Latin America &amp; Caribbean         Sub-Saharan Africa 
+##                "goldenrod"                   "sienna" 
+##        East Asia &amp; Pacific         Sub-Saharan Africa 
+##                "steelblue"                   "sienna" 
+##         Sub-Saharan Africa         Sub-Saharan Africa 
+##                   "sienna"                   "sienna" 
+## Middle East &amp; North Africa                 South Asia 
+##               "darkorange"                "firebrick" 
+##         Sub-Saharan Africa         Sub-Saharan Africa 
+##                   "sienna"                   "sienna" 
+##      Europe &amp; Central Asia  Latin America &amp; Caribbean 
+##              "forestgreen"                "goldenrod" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa 
+##              "forestgreen"                   "sienna" 
+##  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
+##                "goldenrod"                "goldenrod" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa 
+##              "forestgreen"                   "sienna" 
+##        East Asia &amp; Pacific         Sub-Saharan Africa 
+##                "steelblue"                   "sienna" 
+##         Sub-Saharan Africa         Sub-Saharan Africa 
+##                   "sienna"                   "sienna" 
+##         Sub-Saharan Africa         Sub-Saharan Africa 
+##                   "sienna"                   "sienna" 
+## Middle East &amp; North Africa  Latin America &amp; Caribbean 
+##               "darkorange"                "goldenrod" 
+##      Europe &amp; Central Asia  Latin America &amp; Caribbean 
+##              "forestgreen"                "goldenrod" 
+## Middle East &amp; North Africa  Latin America &amp; Caribbean 
+##               "darkorange"                "goldenrod" 
+##  Latin America &amp; Caribbean      Europe &amp; Central Asia 
+##                "goldenrod"              "forestgreen" 
+##      Europe &amp; Central Asia  Latin America &amp; Caribbean 
+##              "forestgreen"                "goldenrod" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen" 
+##        East Asia &amp; Pacific      Europe &amp; Central Asia 
+##                "steelblue"              "forestgreen" 
+##      Europe &amp; Central Asia Middle East &amp; North Africa 
+##              "forestgreen"               "darkorange" 
+##      Europe &amp; Central Asia Middle East &amp; North Africa 
+##              "forestgreen"               "darkorange" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa 
+##              "forestgreen"                   "sienna" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen" 
+##         Sub-Saharan Africa        East Asia &amp; Pacific 
+##                   "sienna"                "steelblue" 
+##        East Asia &amp; Pacific      Europe &amp; Central Asia 
+##                "steelblue"              "forestgreen" 
+## Middle East &amp; North Africa      Europe &amp; Central Asia 
+##               "darkorange"              "forestgreen" 
+##  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
+##                "goldenrod"                "goldenrod" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen" 
+##  Latin America &amp; Caribbean         Sub-Saharan Africa 
+##                "goldenrod"                   "sienna" 
+##      Europe &amp; Central Asia Middle East &amp; North Africa 
+##              "forestgreen"               "darkorange" 
+##        East Asia &amp; Pacific      Europe &amp; Central Asia 
+##                "steelblue"              "forestgreen" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen" 
+##         Sub-Saharan Africa      Europe &amp; Central Asia 
+##                   "sienna"              "forestgreen" 
+##  Latin America &amp; Caribbean        East Asia &amp; Pacific 
+##                "goldenrod"                "steelblue" 
+## Middle East &amp; North Africa         Sub-Saharan Africa 
+##               "darkorange"                   "sienna" 
+## Middle East &amp; North Africa Middle East &amp; North Africa 
+##               "darkorange"               "darkorange" 
+##  Latin America &amp; Caribbean      Europe &amp; Central Asia 
+##                "goldenrod"              "forestgreen" 
+##      Europe &amp; Central Asia        East Asia &amp; Pacific 
+##              "forestgreen"                "steelblue" 
+##  Latin America &amp; Caribbean      Europe &amp; Central Asia 
+##                "goldenrod"              "forestgreen" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa 
+##              "forestgreen"                   "sienna" 
+##  Latin America &amp; Caribbean      Europe &amp; Central Asia 
+##                "goldenrod"              "forestgreen" 
+## Middle East &amp; North Africa         Sub-Saharan Africa 
+##               "darkorange"                   "sienna" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen" 
+##         Sub-Saharan Africa         Sub-Saharan Africa 
+##                   "sienna"                   "sienna" 
+##         Sub-Saharan Africa      Europe &amp; Central Asia 
+##                   "sienna"              "forestgreen" 
+##         Sub-Saharan Africa      Europe &amp; Central Asia 
+##                   "sienna"              "forestgreen" 
+##      Europe &amp; Central Asia         Sub-Saharan Africa 
+##              "forestgreen"                   "sienna" 
+##      Europe &amp; Central Asia Middle East &amp; North Africa 
+##              "forestgreen"               "darkorange" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean 
+##                "steelblue"                "goldenrod" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen" 
+##         Sub-Saharan Africa         Sub-Saharan Africa 
+##                   "sienna"                   "sienna" 
+## Middle East &amp; North Africa        East Asia &amp; Pacific 
+##               "darkorange"                "steelblue" 
+##         Sub-Saharan Africa  Latin America &amp; Caribbean 
+##                   "sienna"                "goldenrod" 
+##        East Asia &amp; Pacific                 South Asia 
+##                "steelblue"                "firebrick" 
+##        East Asia &amp; Pacific      Europe &amp; Central Asia 
+##                "steelblue"              "forestgreen" 
+##      Europe &amp; Central Asia  Latin America &amp; Caribbean 
+##              "forestgreen"                "goldenrod" 
+## Middle East &amp; North Africa                 South Asia 
+##               "darkorange"                "firebrick" 
+##         Sub-Saharan Africa        East Asia &amp; Pacific 
+##                   "sienna"                "steelblue" 
+##  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
+##                "goldenrod"                "goldenrod" 
+##      Europe &amp; Central Asia        East Asia &amp; Pacific 
+##              "forestgreen"                "steelblue" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean 
+##                "steelblue"                "goldenrod" 
+##        East Asia &amp; Pacific         Sub-Saharan Africa 
+##                "steelblue"                   "sienna" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean 
+##                "steelblue"                "goldenrod" 
+##      Europe &amp; Central Asia        East Asia &amp; Pacific 
+##              "forestgreen"                "steelblue" 
+##  Latin America &amp; Caribbean        East Asia &amp; Pacific 
+##                "goldenrod"                "steelblue" 
+##         Sub-Saharan Africa  Latin America &amp; Caribbean 
+##                   "sienna"                "goldenrod" 
+##        East Asia &amp; Pacific  Latin America &amp; Caribbean 
+##                "steelblue"                "goldenrod" 
+##  Latin America &amp; Caribbean        East Asia &amp; Pacific 
+##                "goldenrod"                "steelblue" 
+##  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
+##                "goldenrod"                "goldenrod" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen" 
+##  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
+##                "goldenrod"                "goldenrod" 
+##              North America      Europe &amp; Central Asia 
+##             "mediumpurple"              "forestgreen" 
+##      Europe &amp; Central Asia        East Asia &amp; Pacific 
+##              "forestgreen"                "steelblue" 
+##  Latin America &amp; Caribbean        East Asia &amp; Pacific 
+##                "goldenrod"                "steelblue" 
+##  Latin America &amp; Caribbean  Latin America &amp; Caribbean 
+##                "goldenrod"                "goldenrod" 
+##        East Asia &amp; Pacific      Europe &amp; Central Asia 
+##                "steelblue"              "forestgreen" 
+##      Europe &amp; Central Asia      Europe &amp; Central Asia 
+##              "forestgreen"              "forestgreen" 
+##  Latin America &amp; Caribbean        East Asia &amp; Pacific 
+##                "goldenrod"                "steelblue" 
+##        East Asia &amp; Pacific        East Asia &amp; Pacific 
+##                "steelblue"                "steelblue"
 ```
 ]
 
