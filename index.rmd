@@ -36,7 +36,8 @@ Perhaps the most important immediate need is to download and install R and Rstud
 
 # Lectures and Labs
 
-## Module 1 - Intro | Operators | Data Types and Structures
+## Module 1 - Introduction
+### Operators | Data Types | Data Structures
 
 - [Lecture 0: Intro to R](lectures/01-R-Intro/R-Intro.html)
 - [Lecture 1: Operators](lectures/02-R Operators/R_Operators.html)
@@ -48,7 +49,8 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - [Lecture 3: Data Structures (Jan 28)](lectures/04-Data-Structures/Data-Structures.html)
   - [Birds.R function](lectures/04-Data-Structures/Birds.R)
   
-## Module 2 - Working with data (Indexing | Importing/Exporting | Plotting | Summarizing)
+## Module 2 - Working with data 
+### Indexing | Importing/Exporting | Plotting | Summarizing
 - [Lecture 4: Indexing Vectors (Feb 2)](lectures/05-Indexing-Vectors/Indexing-Vectors.html)
   - [Top300MF_names.Rdata](lectures/05-Indexing-Vectors/Top300MF_names.Rdata)
 - [Lecture 5: Indexing Dataframes (Feb 4)](lectures/06-Indexing-Dataframes/Indexing-Dataframes.html)
@@ -56,9 +58,12 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - [Puromycin_data (csv)](lectures/08-Importing-Exporting-Data/Puromycin_data.csv)
   - [qPCR data (txt)](lectures/08-Importing-Exporting-Data/qPCR-data.txt)
 - [Lecture 7: Plotting Basics (Feb 11)](lectures/09-Plotting-Basics/Plotting_basics.pdf)
-- [Lecture 8: More Base Plotting (Feb 18) - slides](lectures/10-Plotting Part II/PlottingPartII.html)
+- [Lecture 8: Plotting Part II (Feb 18) - slides](lectures/10-PlottingPartII/PlottingPartII.html)
   - [document style](lectures/10-Plotting Part II/PlottingPartII_lab.html)
   - [World Development Index data (csv)](lectures/10-Plotting Part II/WDI.csv)
+- [Lecture 9: Plotting Part III (Feb 23) - slides](lectures/11-PlottingPartIII/PlottingPartIII_slides.html)
+  - [document style](lectures/11-PlottingPartIII/PlottingPartIII_lab.html)
+  - [Rmarkdown](lectures/11-PlottingPartIII/PlottingPartIII_lab.html)
   
 ## Tools and Tricks in Reproducible Research
 

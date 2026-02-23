@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Plotting in R: Part III</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Elie Gurarie" />
+    <meta name="date" content="2026-02-23" />
+    <script src="PlottingPartIII_slides_files/header-attrs-2.30/header-attrs.js"></script>
+    <link href="PlottingPartIII_slides_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="PlottingPartIII_slides_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="PlottingPartIII_slides_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="PlottingPartIII_slides_files/tile-view-0.2.6/tile-view.js"></script>
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Plotting in <strong>R</strong>: Part III
+]
+.subtitle[
+## <a href="https://eligurarie.github.io/EFB654/">EFB 654: R and Reproducible Research</a>
+]
+.author[
+### Elie Gurarie
+]
+.date[
+### <strong>February 23, 2026</strong>
+]
+
+---
+
+class: inverse
+
+
+
+
+
+
+## Today
+
+- **Layouts** — `mfrow` and `layout()`
+- **Exporting figures** — `png()`, `pdf()`, `jpeg()`, and knitr chunk options
+- **Brief intro to `ggplot2`**
+
+Using the WDI data from [last time](PlottingPartII_lab.html)
+
+---
+
+## Setup — load data &amp; colors
+
+
+``` r
+wdi &lt;- read.csv("WDI.csv")
+wdi$region &lt;- factor(wdi$region)
+cols &lt;- c("East Asia &amp; Pacific"        = "steelblue",
+          "Europe &amp; Central Asia"      = "forestgreen",
+          "Latin America &amp; Caribbean"  = "goldenrod",
+          "Middle East &amp; North Africa" = "darkorange",
+          "North America"              = "mediumpurple",
+          "South Asia"                 = "firebrick",
+          "Sub-Saharan Africa"         = "sienna")
+```
+
+---
+class: inverse
+
+# 1. Controlling layouts
+
+---
+
+## `par(mfrow = ...)`
+
+.pull-left[
+
+``` r
+par(mfrow = c(2, 1))
+boxplot(GDP/1000 ~ region, data = wdi,
+        log = "y", las = 1, col = cols)
+boxplot(LifeExp ~ region, data = wdi,
+        las = 1, col = cols)
+```
+
+- `mfrow = c(nrow, ncol)` — fill by **row**
+- `mfcol = c(nrow, ncol)` — fill by **column**
+]
+
+.pull-right[
+&lt;img src="PlottingPartIII_slides_files/figure-html/mfrow-basic-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Prettier: `mar` and `oma`
+
+.pull-left[.small[
+
+``` r
+par(mfrow = c(2,1), 
+    mar = c(0,4,1,2),   # margins per panel
+    oma = c(3,0,2,0),   # outer margins
+    cex.axis = 0.8, 
+    tck = 0.01, bty = "l", mgp = c(2,.25,0))
+
+boxplot(GDP/1000 ~ region, data = wdi, 
+        log = "y", las = 1, col = cols, 
+        xlab = "", xaxt = "n")
+boxplot(LifeExp ~ region, data = wdi, 
+        las = 1, col = cols)
+title("Global Indicators across regions",
+      outer = TRUE)
+```
+]]
+
+.pull-right[
+&lt;img src="PlottingPartIII_slides_files/figure-html/mfrow-pretty-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Margin anatomy
+
+.pull-left[
+
+| parameter | what it controls |
+|-----------|-----------------|
+| `mar` | margins around **each** panel (bottom, left, top, right) |
+| `oma` | **outer** margins around entire figure |
+| `xaxt = "n"` | suppress x-axis (draw your own later) |
+
+`title(..., outer = TRUE)` — title in outer margin
+]
+
+.pull-right[
+&lt;img src="PlottingPartIII_slides_files/figure-html/margin-diagram-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Fixing long labels
+
+.pull-left[.small[
+
+``` r
+par(mfrow = c(2,1), 
+    mar = c(0,4,1,2), oma = c(3,0,2,0),
+    cex.axis = 0.8, tck = 0.01, bty = "l",
+    mgp = c(2,.25,0))
+
+boxplot(GDP/1000 ~ region, data = wdi, 
+        log = "y", las = 1, col = cols, 
+        varwidth = TRUE, 
+        xlab = "", xaxt = "n")
+boxplot(LifeExp ~ region, data = wdi, las = 1, 
+        varwidth = TRUE, col = cols, xaxt = "n")
+title("Global Indicators across regions",
+      outer = TRUE)
+
+regions &lt;- levels(factor(wdi$region))
+region_labels &lt;- gsub("&amp;", "&amp;\n", regions,
+                       fixed = TRUE)
+mtext(region_labels, side = 1, 
+      at = 1:7, line = 0, padj = 1)
+```
+]]
+
+.pull-right[
+&lt;img src="PlottingPartIII_slides_files/figure-html/mfrow-labels-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Key tricks used
+
+- `varwidth = TRUE` — box width proportional to sample size
+- `xaxt = "n"` — suppress automatic x-axis labels
+- `gsub("&amp;", "&amp;\n", ...)` — insert newlines to break long labels
+- `mtext()` — manual axis label placement
+
+---
+class: inverse
+
+# `layout()`
+
+---
+
+## `layout()` — flexible panel arrangements
+
+.pull-left[
+
+``` r
+layout(rbind(c(1, 2), c(1, 3)))
+layout.show(3)
+```
+
+&lt;img src="PlottingPartIII_slides_files/figure-html/layout-demo-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+- `layout()` takes a **matrix** of panel numbers
+- Panel 1 spans both rows (left column)
+- Panels 2 &amp; 3 stack on the right
+- `layout.show(n)` — preview the arrangement
+]
+
+---
+
+## Complex layout in action
+
+[See complete code in lab]
+
+&lt;img src="PlottingPartIII_slides_files/figure-html/fun-layout-1.png" alt="" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: inverse
+
+# Quick aside: wrapping code in functions
+
+---
+
+## Bundle plotting code into functions
+
+.pull-left[.small[
+
+``` r
+setPars &lt;- function(){
+  par(cex.lab = 1.2, las = 1,
+    mgp = c(2, .25, 0), tck = 0.01, 
+    bty = "l", mar = c(0,4,0,2), 
+    oma = c(4,0,4,0), xpd = NA)
+}
+
+plotWDI &lt;- function(){
+  cont_col &lt;- cols[match(wdi$region,
+                         levels(wdi$region))]
+  cex_pop &lt;- sqrt(wdi$Population / 
+      max(wdi$Population, na.rm = TRUE)) * 15
+  plot(wdi$GDP/1e3, wdi$LifeExp, log = "x",
+       ylab = "Life expectancy (years)",
+       xlab = "GDP per capita (1000 USD)",
+       type = "n")
+  points(wdi$GDP/1e3, wdi$LifeExp,
+         cex = cex_pop + .5, pch = 21,
+         col = cont_col,
+         bg = alpha(cont_col, .7))
+  legend("bottomright", title = "Region",
+         legend = levels(wdi$region),
+         pt.bg = cols, col = "grey40",
+         pch = 21, pt.cex = 1.8, bty = "n")
+}
+
+boxplotWDI &lt;- function(){
+  boxplot(GDP/1000 ~ region, data = wdi, 
+          log = "y", las = 1, varwidth = TRUE, 
+          col = alpha(cols, .7), border = cols, 
+          xlab = "", xaxt = "n")
+  boxplot(LifeExp ~ region, data = wdi, las = 1, 
+          varwidth = TRUE, col = alpha(cols, .7),
+          border = cols, xaxt = "n",
+          xlab = "Region")
+}
+```
+]]
+
+.pull-right[
+
+- No arguments, no return values
+- Just **do the thing**
+- Functions only plot — setup is separate
+
+Then the complex layout becomes:
+
+
+``` r
+layout(rbind(c(1,2), c(1,3)))
+setPars()
+plotWDI()
+boxplotWDI()
+```
+
+Three lines instead of 30+
+]
+
+---
+
+
+``` r
+layout(rbind(c(1,2), c(1,3)))
+setPars(); plotWDI(); boxplotWDI()
+```
+
+&lt;img src="PlottingPartIII_slides_files/figure-html/super-quick-show-1.png" alt="" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse
+
+# 2. Exporting figures to files
+
+---
+
+## The pattern: open → plot → close
+
+
+``` r
+device_function("filename.ext", width = ..., height = ...)
+  # ... plotting code ...
+dev.off()                          # close and write file
+```
+
+- Nothing appears on screen — output goes straight to file
+- **Forgetting `dev.off()`** = most common mistake
+- The file stays open and incomplete
+
+---
+
+## PDF vs. PNG
+
+| | PDF | PNG |
+|---|---|---|
+| Type | **Vector** | **Raster** (bitmap) |
+| Stores as | Math descriptions | Grid of pixels |
+| Scaling | Perfect at any size | Degrades if enlarged |
+| Best for | Publications, LaTeX | Web, Word, presentations |
+| Resolution | N/A | Critical — use `res =` |
+
+---
+
+## Exporting to PDF
+
+
+``` r
+pdf("WDImegaplot.pdf", width = 12, height = 6)   # inches
+
+  layout(rbind(c(1,2), c(1,3)))
+  setPars()
+  plotWDI()
+  boxplotWDI()
+
+dev.off()
+```
+
+- `width` / `height` always in **inches** (default 7 × 7)
+- Plotting in a loop → **multi-page PDF**
+
+---
+
+## Exporting to PNG
+
+
+``` r
+png("WDImegaplot.png", width = 2400, height = 1200, res = 200)   # pixels
+
+  layout(rbind(c(1,2), c(1,3)))
+  setPars()
+  plotWDI()
+  boxplotWDI()
+
+dev.off()
+```
+
+- `width` / `height` in **pixels** (by default)
+- `res` = dots per inch — controls text/point size relative to canvas
+- Effective size = `width / res` → `2400/200 = 12"` wide
+- Print quality: `res = 300`; screen: `res = 96`–`150`
+
+---
+
+## Controlling size in R Markdown
+
+````
+```{r myplot, fig.width = 8, fig.height = 5, dpi = 200}`
+# ... plotting code ...
+```
+````
+
+- `fig.width` / `fig.height` — **inches** (like PDF)
+- `dpi` — resolution of rendered PNG (knitr default: 72)
+- Set defaults globally in setup chunk:
+
+
+``` r
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5, dpi = 150)
+```
+
+---
+
+## `jpeg()` — when to use
+
+
+``` r
+jpeg("myplot.jpg", width = 800, height = 600, 
+     res = 150, quality = 90)
+  # ... plotting code ...
+dev.off()
+```
+
+- `quality` 0–100 (lower = smaller file, more artifacts)
+- **Avoid** for plots with sharp lines &amp; text — artifacts visible
+- OK for photographic content or when file size matters
+
+---
+
+## Device summary
+
+| Function | Format | Size units | Key arg |
+|----------|--------|-----------|---------|
+| `pdf()` | Vector PDF | inches | `width`, `height` |
+| `png()` | Raster PNG | pixels | `res` (dpi) |
+| `jpeg()` | Raster JPEG | pixels | `quality` |
+| knitr chunk | (PNG) | inches | `fig.width`, `dpi` |
+
+---
+class: inverse
+
+# 3. Introduction to `ggplot2`
+
+---
+
+## What is `ggplot2`?
+
+- Created by Hadley Wickham (2005)
+- Based on *The Grammar of Graphics* (Wilkinson 1999)
+- Every graphic = **data** + **aesthetics** + **geometries**
+- You *declare* what you want; `ggplot2` figures out the rendering
+- Result is a single object you can inspect, modify, print
+
+---
+
+## The key constraint
+
+**Every variable must be a column in a data frame**
+
+- Can't pass loose vectors like in `plot(x, y)`
+- Sometimes inconvenient, but enforces good data discipline
+
+
+``` r
+library(ggplot2)
+```
+
+---
+
+## Basic scatter plot
+
+.pull-left[
+
+``` r
+ggplot(data = wdi, 
+       aes(x = GDP/1e3, y = LifeExp)) +
+  geom_point()
+```
+
+`aes()` maps **variables** to **visual channels**
+
+| aesthetic | visual property |
+|-----------|----------------|
+| `x`, `y`  | position |
+| `color`   | outline color |
+| `fill`    | fill color |
+| `size`    | point size |
+| `alpha`   | transparency |
+| `shape`   | point character |
+]
+
+.pull-right[
+&lt;img src="PlottingPartIII_slides_files/figure-html/gg-basic-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Common `geom_*` functions
+
+| geom | draws |
+|------|-------|
+| `geom_point()` | scatter plot |
+| `geom_line()` | lines |
+| `geom_smooth()` | trend + confidence band |
+| `geom_boxplot()` | box-and-whisker |
+| `geom_histogram()` | histogram |
+| `geom_bar()` / `geom_col()` | bar chart |
+| `geom_text()` | text labels |
+
+---
+
+## Adding dimensions is quick
+
+.pull-left[
+
+``` r
+ggplot(wdi, aes(x = GDP/1e3, y = LifeExp, 
+                color = region, 
+                size  = Population/1e6)) +
+  geom_point(alpha = 0.7) +
+  scale_x_log10() +
+  theme_bw()
+```
+
+- 4 variables in ~4 lines
+- Legends generated **automatically**
+- Compare to the manual `match()` + `legend()` work in base R
+]
+
+.pull-right[
+&lt;img src="PlottingPartIII_slides_files/figure-html/gg-multi-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## BUT — customization is hard
+
+.pull-left[
+Moving a legend, adjusting ticks, mixing fonts — all require `theme()` with ~100 arguments or extension packages.
+
+
+``` r
+theme(
+  legend.position   = c(0.15, 0.85),
+  legend.background = element_rect(
+      fill = "white", color = "grey70"),
+  axis.text         = element_text(size = 11),
+  panel.grid.minor  = element_blank(),
+  plot.title.position = "plot"
+)
+```
+]
+
+.pull-right[
+In base R the same thing is a couple `par()` arguments.
+
+&gt; Customizing a ggplot is one of the better uses of Large-Language Models
+]
+
+---
+
+## Faceting — extremely powerful
+
+.pull-left[.small[
+
+``` r
+ggplot(wdi, aes(x = GDP/1e3, y = LifeExp, 
+                size = Population/1e6)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_smooth(method = "lm", color = "firebrick",
+              linewidth = 0.7) +
+  scale_x_log10() +
+  facet_wrap(~ region)
+```
+]]
+
+.pull-right[
+&lt;img src="PlottingPartIII_slides_files/figure-html/gg-facet-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+One line: `facet_wrap(~ region)` — automatic panels, shared scales, per-panel trend lines.
+
+---
+
+## `ggplot2` vs. base R
+
+| | base R | ggplot2 |
+|---|---|---|
+| Learning curve | Steeper for basics | Steeper for customization |
+| Multi-variable | Manual (but explicit) | Fast (auto legends/scales) |
+| Faceting | Manual `layout()` | `facet_wrap()` / `facet_grid()` |
+| Fine control | Excellent | Difficult |
+| Default aesthetics | Minimal | Ugly (IMO) |
+| Data requirement | Anything | Data frame required |
+
+The two are **complementary**: `ggplot2` for exploration &amp; panels; base R for precise, publication-ready control.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "countIncrementalSlides": false,
+  "highlightLines": true,
+  "ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
