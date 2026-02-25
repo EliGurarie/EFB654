@@ -1,0 +1,143 @@
+---
+title: "Homework 6: Data Summarization, Aggregation, and Merging"
+author: 
+date: "Assigned Feb 25, 2026; Due Mar 04, 2026"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Instructions
+
+Complete all exercises below by filling in your answers in the designated spaces. When finished:
+
+1. Use *this* .Rmd file to complete the homework
+2. Complete the homework creating code chunks where needed
+3. Knit the document to HTML (click the "Knit" button or press Ctrl+Shift+K / Cmd+Shift+K)
+4. Submit **both** your .Rmd file and the knitted Word/PDF (HTMLs are not 'uploadable', but can be converted to PDF) to Blackboard
+
+**Due:** Tuesday, March 04 by 11:59 PM
+
+---
+
+## Part 1: Data Summaries
+
+### Question 1 (1 point)
+
+The built-in `esoph` dataset contains data from a case-control study of esophageal cancer in France. It includes age group (`agegp`), alcohol consumption group (`alcgp`), tobacco consumption group (`tobgp`), and the number of cases and controls.
+
+a) Use `str()` and `summary()` to examine the dataset. Notice that `ncases` and `ncontrols` are numeric counts within each row. Use `sum()` to find the total number of cancer cases and the total number of controls across the entire dataset. What is the ratio of total controls to total cases?
+
+b) Use `table()` to produce a contingency table of `agegp` and `alcgp`. Store the result in an object. Then use `as.data.frame()` to convert it to a data frame. In the resulting data frame, which age group has the most observations in the `120+` alcohol category?
+
+c) Use `ftable()` to produce a flat contingency table of `agegp`, `alcgp`, and `tobgp`. Compare this to the output of `table(esoph$agegp, esoph$alcgp, esoph$tobgp)`. In your own words, explain how `ftable()` differs and why it is more practical for three-way tables.
+
+d) Bonus: Install and load the `Hmisc` package. Use `describe()` on the `esoph` dataset and store the result. Use `str()` on the stored result to confirm it is a list. Extract the `ncases` element from the list using `$` notation and examine it. How does the information from `describe()` compare to what `summary()` provides for the same column?
+
+
+In your own words, explain why `summary()` produces different output for factor columns versus numeric columns, and which type of output is more useful for spotting data entry errors:
+
+*Delete this text and write your explanation here.*
+
+---
+
+## Part 2: Aggregation with `aggregate()`
+
+The `aggregate()` function computes summary statistics for subgroups defined by one or more factors. It uses the formula interface: `response ~ grouping_variable`.
+
+### Question 2 (1.5 points)
+
+Load the built-in `CO2` dataset, which contains data from an experiment on cold tolerance of the grass species *Echinochloa crus-galli*. Plants from Quebec and Mississippi were subjected to chilling treatments and their CO2 uptake rates were measured at various ambient CO2 concentrations.
+
+a) Use `str()` to examine the structure of `CO2`. How many observations and variables are there?
+
+b) Use `aggregate()` with the formula interface to find the **mean** CO2 uptake (`uptake`) for each `Type` (Quebec vs Mississippi).
+
+c) Use `aggregate()` to find the **mean** CO2 uptake for each combination of `Type` and `Treatment` (nonchilled vs chilled). Which combination has the lowest mean uptake?
+
+d) Use `aggregate()` to find the **maximum** CO2 uptake within each `Plant`. Which individual plant achieved the highest uptake rate?
+
+e) Run two separate `aggregate()` calls to get the **mean** and **standard deviation** of `uptake` for each `Type`. Use `cbind()` to combine them into a single data frame with clear column names (e.g., `Type`, `mean_uptake`, `sd_uptake`). Hint: you will need to select specific columns from each `aggregate()` result to avoid duplicating the `Type` column.
+
+
+---
+
+The built-in `chickwts` dataset records the weights of chicks that were fed one of six different feed supplements. The built-in `PlantGrowth` dataset records dried plant weights under a control and two treatment conditions.
+
+a) Use `aggregate()` to compute the **mean** and then the **median** weight for each `feed` type in `chickwts`. Which feed produces the heaviest chicks on average? Does the median agree with the mean for that feed?
+
+b) Use `rbind()` to stack `chickwts` and `PlantGrowth` together. What happens and why? In your own words, explain what `rbind()` requires of the data frames being combined.
+
+c) Both `chickwts` and `PlantGrowth` share a similar structure: a numeric measurement column and a grouping factor. Rename the columns of `PlantGrowth` to match `chickwts` (i.e., `weight` and `feed`) using `names()`. Now use `rbind()` to stack them. Use `aggregate()` on the combined data frame to find the mean `weight` for each `feed` level. How many groups are there now?
+
+
+---
+
+## Part 3: Merging Data Frames
+
+The `merge()` function combines two data frames by matching values in shared columns. Understanding the `all`, `all.x`, and `all.y` arguments is critical for controlling which rows are kept.
+
+### Question 4 (1.5 points)
+
+Run the following code to create two small data frames representing field sampling data:
+
+```{r q4-setup, eval=FALSE}
+sites <- data.frame(
+  site_id = c("A1", "A2", "B1", "B2", "C1"),
+  habitat = c("forest", "wetland", "forest", "grassland", "wetland"),
+  elevation_m = c(450, 120, 510, 280, 95)
+)
+
+surveys <- data.frame(
+  site_id = c("A1", "A2", "B1", "B2", "D1"),
+  species_count = c(12, 23, 8, 15, 19),
+  date = c("2025-06-01", "2025-06-03", "2025-06-05", "2025-06-07", "2025-06-10")
+)
+```
+
+a) Before merging, use `intersect(names(sites), names(surveys))` to identify the shared column(s). Why is this a good practice before merging?
+
+b) Merge `sites` and `surveys` using the default settings (no extra arguments). How many rows are in the result? Why were some rows dropped?
+
+c) Merge again using `all = TRUE`. How many rows now? Explain where the `NA` values came from.
+
+d) Merge using `all.x = TRUE` (keeping all rows in `sites`). Then merge using `all.y = TRUE` (keeping all rows in `surveys`). Explain the difference in the output.
+
+e) Check the dimensions of each merged result using `dim()`. Confirm they match your expectations.
+
+
+---
+
+### Question 5 (1 point)
+
+The built-in datasets `state.x77` (a matrix) and `state.region` (a factor) both describe the 50 US states, but they are different data structures.
+
+a) Convert `state.x77` to a data frame. Notice that the state names are stored as row names, not as a column. Create a new column called `state` from the row names using `rownames()`.
+
+b) Create a second data frame from `state.region` with columns `state` (state names) and `region` (the region factor). Hint: `state.region` uses `names()` for the state labels.
+
+c) Merge these two data frames by `state`. Confirm the merged result has 50 rows.
+
+d) Use `aggregate()` on the merged data frame to find the mean `Income` within each `region`.
+
+
+---
+
+## Submission Checklist
+
+Before submitting, make sure you have:
+
+- [ ] Filled in your name in the author field at the top
+- [ ] Answered all questions
+- [ ] Written explanations in your own words where requested
+- [ ] Successfully knitted your document to HTML (or Word/PDF)
+- [ ] Uploaded both your .Rmd file AND your knitted output to Blackboard
+
+---
+
+*This homework is worth 6 points total.*

@@ -66,6 +66,7 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - [slides](lectures/11-Plotting-Part-III/PlottingPartIII_slides.html)
   - [document style](lectures/11-Plotting-Part-III/PlottingPartIII_lab.html)
   - [Rmarkdown](lectures/11-Plotting-Part-III/PlottingPartIII_lab.html)
+- [Lecture 10: Data Summaries and Aggregation (Feb 25)](lectures/12-Data-Summaries/Data-Summaries-and-Aggregation.html) 
   
 ## Tools and Tricks in Reproducible Research
 
@@ -85,6 +86,8 @@ Submit all assignments to the Blackboard page
   - [Elightenment Thinkers Data](homework/enlightenment_thinkers.csv)
 - [Homework 05](homework/HW05.html)  (due Feb 25)
   - [World Development Index Data](lectures/10-Plotting Part II/WDI.csv)
+- [Homework 06](homework/HW06.Rmd)  (due Mar 04)
+  - (Note: this is an `Rmd` file which you will download, modify, knit, and upload.) 
 
 <img src="assets/Rlogo.svg" height="50" style="margin-right: 30px;">
 <img src="assets/RStudio_logo_flat.svg" height="50">

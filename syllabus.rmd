@@ -97,6 +97,9 @@ Build an R package that includes at least three custom functions. Your package s
 **Option B: Shiny Application**
 Build an interactive Shiny app that includes at least three custom functions. Your app should solve a meaningful problem or visualize data in a useful way, with a clean interface and clear documentation of its functionality.
 
+**Option C: Report**
+A classic approach to the final project that more aligns with a thesis or dissertation and has typical sections: Introduction, Methods, Results, Discussion, and Conclusions. Your report should a) provide enough background about your study/data, b) describe the methods of data collection, treatment, and analysis, c) report the results, and d) discuss the results within a broader context. There is no page minimum or maximum and the report must be generated using reproducible methods used in class (i.e., Rmarkdown, knitr).
+
 Schedule an initial project meeting with Dr. Green or Dr. Gurarie by Feb 28 to discuss your project idea.
 
 ## Schedule
@@ -115,9 +118,9 @@ Schedule an initial project meeting with Dr. Green or Dr. Gurarie by Feb 28 to d
 | Wed Feb 11 | Green | Plotting basics I | HW4 due, HW5 assigned |
 | Mon Feb 16 | — | *Project Workday* | |
 | Wed Feb 18 | Gurarie | More Plotting | |
-| Mon Feb 23 | Green | TBD | |
-| Wed Feb 25 | Green | Summarizing data | HW5 due, HW6 assigned |
-| Mon Mar 2 | Green | Aggregating and merging data | |
+| Mon Feb 23 | Gurarie | More Plotting (i.e., exporting plots, ggplot2)| |
+| Wed Feb 25 | Green | Summarizing and Aggregating data | HW5 due, HW6 assigned |
+| Mon Mar 2 | Green | Merging data | |
 | Wed Mar 4 | Green | Writing/debugging functions | HW6 due |
 | Mar 8-15 | — | *Spring Break (no class)* | |
 | Mon Mar 16 | Gurarie | Git and GitHub | HW7 assigned |
@@ -149,7 +152,7 @@ Academic dishonesty is a sign of disrespect and breach of trust between a studen
 
 ## AI-Assisted Learning Analytics
 
-This course uses Claude AI (via ESF's enterprise agreement with Anthropic) to analyze homework submissions and identify class-wide learning patterns. This approach aligns with SUNY's Faculty Advisory Council on Teaching and Technology ([FACT2](https://soar.suny.edu/bitstreams/77a56a43-fc22-43e6-9b9d-b7abe491351a/download) guidelines for responsible AI integration in higher education, which emphasize transparent use, human oversight, and student agency. We will use Sonnet 4.5 versus more advanced and computationally-intense models like Opus 4.5.
+This course uses Claude AI (via ESF's enterprise agreement with Anthropic) to analyze homework submissions and identify class-wide learning patterns. This approach aligns with SUNY's Faculty Advisory Council on Teaching and Technology ([FACT2](https://soar.suny.edu/bitstreams/77a56a43-fc22-43e6-9b9d-b7abe491351a/download) guidelines for responsible AI integration in higher education, which emphasize transparent use, human oversight, and student agency. We will use Sonnet 4.5 or greater versus more advanced and computationally-intense models like Opus 4.5.
 
 Key Protections:
 
