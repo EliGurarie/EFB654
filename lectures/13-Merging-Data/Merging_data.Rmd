@@ -1,0 +1,404 @@
+---
+title: "Merging Data"
+date: "Mar 2, 2026"
+output: 
+  ioslides_presentation:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+    widescreen: true
+    css: style.css
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Today
+
+ - Why merge?
+ - `merge()` and its arguments
+ - The four types of merge
+ - Merging by differently named columns
+ - The `suffixes` argument
+ - Many-to-one merges
+ - Common pitfalls and debugging
+ - Exercises
+
+## Why merge?
+
+Real data almost never arrives in one tidy table.
+
+ - Field measurements in one file, lab results in another
+ - Species observations in one table, trait data in another
+ - One sensor logs temperature, another logs precipitation
+ 
+The problem: **how do you combine two data frames that share some---but not all---rows and columns?**
+
+## The three questions
+
+Before you type `merge()`, answer three questions:
+
+ >1. **Which** two data frames am I combining?
+ 2. **By which column(s)** should they be matched?
+ 3. **What happens to rows** that exist in one frame but not the other?
+
+## `merge()` {.smaller}
+
+```{r, eval=FALSE}
+?merge
+```
+
+<PRE>
+merge(x, y, by = intersect(names(x), names(y)),
+      by.x = by, by.y = by, all = FALSE, all.x = all, all.y = all,
+      sort = TRUE, suffixes = c(".x",".y"),
+      incomparables = NULL, ...)
+</PRE>
+
+| Argument | What it does |
+|----------|--------------|
+| `x`, `y` | The two data frames |
+| `by` | Column(s) to match on (name or index) |
+| `by.x`, `by.y` | Use when column names differ between frames |
+| `all` | Keep all rows from *both* frames? |
+| `all.x` | Keep all rows from `x`? |
+| `all.y` | Keep all rows from `y`? |
+| `suffixes` | Disambiguate duplicate column names |
+
+## Example data: water quality
+
+```{r}
+wq <- data.frame(
+  month = c("Aug", "Sept", "Oct", "Nov"),
+  DO    = c(12.3, 17.2, 14.0, 8.9),
+  pH    = c(7.2, 6.9, 7.8, 7.7)
+)
+ec <- data.frame(
+  month = c("Sept", "Oct", "Nov", "Dec"),
+  Ecoli = c(120, 2080, 830, 7900)
+)
+```
+
+ - Both have `month`
+ - `wq` has Aug but not Dec
+ - `ec` has Dec but not Aug
+
+## Check names before merging
+
+```{r}
+intersect(names(wq), names(ec))
+```
+
+This is what `merge()` uses by default for `by`. Always check this yourself first, especially with large data frames where columns may share names by accident.
+
+## Inner merge (the default)
+
+```{r}
+merge(wq, ec)
+```
+
+ - Only rows found in **both** frames are kept
+ - `Aug` dropped (not in `ec`); `Dec` dropped (not in `wq`)
+ - Result sorted alphabetically by `month`
+
+This is the database equivalent of an **inner join**.
+
+## Outer merge: `all = TRUE`
+
+```{r}
+merge(wq, ec, all = TRUE)
+```
+
+ - **All** rows from **both** frames kept
+ - Missing values filled with `NA`
+ - This is a **full outer join**
+
+## Left merge: `all.x = TRUE`
+
+```{r}
+merge(wq, ec, all.x = TRUE)
+```
+
+ - All rows from `x` (`wq`) kept
+ - Unmatched rows from `y` (`ec`) dropped
+ - `Aug` stays; `Dec` goes
+ - This is a **left join**
+
+## Right merge: `all.y = TRUE`
+
+```{r}
+merge(wq, ec, all.y = TRUE)
+```
+
+ - All rows from `y` (`ec`) kept
+ - Unmatched rows from `x` (`wq`) dropped
+ - `Dec` stays; `Aug` goes
+ - This is a **right join**
+
+## The four merges, summarized {.smaller}
+
+| Type | R code | Keeps from `x` | Keeps from `y` | SQL equivalent |
+|------|--------|-----------------|-----------------|----------------|
+| Inner | `merge(x, y)` | Matched only | Matched only | `INNER JOIN` |
+| Full outer | `merge(x, y, all=T)` | All | All | `FULL OUTER JOIN` |
+| Left | `merge(x, y, all.x=T)` | All | Matched only | `LEFT JOIN` |
+| Right | `merge(x, y, all.y=T)` | Matched only | All | `RIGHT JOIN` |
+
+**Rule of thumb:** if you're not sure, start with `all = TRUE` so you can *see* what didn't match, then decide what to discard.
+
+## When column names don't match
+
+Suppose the `ec` data used `sampling_month` instead of `month`:
+
+```{r}
+ec2 <- ec
+names(ec2)[1] <- "sampling_month"
+names(ec2)
+```
+
+## `by.x` and `by.y`
+
+```{r}
+merge(wq, ec2, by.x = "month", by.y = "sampling_month")
+```
+
+ - `by.x` says which column in `x` to match on
+ - `by.y` says which column in `y` to match on
+ - The result uses the name from `x`
+
+## Merging by multiple columns
+
+Sometimes a single column isn't enough to uniquely identify a row. Common in ecological data where you have site + year, or plot + date.
+
+```{r}
+sites_a <- data.frame(
+  site = c("A", "A", "B", "B"),
+  year = c(2020, 2021, 2020, 2021),
+  temp = c(15.2, 16.1, 12.8, 13.5)
+)
+sites_b <- data.frame(
+  site = c("A", "A", "B", "B"),
+  year = c(2020, 2021, 2020, 2021),
+  precip = c(820, 790, 1100, 1050)
+)
+```
+
+## Merging by multiple columns
+
+```{r}
+merge(sites_a, sites_b)
+```
+
+ - `intersect(names(sites_a), names(sites_b))` returns `c("site", "year")`
+ - Both columns used automatically
+ - Each site-year combination matched correctly
+
+## The `suffixes` argument
+
+What happens when both data frames have a column with the same name that is *not* the merge key?
+
+```{r}
+df1 <- data.frame(id = 1:3, value = c(10, 20, 30))
+df2 <- data.frame(id = 1:3, value = c(100, 200, 300))
+merge(df1, df2)
+```
+
+## Customizing suffixes
+
+The defaults `.x` and `.y` aren't very informative. Use `suffixes` to make them meaningful:
+
+```{r}
+merge(df1, df2, suffixes = c("_field", "_lab"))
+```
+
+This is much more readable when you come back to your code six months later.
+
+## Many-to-one merges
+
+Not all merges are one-to-one. Sometimes you want to attach a lookup table where one frame has fewer rows:
+
+```{r}
+observations <- data.frame(
+  species = c("PIST", "PIST", "ACRU", "ACRU", "QURU"),
+  dbh_cm  = c(25, 32, 18, 22, 45)
+)
+lookup <- data.frame(
+  species   = c("PIST", "ACRU", "QURU"),
+  common    = c("White Pine", "Red Maple", "Red Oak")
+)
+```
+
+## Many-to-one merges
+
+```{r}
+merge(observations, lookup)
+```
+
+ - `lookup` has 3 rows, `observations` has 5
+ - Each species code in `observations` matched to its common name
+ - Rows in `observations` are *not* lost---they expand to include the lookup info
+ - This is one of the most useful merge patterns
+
+## Checking your merge with `dim()` {.smaller}
+
+**Always check dimensions before and after merging.**
+
+```{r}
+dim(wq)
+dim(ec)
+dim(merge(wq, ec))           # inner
+dim(merge(wq, ec, all = TRUE)) # full outer
+```
+
+If the merged frame is unexpectedly large, you likely have duplicate keys causing a **Cartesian product** (every row in `x` paired with every matching row in `y`).
+
+## Common pitfall: accidental Cartesian product
+
+```{r}
+d1 <- data.frame(id = c(1, 1, 2), val1 = c("a", "b", "c"))
+d2 <- data.frame(id = c(1, 1, 2), val2 = c("x", "y", "z"))
+merge(d1, d2)
+```
+
+ - `id = 1` appears twice in **both** frames
+ - Result: 2 x 2 = 4 rows for `id = 1`
+ - This blows up fast with real data
+
+## Debugging checklist
+
+When `merge()` gives unexpected results:
+
+ 1. **Check `intersect(names(x), names(y))`** --- are the right columns being matched?
+ 2. **Check `dim()` before and after** --- did the row count change the way you expected?
+ 3. **Check for duplicate keys** --- `table(table(x[, by_cols]))` should show all 1s if keys are unique
+ 4. **Check spelling** --- `"Sept"` vs `"September"` will *not* match
+ 5. **Check class** --- merging a factor column with a character column can produce surprises
+
+## Quick reference: `identical()`
+
+`identical()` tests whether two objects are **exactly the same**:
+
+```{r}
+wq2 <- merge(wq, ec, by = "month")
+wq3 <- merge(wq, ec, by = 1)
+wq4 <- merge(wq, ec)
+identical(wq2, wq3)
+identical(wq3, wq4)
+```
+
+Useful for confirming that different `merge()` calls produce the same result.
+
+## Tidyverse joins: `dplyr`
+
+The `dplyr` package provides a family of `_join()` functions that do the same thing as `merge()` but with more explicit naming.
+
+```{r, message=FALSE}
+library(dplyr)
+```
+
+## `dplyr` join functions {.smaller}
+
+Each join type gets its own function---no toggling `all`, `all.x`, `all.y`:
+
+| `dplyr` function | Equivalent `merge()` | Keeps |
+|------------------|----------------------|-------|
+| `inner_join(x, y)` | `merge(x, y)` | Rows in **both** |
+| `full_join(x, y)` | `merge(x, y, all = TRUE)` | **All** rows |
+| `left_join(x, y)` | `merge(x, y, all.x = TRUE)` | All rows from `x` |
+| `right_join(x, y)` | `merge(x, y, all.y = TRUE)` | All rows from `y` |
+
+The `by` argument works similarly, and column name mismatches use `by = c("name_in_x" = "name_in_y")` syntax.
+
+## `dplyr` join examples
+
+```{r}
+inner_join(wq, ec, by = "month")
+```
+
+```{r}
+left_join(wq, ec, by = "month")
+```
+
+## Handling mismatched names in `dplyr`
+
+Recall `ec2` where the column was named `sampling_month`:
+
+```{r}
+full_join(wq, ec2, by = c("month" = "sampling_month"))
+```
+
+This is the `dplyr` equivalent of `merge(wq, ec2, by.x = "month", by.y = "sampling_month", all = TRUE)`.
+
+## Filtering joins in `dplyr`
+
+`dplyr` also has two joins that don't add columns---they just filter rows:
+
+```{r}
+semi_join(wq, ec, by = "month")  # rows in wq that HAVE a match in ec
+```
+
+```{r}
+anti_join(wq, ec, by = "month")  # rows in wq that have NO match in ec
+```
+
+These have no direct `merge()` equivalent and are genuinely useful for data QC---e.g., "which of my field sites are missing from the lab results?"
+
+## `merge()` vs `dplyr` joins
+
+**Advantages of `merge()`:**
+
+ - No package dependency (base R)
+ - One function to learn
+ - Fine for most datasets
+
+**Advantages of `dplyr` joins:**
+
+ - Function names make the join type explicit
+ - Preserves row order (base `merge()` sorts by default)
+ - `semi_join()` and `anti_join()` are handy extras
+ - Somewhat faster on large data
+ 
+
+## Other alternatives: `data.table`
+
+ - `data.table::merge()` uses the **same arguments** as base `merge()`, so switching is nearly free
+ - Speed advantage is dramatic: merges on millions of rows that take minutes in base R finish in seconds
+ - Memory-efficient---modifies data in place rather than copying
+ - The package also has its own `[` syntax for joins (`X[Y, on = ...]`) which is extremely concise once learned
+ - Worth adopting if your data routinely exceeds ~1 million rows or if you're doing repeated merges in a loop
+
+## Other alternatives: `sqldf`
+
+ - `sqldf::sqldf()` lets you write **actual SQL queries** directly on R data frames
+ - Useful if you already know SQL from database work or GIS (e.g., PostGIS, Access, SQLite)
+ - Handles complex joins, subqueries, and aggregations in a single statement
+ - A good bridge if you're moving between R and database workflows
+
+## Exercise 1
+
+Create these two data frames and perform the four types of merge (inner, full outer, left, right). For each, check the dimensions and identify which rows were kept or dropped:
+
+```{r, eval = FALSE}
+growth <- data.frame(
+  plot = c("P1", "P2", "P3", "P4"),
+  height_cm = c(120, 95, 140, 110)
+)
+soil <- data.frame(
+  plot = c("P2", "P3", "P4", "P5"),
+  organic_pct = c(3.2, 5.1, 2.8, 4.5)
+)
+```
+
+
+## Summary
+
+ - `merge()` combines two data frames by shared columns
+ - Four types: inner (default), full outer, left, right
+ - Always check `intersect(names(x), names(y))` before merging
+ - Always check `dim()` before and after
+ - Use `by.x` and `by.y` when column names differ
+ - Use `suffixes` to make duplicate column names informative
+ - Watch out for Cartesian products from duplicate keys
+ - Start with `all = TRUE` when exploring, then restrict as needed
