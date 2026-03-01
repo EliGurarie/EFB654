@@ -67,7 +67,8 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - [document style](lectures/11-Plotting-Part-III/PlottingPartIII_lab.html)
   - [Rmarkdown](lectures/11-Plotting-Part-III/PlottingPartIII_lab.html)
 - [Lecture 10: Data Summaries and Aggregation (Feb 25)](lectures/12-Data-Summaries/Data-Summaries-and-Aggregation.html) 
-  
+- [Lecture 11: Merging Data (Mar 2)](lectures/13-Merging-Data/Merging_data.html)
+
 ## Tools and Tricks in Reproducible Research
 
 - [Markdown Basics](lectures/04-Rmarkdown/04_BasicsOfRmarkdown.html)
