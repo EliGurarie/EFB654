@@ -123,7 +123,7 @@ Schedule an initial project meeting with Dr. Green or Dr. Gurarie by Feb 28 to d
 | Mon Mar 2 | Green | Merging data | |
 | Wed Mar 4 | Green | Writing/debugging functions | HW6 due |
 | Mar 8-15 | — | *Spring Break (no class)* | |
-| Mon Mar 16 | Gurarie | Git and GitHub | HW7 assigned |
+| Mon Mar 16 | Gurarie | More on functions | HW7 assigned |
 | Wed Mar 18 | Gurarie | Loops and apply | |
 | Mon Mar 23 | Gurarie | Shiny I: basics | HW7 due, HW8 assigned |
 | Wed Mar 25 | Gurarie | Shiny II: reactivity and deployment | |
