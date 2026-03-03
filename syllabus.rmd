@@ -121,11 +121,11 @@ Schedule an initial project meeting with Dr. Green or Dr. Gurarie by Feb 28 to d
 | Mon Feb 23 | Gurarie | More Plotting (i.e., exporting plots, ggplot2)| |
 | Wed Feb 25 | Green | Summarizing and Aggregating data | HW5 due, HW6 assigned |
 | Mon Mar 2 | Green | Merging data | |
-| Wed Mar 4 | Green | Writing/debugging functions | HW6 due |
+| Wed Mar 4 | Green | Writing/debugging functions | HW6 due, HW7 assigned |
 | Mar 8-15 | — | *Spring Break (no class)* | |
-| Mon Mar 16 | Gurarie | More on functions | HW7 assigned |
-| Wed Mar 18 | Gurarie | Loops and apply | |
-| Mon Mar 23 | Gurarie | Shiny I: basics | HW7 due, HW8 assigned |
+| Mon Mar 16 | Gurarie | More on functions | |
+| Wed Mar 18 | Gurarie | Loops and apply | HW7 due, HW8 assigned |
+| Mon Mar 23 | Gurarie | Shiny I: basics | |
 | Wed Mar 25 | Gurarie | Shiny II: reactivity and deployment | |
 | Mon Mar 30 | Gurarie | Spatial data in R I | HW8 due, HW9 assigned |
 | Wed Apr 1 | Gurarie | Spatial data in R II | |

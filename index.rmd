@@ -69,6 +69,10 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - [Lecture 10: Data Summaries and Aggregation (Feb 25)](lectures/12-Data-Summaries/Data-Summaries-and-Aggregation.html) 
 - [Lecture 11: Merging Data (Mar 2)](lectures/13-Merging-Data/Merging_data.html)
 
+## Module 3 - Functions, Loops, Shiny, and other fun stuff 
+### Functions | Loops | Shiny | Other fun stuff 
+- [Lecture 12: Writing Functions (Mar 4)](lectures/14-Writing-Functions/Writing-Functions.html)
+
 ## Tools and Tricks in Reproducible Research
 
 - [Markdown Basics](lectures/04-Rmarkdown/04_BasicsOfRmarkdown.html)
@@ -89,6 +93,9 @@ Submit all assignments to the Blackboard page
   - [World Development Index Data](lectures/10-Plotting Part II/WDI.csv)
 - [Homework 06](homework/HW06.Rmd)  (due Mar 04)
   - (Note: this is an `Rmd` file which you will download, modify, knit, and upload.) 
-
+- [Homework 07](homework/HW07.Rmd)  (due Mar 18)
+  - (Note: this is an `Rmd` file which you will download, modify, knit, and upload.)
+  - Here's the [nicer-looking html](homework/HW07.html) 
+  
 <img src="assets/Rlogo.svg" height="50" style="margin-right: 30px;">
 <img src="assets/RStudio_logo_flat.svg" height="50">
