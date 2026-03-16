@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>loops and functions and (why not?) animations</title>
+    <title>Loops and functions (and an animation - for fun)</title>
     <meta charset="utf-8" />
     <meta name="author" content="Elie Gurarie" />
     <meta name="date" content="2026-02-23" />
@@ -17,7 +17,7 @@
 class: center, middle, inverse, title-slide
 
 .title[
-# loops and functions and (why not?) animations
+# Loops and functions (and an animation - for fun)
 ]
 .subtitle[
 ## <a href="https://eligurarie.github.io/EFB654/">EFB 654: R and Reproducible Research</a>
@@ -272,9 +272,11 @@ Compare to golden ratio:  `\(\large 1+\sqrt{5} \over 2\)`
 
 
 ---
-## Loop in loop
+
 
 .pull-left[
+## Loop in loop
+
 
 ``` r
 x &lt;- seq(-5,5,.05)
@@ -288,7 +290,6 @@ for(i in 1:length(x))
 ```
 ]
 
--- 
 .pull-right[
 
 
@@ -454,11 +455,6 @@ abline(v = mid, lty = 2, col = "red", lwd = 2)
 &lt;img src="loops_slides_files/figure-html/unnamed-chunk-22-1.png" alt="" style="display: block; margin: auto;" /&gt;
 
 ---
-class: inverse
-
-# Combining loops with functions
-
----
 
 ## Looping through years of WDI data
 
@@ -509,6 +505,35 @@ plotWDI &lt;- function(myyear, ...){
 }
 ```
 ]
+
+---
+## Example of function use
+
+.pull-left[
+
+
+``` r
+load("WDI_allyears.rda")
+plotWDI(1960, xlim = c(.01, 2e2), ylim = c(25, 90))
+```
+
+&lt;img src="loops_slides_files/figure-html/unnamed-chunk-25-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+
+``` r
+plotWDI(2020,
+        xlim = c(.01, 2e2), ylim = c(25, 90))
+```
+
+&lt;img src="loops_slides_files/figure-html/unnamed-chunk-26-1.png" alt="" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
 
 ---
 
