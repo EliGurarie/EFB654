@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>loops and functions and (why not?) animations</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Elie Gurarie" />
+    <meta name="date" content="2026-02-23" />
+    <script src="loops_slides_files/header-attrs-2.30/header-attrs.js"></script>
+    <link href="loops_slides_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="loops_slides_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="loops_slides_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="loops_slides_files/tile-view-0.2.6/tile-view.js"></script>
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# loops and functions and (why not?) animations
+]
+.subtitle[
+## <a href="https://eligurarie.github.io/EFB654/">EFB 654: R and Reproducible Research</a>
+]
+.author[
+### Elie Gurarie
+]
+.date[
+### <strong>February 23, 2026</strong>
+]
+
+---
+
+class: inverse
+
+
+
+
+
+
+
+
+# Loops
+
+---
+
+## Simple `for` loop
+
+
+``` r
+for(i in 1:10)
+  print(i)
+```
+
+```
+## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10
+```
+
+`i` is the loop variable — it takes each value in the sequence, one at a time. 
+- `i` is the most common name (**index**), but it's arbitrary.
+
+---
+
+## Pay attention to notation
+
+
+``` r
+names &lt;- c("Aditya", "Bob", "Changzi", "Demetrious", "Ed")
+
+# indexing style: i goes from 1 to the length of the vector
+for(i in 1:length(names))
+  print(nchar(names[i]))
+```
+
+```
+## [1] 6
+## [1] 3
+## [1] 7
+## [1] 10
+## [1] 2
+```
+
+---
+
+## Pre-allocate a container
+
+Often you want to *save* results from a loop, not just print them. Make an empty container first, then fill it in.
+
+
+``` r
+nchars &lt;- rep(NA, length(names))
+for(i in 1:length(names))
+  nchars[i] &lt;- nchar(names[i])
+nchars
+```
+
+```
+## [1]  6  3  7 10  2
+```
+
+---
+
+## Loop variable doesn't have to be an integer (or `i`)
+
+
+``` r
+for(n in names){
+  print(n)
+  print(nchar(n))
+}
+```
+
+```
+## [1] "Aditya"
+## [1] 6
+## [1] "Bob"
+## [1] 3
+## [1] "Changzi"
+## [1] 7
+## [1] "Demetrious"
+## [1] 10
+## [1] "Ed"
+## [1] 2
+```
+
+---
+
+## Saving results with element-based looping
+
+Using a named vector:
+
+
+``` r
+nchars &lt;- rep(NA, length(names))
+names(nchars) &lt;- names
+
+for(n in names)
+  nchars[n] &lt;- nchar(n)
+nchars
+```
+
+```
+##     Aditya        Bob    Changzi Demetrious         Ed 
+##          6          3          7         10          2
+```
+
+---
+
+## Avoiding loops with `apply`
+
+In R, loops can often be avoided with the `apply` family of functions:
+
+
+``` r
+sapply(names, nchar)
+```
+
+```
+##     Aditya        Bob    Changzi Demetrious         Ed 
+##          6          3          7         10          2
+```
+
+Also `plyr` / `dplyr` / tidyverse — we'll discuss this later.
+
+
+&gt; It is not very "R" to use a lot of loops!  
+
+
+---
+class: inverse
+
+# Uses of loops
+
+---
+
+## True iteration
+
+Some problems genuinely require loops because each step depends on the previous one.
+
+### Fibonacci sequence
+
+
+``` r
+fib &lt;- rep(NA, 12)
+fib[1] &lt;- 1
+fib[2] &lt;- 1
+
+for(i in 3:length(fib)){
+  fib[i] &lt;- fib[i-1] + fib[i-2]
+}
+fib
+```
+
+```
+##  [1]   1   1   2   3   5   8  13  21  34  55  89 144
+```
+
+---
+
+## Fibonacci in Nature
+
+.pull-left[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+![](fibonacci1.png)
+
+]
+
+
+.pull-right[
+![](fibonacci.webp)]
+
+---
+
+## A natural thing to wrap in a function
+.pull-left[
+
+``` r
+computeFib &lt;- function(n){
+  fib &lt;- rep(NA, n)
+  fib[1] &lt;- 1
+  fib[2] &lt;- 1
+  
+  for(i in 3:length(fib)){
+    fib[i] &lt;- fib[i-1] + fib[i-2]
+  }
+  fib
+}
+```
+]
+
+.pull-right[
+
+
+``` r
+(f30 &lt;- computeFib(30))
+```
+
+```
+##  [1]      1      1      2      3      5      8     13     21     34     55     89    144    233    377
+## [15]    610    987   1597   2584   4181   6765  10946  17711  28657  46368  75025 121393 196418 317811
+## [29] 514229 832040
+```
+
+``` r
+f30[30]/f30[29]
+```
+
+```
+## [1] 1.618034
+```
+
+Compare to golden ratio:  `\(\large 1+\sqrt{5} \over 2\)`
+
+
+``` r
+(1+sqrt(5))/2
+```
+
+```
+## [1] 1.618034
+```
+]
+
+
+---
+## Loop in loop
+
+.pull-left[
+
+``` r
+x &lt;- seq(-5,5,.05)
+y &lt;- seq(-5,5,.05)
+
+A &lt;- matrix(NA, nrow = length(x), ncol = length(y))
+
+for(i in 1:length(x))
+  for(j in 1:length(y))
+    A[i,j] &lt;- cos(x[i]^2) * cos(y[j]^2)
+```
+]
+
+-- 
+.pull-right[
+
+
+``` r
+image(x,y,A, asp = 1)
+```
+
+&lt;img src="loops_slides_files/figure-html/unnamed-chunk-14-1.png" alt="" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+## Looping through files
+
+A very common real-world use: processing a batch of data files.
+
+```
+files &lt;- list.files("path/to/csvs")
+```
+
+Example file listing from a CTT wildlife tracking project:
+
+```
+ [1] "CTT-V3033D437786-blu.2026-03-11_014627.csv"
+ [2] "CTT-V3033D437786-blu.2026-03-11_024628.csv"
+ [3] "CTT-V3033D437786-blu.2026-03-11_044631.csv"
+ [4] "CTT-V3033D437786-blu.2026-03-11_164645.csv"
+ [5] "CTT-V3033D437786-blu.2026-03-12_044659.csv"
+ ...
+```
+
+
+``` r
+for(f in files){
+  mycsv &lt;- read.csv(f)
+  # do something with mycsv
+}
+```
+
+---
+
+## `while` loops
+
+A `while` loop repeats as long as a condition is `TRUE`. The condition is checked *before* each iteration.  Example below runs the Fibonacci iteration up to a certain value:
+
+
+``` r
+fib &lt;- c(1, 1)
+while(fib[length(fib)] &lt; 1000){
+  fib &lt;- c(fib, fib[length(fib)] + fib[length(fib)-1])
+}
+fib
+```
+
+```
+##  [1]    1    1    2    3    5    8   13   21   34   55   89  144  233  377  610  987 1597
+```
+
+---
+
+## Be careful!
+
+.pull-left[
+
+If the condition never becomes `FALSE`, the loop runs forever:
+
+
+``` r
+# Do NOT run this
+x &lt;- 2
+while(x &gt; 1){
+  x &lt;- x + 1
+  cat(paste(x, " "))
+}
+```
+]
+
+.pull-right[
+
+Often, you can put in an `if` statement and `stop` or `break` command to break a loop:
+
+
+``` r
+x&lt;- 2
+while(x &gt; 1){
+  x &lt;- x + 1
+  cat(paste(x, " "))
+  if(x &gt; 100) stop("woah!")
+}
+```
+
+Though here - of course - it's easier to just put a roof: `while(x &lt; 100)`  
+]
+
+---
+
+## Example: finding the maximum of a function
+
+
+``` r
+funkycurve &lt;- function(x) x^2 * sin(x) / (1 + x)
+curve(funkycurve(x), xlim = c(0, 5), lwd = 2)
+```
+
+&lt;img src="loops_slides_files/figure-html/unnamed-chunk-19-1.png" alt="" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Finding the max with a `while` loop
+
+A simple `while` loop to find the max between 0 and 5 within a tolerance of 0.001:
+
+.pull-left[
+
+
+``` r
+lo &lt;- 0; hi &lt;- 5; tol &lt;- 0.001
+
+while((hi - lo) &gt; tol){
+  mid &lt;- (lo + hi) / 2
+  if(funkycurve(mid + tol) &gt; funkycurve(mid - tol)){
+    lo &lt;- mid
+  } else {
+    hi &lt;- mid
+  }
+}
+```
+]
+
+.pull-right[
+
+``` r
+mid
+```
+
+```
+## [1] 2.125854
+```
+
+``` r
+funkycurve(mid)
+```
+
+```
+## [1] 1.228714
+```
+]
+
+&gt; Think through how this algorithm works....
+
+---
+
+## Visualize the result
+
+
+``` r
+curve(funkycurve(x), xlim = c(0, 5), lwd = 2)
+abline(v = mid, lty = 2, col = "red", lwd = 2)
+```
+
+&lt;img src="loops_slides_files/figure-html/unnamed-chunk-22-1.png" alt="" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse
+
+# Combining loops with functions
+
+---
+
+## Looping through years of WDI data
+
+
+``` r
+load("WDI_allyears.rda")
+with(WDI, table(country))
+```
+
+---
+
+## Define a plotting function
+
+.small[
+
+``` r
+plotWDI &lt;- function(myyear, ...){
+  
+  cols &lt;- c("East Asia &amp; Pacific"        = "steelblue",
+            "Europe &amp; Central Asia"      = "forestgreen",
+            "Latin America &amp; Caribbean"  = "goldenrod",
+            "Middle East &amp; North Africa" = "darkorange",
+            "North America"              = "mediumpurple",
+            "South Asia"                 = "firebrick",
+            "Sub-Saharan Africa"         = "sienna")
+  
+  mywdi &lt;- subset(WDI, year == myyear)
+  mywdi_big &lt;- mywdi[order(mywdi$Population, decreasing = TRUE),][1:10,]
+  
+  cont_col &lt;- cols[match(mywdi$region, levels(mywdi$region))]
+  cex_pop  &lt;- sqrt(mywdi$Population / max(mywdi$Population, na.rm = TRUE)) * 15
+  
+  with(mywdi, {
+    plot(GDP/1e3, LifeExp, log = "x",
+         ylab = "Life expectancy (years)",
+         xlab = "GDP per capita (1000 USD, log scale)", 
+         type = "n", ...)
+    grid()
+    points(GDP/1e3, LifeExp,
+           cex = cex_pop + .5, pch = 21, col = cont_col,
+           bg  = scales::alpha(cont_col, .7))
+    legend("bottomright", title = "Region",
+           legend = levels(region),
+           pt.bg = cols, col = "grey40",
+           pch = 21, pt.cex = 1.8, bty = "n", cex = 0.7)
+    title(paste("Health v. Wealth", myyear))
+  })
+}
+```
+]
+
+---
+
+## Loop to create a multi-page PDF
+
+
+``` r
+pdf("HealthVWealth.pdf", width = 10, height = 8)
+  par(mar = c(4,4,3,2),
+      cex.axis = 0.8, family = "serif",  
+      tck = 0.01, mgp = c(2,.25,0), las = 1)
+  for(myy in 1960:2023)
+    plotWDI(myy, 
+            xlim = c(.01, 2e2),
+            ylim = c(25, 90))
+dev.off()
+```
+
+---
+
+## Or loop to create many PNGs
+
+
+``` r
+for(myy in 1960:2023){
+  png(paste0("pngs/healthvwealth", myy, ".png"), 
+      width = 800, height = 600, res = 120)
+    par(mar = c(4,4,3,2),
+        cex.axis = 0.8, family = "serif",  
+        tck = 0.01, mgp = c(2,.25,0), 
+        las = 1)
+      plotWDI(myy, 
+              xlim = c(.01, 2e2),
+              ylim = c(25, 90))
+  dev.off()
+}
+```
+
+---
+
+## Animate with the `magick` package
+.pull-left-40[
+
+``` r
+library(magick)
+pngs &lt;- list.files("pngs", pattern = "*.png", full.names = TRUE)
+frames &lt;- image_read(pngs)
+anim &lt;- image_animate(frames, fps = 5)
+image_write(anim, "HealthVWealth.gif")
+```
+]
+
+.pull-right-60[
+![](HealthVWealth.gif)
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "countIncrementalSlides": false,
+  "highlightLines": true,
+  "ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
