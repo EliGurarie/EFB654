@@ -115,9 +115,9 @@ Schedule an initial project meeting with Dr. Green or Dr. Gurarie by Feb 28 to d
 | Mon Feb 2 | Green | Indexing matrices, data frames, lists | |
 | Wed Feb 4 | Green | Source doc formatting; sorting/subsetting data | HW3 due, HW4 assigned |
 | Mon Feb 9 | Green | Importing/exporting data | |
-| Wed Feb 11 | Green | Plotting basics I | HW4 due, HW5 assigned |
+| Wed Feb 11 | Green | Plotting basics I | HW4 due |
 | Mon Feb 16 | — | *Project Workday* | |
-| Wed Feb 18 | Gurarie | More Plotting | |
+| Wed Feb 18 | Gurarie | More Plotting | HW5 assigned |
 | Mon Feb 23 | Gurarie | More Plotting (i.e., exporting plots, ggplot2)| |
 | Wed Feb 25 | Green | Summarizing and Aggregating data | HW5 due, HW6 assigned |
 | Mon Mar 2 | Green | Merging data | |
