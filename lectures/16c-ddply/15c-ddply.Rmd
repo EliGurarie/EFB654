@@ -1,0 +1,250 @@
+---
+title: "Summarizing with `ddply()`"
+author: "Hyatt Green"
+date: "March 18, 2026"
+output: 
+  ioslides_presentation:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+    widescreen: true
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Today
+
+ - Review `aggregate()`
+ - `plyr::summarize()`
+ - **`ddply()`**
+ - The `d_ply()` family
+
+## Remember `aggregate()`?
+
+```{r}
+data(warpbreaks)
+aggregate(breaks~wool, warpbreaks, FUN=mean)
+```
+
+## Remember `aggregate()`?
+
+```{r}
+aggregate(breaks~wool+tension, warpbreaks, FUN=mean)
+```
+
+## `aggregate()` limitation
+
+Only one aggregation function allowed.
+
+```{r, error=TRUE}
+# Does not work
+aggregate(breaks~wool+tension, warpbreaks, FUN=c(mean, sd))
+```
+
+ - What if we want the mean **and** the sd **and** the median in one call?
+
+## `plyr::summarize()`
+
+ - Creates new dataframe
+
+```{r, message=FALSE}
+library(plyr)
+summarize(warpbreaks, mean(breaks), sd(breaks))
+```
+
+## `plyr::summarize()`
+
+ - Usually add custom names
+
+```{r}
+summarize(warpbreaks, 
+  Avg = mean(breaks), 
+  StdDev = sd(breaks))
+```
+
+## `plyr::summarize()`
+
+ - Applied functions can be complex
+
+```{r}
+summarize(warpbreaks, 
+  Avg = mean(breaks), 
+  Med = median(breaks), 
+  Dif = abs(Avg - Med)) #Can use objects created within function
+```
+
+ - What capability are we missing here with `summarize()`?
+
+## `ddply()`
+
+ - Also in the `plyr` package
+ - "Split data frame, apply function, and return results in a data frame." --- ?ddply
+ - Hadley Wickham (2011). "The Split-Apply-Combine Strategy for Data Analysis", *Journal of Statistical Software, 40(1), 1-29*
+ - **d**ataframe *in*, **d**ataframe *out*, ap**ply**
+
+## `ddply()` arguments
+
+`ddply()` arguments:
+ 
+ - **`.data`** = data frame to be processed
+ - **`.variables`** = variables to split data frame by
+    + a character vector
+    + as `as.quoted()` variables
+    + a formula
+ - **`.fun`** = function to apply to each piece
+ - **`...`** = arguments passed to **`.fun`** (e.g., `na.rm`)
+    + in our case `.fun` is `summarize()`
+
+## `ddply()` in action
+
+ - Often used with `summarize()` to apply more than one function
+
+```{r}
+ddply(warpbreaks, "wool", summarize,
+   Avg = mean(breaks),
+   Med = median(breaks),
+   Dif = abs(Avg - Med))
+```
+
+## `ddply()`: `.()` notation
+
+```{r}
+ ddply(warpbreaks, .(wool, tension), summarize,
+   Avg = mean(breaks),
+   Med = median(breaks),
+   Dif = abs(Avg - Med))
+```
+
+ - **`.`** is a function that simply quotes the names of each variable (see `?.`)
+      + does not evaluate the variable
+      + simply allows you to drop quotes
+
+## `ddply()`: formula interface
+
+```{r}
+ ddply(warpbreaks, ~wool+tension, summarize,
+   Avg = mean(breaks),
+   Med = median(breaks),
+   Dif = abs(Avg - Med))
+```
+
+
+## Three ways to specify variables
+
+| Method | Syntax | Notes |
+|---|---|---|
+| Character vector | `"wool"` | Quoted, single variable |
+| `.()` notation | `.(wool, tension)` | Unquoted, multiple variables |
+| Formula | `~wool+tension` | Familiar from `aggregate()` |
+
+All three produce the same result. Use whichever you find most readable.
+
+
+## The `d_ply()` family
+
+What if we want to output a list? Use `dlply()`...
+
+```{r}
+dlply(warpbreaks, .(wool, tension), summarize,
+   Avg = mean(breaks),
+   Med = median(breaks),
+   Dif = abs(Avg - Med))
+```
+
+## The `d_ply()` family
+
+What if we want to output an array? Use `daply()`...
+
+```{r}
+daply(warpbreaks, .(wool, tension), summarize,
+   Avg = mean(breaks),
+   Med = median(breaks),
+   Dif = abs(Avg - Med))
+```
+
+## The `d_ply()` family
+
+By far, `ddply()` is most common because dataframes are easiest to work with.
+
+Other functions that *produce* dataframes:
+
+ - `ldply()`
+ - `adply()`
+ - `mdply()`
+
+
+## Practice with `ddply()`
+
+Import the `birthwt` data set from the **MASS** package. For *all combinations of race and smoking status*, find the:
+
+ - number of observations within each group
+ - mean and std. dev. of:
+    + mother's weight at last menstrual period
+    + birth weight
+ - median number of physician visits during the first trimester
+
+----
+
+```{r, message=FALSE}
+library(MASS)
+data(birthwt)
+str(birthwt)
+```
+
+----
+
+```{r}
+head(birthwt)
+```
+
+----
+
+```{r}
+ddply(birthwt, .(race, smoke), summarize, 
+  N = length(bwt),
+  MW.mean = mean(lwt),
+  MW.sd = sd(lwt),
+  BWT.mean = mean(bwt),
+  BWT.sd = sd(bwt),
+  FTV.med = median(ftv) )
+```
+
+----
+
+Wrap in `round()` for cleaner output:
+
+```{r}
+round(ddply(birthwt, .(race, smoke), summarize,
+  N = length(bwt),
+  MW.mean = mean(lwt),
+  MW.sd = sd(lwt),
+  BWT.mean = mean(bwt),
+  BWT.sd = sd(bwt),
+  FTV.med = median(ftv) ) )
+```
+
+
+## `aggregate()` vs `ddply()`
+
+| Feature | `aggregate()` | `ddply()` |
+|---|---|---|
+| Package | base R | `plyr` |
+| Functions per call | **One** | **Many** |
+| Variable specification | Formula (`y ~ x`) | Character, `.()`, or formula |
+| Output | Data frame | Data frame (also list, array via `dlply`, `daply`) |
+| Custom column names | No (uses function name) | Yes (name each summary) |
+| Cross-referencing summaries | No | Yes (`Dif = abs(Avg - Med)`) |
+
+ > - Use `aggregate()` for quick one-function summaries
+ > - Use `ddply()` when you need multiple summaries in one table
+
+## Summary
+
+ > - `plyr::summarize()` applies multiple functions but has no grouping
+ > - `ddply()` = `summarize()` + grouping = the full toolkit
+ > - **d**ataframe in, **d**ataframe out, ap**ply**
+ > - Three equivalent ways to specify grouping variables
+ > - The `d_ply()` family: `ddply`, `dlply`, `daply` for different output types

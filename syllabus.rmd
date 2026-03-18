@@ -124,15 +124,15 @@ Schedule an initial project meeting with Dr. Green or Dr. Gurarie by Feb 28 to d
 | Wed Mar 4 | Green | Writing/debugging functions | HW6 due, HW7 assigned |
 | Mar 8-15 | — | *Spring Break (no class)* | |
 | Mon Mar 16 | Gurarie | More on functions | |
-| Wed Mar 18 | Gurarie | Loops and apply | HW7 due, HW8 assigned |
+| Wed Mar 18 | Gurarie | Loops and apply | |
 | Mon Mar 23 | Gurarie | Shiny I: basics | |
-| Wed Mar 25 | Gurarie | Shiny II: reactivity and deployment | |
-| Mon Mar 30 | Gurarie | Spatial data in R I | HW8 due, HW9 assigned |
-| Wed Apr 1 | Gurarie | Spatial data in R II | |
-| Mon Apr 6 | Gurarie | R packages I: structure and documentation | HW9 due, HW10 assigned |
-| Wed Apr 8 | Gurarie | R packages II: building and testing | |
-| Mon Apr 13 | Gurarie | Parallelized code | HW10 due |
-| Wed Apr 15 | — | Project work day / office hours | |
+| Wed Mar 25 | Gurarie | Shiny II: reactivity and deployment | HW7 due, HW8 assigned  |
+| Mon Mar 30 | Gurarie | Spatial data in R I | |
+| Wed Apr 1 | Gurarie | Spatial data in R II | HW8 due, HW9 assigned |
+| Mon Apr 6 | Gurarie | R packages I: structure and documentation |  |
+| Wed Apr 8 | Gurarie | R packages II: building and testing | HW9 due, HW10 assigned |
+| Mon Apr 13 | Gurarie | Parallelized code |  |
+| Wed Apr 15 | — | Project work day / office hours | HW10 due |
 | Mon Apr 20 | — | Project work day / office hours | |
 | Wed Apr 23 | — | **Final presentations (5 min + 2 min Q&A)** | |
 | Mon Apr 27 | — | **Final presentations** | |

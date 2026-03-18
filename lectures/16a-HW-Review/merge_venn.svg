@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <style>
+    text { font-family: 'Courier New', monospace; }
+    .title { font-size: 16px; font-weight: bold; fill: #333; }
+    .label { font-size: 13px; fill: #333; }
+    .code { font-size: 12px; fill: #555; font-family: 'Courier New', monospace; }
+    .desc { font-size: 11px; fill: #666; }
+    .circle-left { fill: #4A90D9; fill-opacity: 0.35; stroke: #2C5F8A; stroke-width: 2; }
+    .circle-right { fill: #E8834A; fill-opacity: 0.35; stroke: #A85A2A; stroke-width: 2; }
+    .highlight { fill-opacity: 0.7; }
+  </style>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">merge() Join Types in R</text>
+
+  <!-- Row 1: Default (inner) and all=TRUE (full outer) -->
+
+  <!-- Inner Join -->
+  <g transform="translate(0, 10)">
+    <text x="115" y="60" text-anchor="middle" class="code">merge(x, y)</text>
+    <text x="115" y="78" text-anchor="middle" class="desc">Inner join: only matching rows</text>
+    <!-- Left circle -->
+    <circle cx="90" cy="140" r="60" class="circle-left" />
+    <!-- Right circle -->
+    <circle cx="140" cy="140" r="60" class="circle-right" />
+    <!-- Highlight intersection -->
+    <clipPath id="clip-left-1">
+      <circle cx="90" cy="140" r="60" />
+    </clipPath>
+    <circle cx="140" cy="140" r="60" fill="#6B4D8A" fill-opacity="0.7" clip-path="url(#clip-left-1)" />
+    <text x="60" y="145" text-anchor="middle" class="label">x</text>
+    <text x="170" y="145" text-anchor="middle" class="label">y</text>
+  </g>
+
+  <!-- Full Outer Join -->
+  <g transform="translate(225, 10)">
+    <text x="115" y="60" text-anchor="middle" class="code">merge(x, y, all=TRUE)</text>
+    <text x="115" y="78" text-anchor="middle" class="desc">Full outer: all rows, NAs where no match</text>
+    <circle cx="90" cy="140" r="60" class="circle-left highlight" />
+    <circle cx="140" cy="140" r="60" class="circle-right highlight" />
+    <text x="60" y="145" text-anchor="middle" class="label">x</text>
+    <text x="170" y="145" text-anchor="middle" class="label">y</text>
+  </g>
+
+  <!-- Row 2: all.x and all.y -->
+
+  <!-- Left Join -->
+  <g transform="translate(450, 10)">
+    <text x="115" y="60" text-anchor="middle" class="code">merge(x, y, all.x=TRUE)</text>
+    <text x="115" y="78" text-anchor="middle" class="desc">Left join: all of x, matching from y</text>
+    <circle cx="90" cy="140" r="60" class="circle-left highlight" />
+    <circle cx="140" cy="140" r="60" class="circle-right" />
+    <!-- Highlight the part of y that overlaps with x -->
+    <clipPath id="clip-left-3">
+      <circle cx="90" cy="140" r="60" />
+    </clipPath>
+    <circle cx="140" cy="140" r="60" fill="#E8834A" fill-opacity="0.7" clip-path="url(#clip-left-3)" />
+    <text x="60" y="145" text-anchor="middle" class="label">x</text>
+    <text x="170" y="145" text-anchor="middle" class="label">y</text>
+  </g>
+
+  <!-- Right Join -->
+  <g transform="translate(675, 10)">
+    <text x="115" y="60" text-anchor="middle" class="code">merge(x, y, all.y=TRUE)</text>
+    <text x="115" y="78" text-anchor="middle" class="desc">Right join: all of y, matching from x</text>
+    <circle cx="90" cy="140" r="60" class="circle-left" />
+    <circle cx="140" cy="140" r="60" class="circle-right highlight" />
+    <!-- Highlight the part of x that overlaps with y -->
+    <clipPath id="clip-right-4">
+      <circle cx="140" cy="140" r="60" />
+    </clipPath>
+    <circle cx="90" cy="140" r="60" fill="#4A90D9" fill-opacity="0.7" clip-path="url(#clip-right-4)" />
+    <text x="60" y="145" text-anchor="middle" class="label">x</text>
+    <text x="170" y="145" text-anchor="middle" class="label">y</text>
+  </g>
+
+  <!-- Summary table at bottom -->
+  <g transform="translate(50, 260)">
+    <!-- Table header -->
+    <rect x="0" y="0" width="800" height="30" fill="#2C5F8A" rx="3" />
+    <text x="120" y="20" text-anchor="middle" fill="white" font-size="12" font-weight="bold">R Code</text>
+    <text x="340" y="20" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Join Type</text>
+    <text x="600" y="20" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Rows Kept</text>
+
+    <!-- Row 1 -->
+    <rect x="0" y="30" width="800" height="28" fill="#F0F4F8" />
+    <text x="120" y="49" text-anchor="middle" class="code">merge(x, y)</text>
+    <text x="340" y="49" text-anchor="middle" class="label">Inner</text>
+    <text x="600" y="49" text-anchor="middle" class="label">Only rows with keys in BOTH x and y</text>
+
+    <!-- Row 2 -->
+    <rect x="0" y="58" width="800" height="28" fill="white" />
+    <text x="120" y="77" text-anchor="middle" class="code">all = TRUE</text>
+    <text x="340" y="77" text-anchor="middle" class="label">Full Outer</text>
+    <text x="600" y="77" text-anchor="middle" class="label">All rows from both; NAs fill gaps</text>
+
+    <!-- Row 3 -->
+    <rect x="0" y="86" width="800" height="28" fill="#F0F4F8" />
+    <text x="120" y="105" text-anchor="middle" class="code">all.x = TRUE</text>
+    <text x="340" y="105" text-anchor="middle" class="label">Left</text>
+    <text x="600" y="105" text-anchor="middle" class="label">All rows from x; NAs for unmatched y</text>
+
+    <!-- Row 4 -->
+    <rect x="0" y="114" width="800" height="28" fill="white" />
+    <text x="120" y="133" text-anchor="middle" class="code">all.y = TRUE</text>
+    <text x="340" y="133" text-anchor="middle" class="label">Right</text>
+    <text x="600" y="133" text-anchor="middle" class="label">All rows from y; NAs for unmatched x</text>
+
+    <!-- Table border -->
+    <rect x="0" y="0" width="800" height="142" fill="none" stroke="#2C5F8A" stroke-width="1.5" rx="3" />
+  </g>
+
+  <!-- Tip at bottom -->
+  <text x="450" y="430" text-anchor="middle" font-size="12" fill="#555" font-style="italic">
+    Tip: all = TRUE is NOT the same as all.x = TRUE. The first keeps everything; the second keeps all of x only.
+  </text>
+  
+  <!-- Legend -->
+  <g transform="translate(300, 445)">
+    <rect x="0" y="0" width="14" height="14" fill="#4A90D9" fill-opacity="0.7" stroke="#2C5F8A" />
+    <text x="20" y="12" font-size="11" fill="#555">= rows kept from x</text>
+    <rect x="150" y="0" width="14" height="14" fill="#E8834A" fill-opacity="0.7" stroke="#A85A2A" />
+    <text x="170" y="12" font-size="11" fill="#555">= rows kept from y</text>
+  </g>
+</svg>

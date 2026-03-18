@@ -73,7 +73,11 @@ Perhaps the most important immediate need is to download and install R and Rstud
 ### Functions | Loops | Shiny | Other fun stuff 
 - [Lecture 12: Writing Functions (Mar 4)](lectures/14-Writing-Functions/Writing-Functions.html)
 - [Lecture 13: Mainly Loops!](lectures/15-Mainly Loops/loops_slides.html)
-
+- Lecture 14: HW Feedback, `ifelse()`, and `ddply()` (March 18):
+  - [HW feedback slides](lectures/16a-HW-Review/HW_Feedback_Slides.html)
+  - [`if`, `else`, and `ifelse()` slides](lectures/16b-if-else-and-ifelse/If-Else-Statements.html)
+  - [`ddply()` slides](lectures/16c-ddply/15c-ddply.html)
+  
 ## Tools and Tricks in Reproducible Research
 
 - [Markdown Basics](lectures/04-Rmarkdown/04_BasicsOfRmarkdown.html)
@@ -94,7 +98,7 @@ Submit all assignments to the Blackboard page
   - [World Development Index Data](lectures/10-Plotting Part II/WDI.csv)
 - [Homework 06](homework/HW06.Rmd)  (due Mar 04)
   - (Note: this is an `Rmd` file which you will download, modify, knit, and upload.) 
-- [Homework 07](homework/HW07/HW07.Rmd)  (due Mar 18)
+- [Homework 07](homework/HW07/HW07.Rmd)  (due Mar 25)
   - (Note: this is an `Rmd` file which you will download, modify, knit, and upload.)
   - Here's the [nicer-looking html](homework/HW07/HW07.html) 
   
