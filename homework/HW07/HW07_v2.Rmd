@@ -1,0 +1,237 @@
+---
+title: "Homework 7: Writing and Debugging Functions"
+author: 
+date: "Assigned Mar 4, 2026; Due Mar 25, 2026"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Instructions
+
+Complete all exercises below by filling in your answers in the designated spaces. When finished:
+
+1. Use *this* .Rmd file to complete the homework
+2. Complete the homework creating code chunks where needed
+3. Knit the document to HTML (click the "Knit" button or press Ctrl+Shift+K / Cmd+Shift+K)
+4. Submit **both** your .Rmd file and the knitted Word/PDF (HTMLs are not 'uploadable', but can be converted to PDF) to Blackboard
+
+**Due:** Wednesday, March 18 by 11:59 PM
+
+---
+
+## Part 1: Building Your First Functions
+
+### Question 1 (1 point)
+
+Foresters use **diameter at breast height** (DBH, in cm) to estimate a tree's basal area --- the cross-sectional area of the trunk. The formula is:
+
+$$BA = \frac{\pi}{4} \times DBH^2$$
+
+where $BA$ is in cm$^2$.
+
+a) Write a function called `basal_area` that takes a single argument `dbh` (in cm) and returns the basal area. Give `dbh` a default value of 25.
+
+b) Test your function on these inputs and show the output:
+   - `basal_area()` (using the default)
+   - `basal_area(10)`
+   - `basal_area(c(10, 25, 40, 55))`
+
+c) Notice that your function works on a single number *and* on a vector. In one sentence, explain why this happens without you having to write any special loop or extra code.
+
+*Delete this text and write your explanation here.*
+
+---
+
+### Question 2 (1 point)
+
+Wildlife biologists sometimes need to convert animal body mass between units depending on the journal, the country, or the dataset they inherited. Writing a converter saves time and prevents arithmetic mistakes.
+
+a) Write a function called `mass_convert` that takes three arguments:
+
+   - `mass` --- a numeric vector (no default; the user must supply this)
+   - `from` --- a character string, with a default of `"kg"`
+   - `to` --- a character string, with a default of `"lb"`
+
+   The function should handle conversions between `"kg"`, `"lb"`, and `"g"` (grams). Use the conversion factors: 1 kg = 2.20462 lb = 1000 g. If `from` and `to` are the same, just return the original mass.
+
+   *Hint:* one clean approach is to first convert everything to kg (regardless of `from`), then convert from kg to the target unit.
+
+b) Show the output of each of the following:
+
+```{r q2-demo, eval=FALSE}
+mass_convert(100)                          # 100 kg to lb
+mass_convert(100, from = "lb", to = "kg")  # 100 lb to kg
+mass_convert(5000, from = "g", to = "lb")  # 5000 g to lb
+mass_convert(80, from = "kg", to = "kg")   # no conversion needed
+```
+
+c) The average mass of an adult male black bear in the Adirondacks is roughly 125 kg. Use your function to express that in pounds and in grams.
+
+*Delete this text and show your code here.*
+
+---
+
+## Part 2: Functions That Summarize Data
+
+### Question 3 (1.5 points)
+
+Aquatic ecologists assess water quality partly by looking at dissolved oxygen (DO) readings from a stream over time. A quick health check might report the mean, the minimum (stressful for fish), and how many readings fall below a critical threshold.
+
+a) Write a function called `do_report` that takes two arguments:
+
+   - `do_vec` --- a numeric vector of dissolved oxygen readings (mg/L)
+   - `threshold` --- a numeric value representing the stress threshold (default = 5 mg/L)
+
+   The function should return a **named list** with four elements:
+
+   - `mean_do` --- the mean of `do_vec` (handle `NA`s)
+   - `min_do` --- the minimum value (handle `NA`s)
+   - `n_below` --- the count of readings below the threshold (ignore `NA`s)
+   - `pct_below` --- the percentage of readings below the threshold, rounded to one decimal place (ignore `NA`s)
+
+b) Create a test vector of dissolved oxygen readings to simulate a warm summer month on a sluggish creek:
+
+```{r q3-data, eval=FALSE}
+creek_do <- c(6.2, 5.8, 4.1, 3.9, 7.0, 5.5, 4.8, 6.1, NA, 3.2, 
+              5.0, 4.5, 6.8, 5.3, 4.0, 7.2, 5.9, 3.5, 4.7, 6.0)
+```
+
+   Run `do_report(creek_do)` and show the output.
+
+c) Now run `do_report(creek_do, threshold = 4.5)`. How does raising the bar change the picture?
+
+d) Your function returns a list. Show how you would extract *just* the `pct_below` element from the result using `$` notation.
+
+*Delete this text and write your explanation here.*
+
+---
+
+### Question 4 (1 point)
+
+The `trees` dataset built into R contains measurements of 31 black cherry trees: `Girth` (diameter in inches), `Height` (in feet), and `Volume` (in cubic feet). Foresters estimate timber volume from these measurements using various allometric equations. A simple one is:
+
+$$V = a \times G^b \times H^c$$
+
+where $G$ is girth, $H$ is height, and $a$, $b$, $c$ are fitted constants.
+
+a) Write a function called `est_volume` that takes five arguments: `girth`, `height`, `a`, `b`, and `c`. Give the constants these defaults: `a = 0.003`, `b = 2.0`, `c = 1.0`. The function should return the estimated volume.
+
+b) Load the `trees` dataset. Use your function to estimate volume for every tree using the defaults:
+
+```{r q4-demo, eval=FALSE}
+data(trees)
+v_est <- est_volume(trees$Girth, trees$Height)
+```
+
+c) Now compare your estimates to the actual `Volume` column. Compute the **mean absolute error**:
+
+$$MAE = \frac{1}{n}\sum_{i=1}^{n}|V_{estimated,i} - V_{actual,i}|$$
+
+   You can do this in one line using `mean()` and `abs()`.
+
+d) Try tweaking the constants to reduce the MAE. Report the values of `a`, `b`, and `c` you settled on and the resulting MAE. You don't need to find the best possible fit --- just show that changing the arguments changes the output.
+
+*Delete this text and write your explanation here.*
+
+---
+
+## Part 3: Scope and Debugging
+
+### Question 5 (0.75 points)
+
+a) Run the following code exactly as written and explain the output of each `exists()` call:
+
+```{r q5-demo, eval=FALSE}
+wind_chill <- function(temp_f, wind_mph) {
+  wc <- 35.74 + 0.6215 * temp_f - 35.75 * wind_mph^0.16 + 
+        0.4275 * temp_f * wind_mph^0.16
+  return(wc)
+}
+
+wind_chill(20, 15)
+exists("wc")
+exists("wind_chill")
+exists("temp_f")
+```
+
+b) In your own words, explain why `wc` and `temp_f` do not exist in your global environment after you call the function, even though both were clearly created or used inside it.
+
+c) Suppose you wanted to store the wind chill for a 20-degree day with 15 mph winds so you could use it later in your script. Write the one line of code that accomplishes this.
+
+*Delete this text and write your explanation here.*
+
+---
+
+### Question 6 (0.75 points)
+
+A colleague in the wildlife department wrote a function to classify black bear body condition from mass (in kg), but it's not working. Here is their code:
+
+```{r q6-buggy, eval=FALSE}
+bear_condition <- function(mass_kg) {
+  if (mass_kg < 60) {
+    condition <- "underweight"
+  } else if (mass_kg >= 60 & mass_kg <= 100) {
+    condition <- "normal"
+  } else if (mass_kg > 100) {
+    condtion <- "heavy"
+  }
+  return(condition)
+}
+```
+
+a) Test the function with `bear_condition(50)` and `bear_condition(80)`. These work fine. Now test it with `bear_condition(130)`. What happens?
+
+b) Identify the bug. Describe the problem in one sentence.
+
+c) Fix the function and show that it works.
+
+d) Add `browser()` as the first line inside the function. Run `bear_condition(130)` again. In the browser console, step through the code line by line (type `n` at the prompt). At each step, check whether `condition` exists yet by typing `condition`. At what point does the problem become visible? Type `Q` to quit the browser. Remove `browser()` when finished.
+
+Explain in your own words how `browser()` helped you find the issue:
+
+*Delete this text and write your explanation here.*
+
+---
+
+
+### Question 7 (1 pt.)
+
+The following function was presented in the [lecture on loops](https://eligurarie.github.io/EFB654/lectures/15-Mainly%20Loops/loops_slides.html#12):
+
+
+```r
+computeFib <- function(n){
+  fib <- rep(NA, n)
+  fib[1] <- 1
+  fib[2] <- 1
+  for(i in 3:length(fib)){
+    fib[i] <- fib[i-1] + fib[i-2]
+  }
+  fib
+}
+```
+
+a) Modify this function so that (1) returns just the final (nth) value of the Fibonnaci sequence, rather than the whole sequence, and (2) takes as an argument a vector of two initial values, that can be arbitrary. 
+
+b) Use this function to test whether the ratio of consecutive elements of the Fibonacci sequence converges to the golden ratio $1 + \sqrt{5} \over 2$ regardless of the initial values. 
+
+
+## Submission Checklist
+
+Before submitting, make sure you have:
+
+- [ ] Filled in your name in the author field at the top
+- [ ] Answered all questions
+- [ ] Written explanations in your own words where requested
+- [ ] Successfully knitted your document to HTML (or Word/PDF)
+- [ ] Uploaded both your .Rmd file AND your knitted output to Blackboard
+
+---
+
+*This homework is worth 6 points total.*
