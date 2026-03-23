@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Becoming a list ninja with apply</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Elie Gurarie" />
+    <meta name="date" content="2026-02-23" />
+    <script src="apply-mentality-slides_files/header-attrs-2.30/header-attrs.js"></script>
+    <link href="apply-mentality-slides_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="apply-mentality-slides_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <script src="apply-mentality-slides_files/fabric-4.3.1/fabric.min.js"></script>
+    <link href="apply-mentality-slides_files/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="apply-mentality-slides_files/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <link href="apply-mentality-slides_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="apply-mentality-slides_files/tile-view-0.2.6/tile-view.js"></script>
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Becoming a list ninja with <code>apply</code>
+]
+.subtitle[
+## <a href="https://eligurarie.github.io/EFB654/">EFB 654: R and Reproducible Research</a>
+]
+.author[
+### Elie Gurarie
+]
+.date[
+### <strong>February 23, 2026</strong>
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+# The `-`apply functions
+
+| Function | Input | Output | Use case |
+|---|---|---|---|
+| apply | array / matrix | array (dim d-1) | rows or columns of a matrix |
+| lapply | list or vector | list (always) | iterate over list elements |
+| sapply | list or vector | simplest possible object | like lapply, but tidier output |
+| tapply | vector + groups | named vector / array | group summaries |
+
+---
+
+# apply across array dimensions
+
+.pull-left[
+
+``` r
+grades &lt;- rbind(
+  Alina = c(88, 92, 75, 95),
+  Omari = c(73, 81, 90, 88),
+  Riley  = c(95, 97, 92, 99),
+  Solo = c(61, 74, 68, 72),
+  Sahara  = c(84, 79, 85, 91),
+  Theodore   = c(70, 65, 78, 80)
+)
+colnames(grades) &lt;- 
+  c("HW1", "HW2", "Midterm", "Final")
+```
+]
+.pull-right[
+
+
+
+``` r
+grades
+```
+
+``` footnotesize
+##          HW1 HW2 Midterm Final
+## Alina     88  92      75    95
+## Omari     73  81      90    88
+## Riley     95  97      92    99
+## Solo      61  74      68    72
+## Sahara    84  79      85    91
+## Theodore  70  65      78    80
+```
+
+``` r
+is(grades)
+```
+
+``` footnotesize
+## [1] "matrix"    "array"     "structure" "vector"
+```
+]
+
+---
+
+# Applying `apply`
+
+
+.pull-left[
+## Means
+
+Average across rows (students)
+
+
+``` r
+apply(grades, 1, mean)
+```
+
+``` footnotesize
+##    Alina    Omari    Riley     Solo   Sahara Theodore 
+##    87.50    83.00    95.75    68.75    84.75    73.25
+```
+
+Average across columns (items)
+
+
+``` r
+apply(grades, 2, mean)
+```
+
+``` footnotesize
+##      HW1      HW2  Midterm    Final 
+## 78.50000 81.33333 81.33333 87.50000
+```
+]
+
+.pull-right[
+## standard deviations
+
+
+
+``` r
+apply(grades, 1, sd) |&gt; round(2)
+```
+
+``` footnotesize
+##    Alina    Omari    Riley     Solo   Sahara Theodore 
+##     8.81     7.70     2.99     5.74     4.92     6.99
+```
+
+
+``` r
+apply(grades, 2, sd) |&gt; round(2)
+```
+
+``` footnotesize
+##     HW1     HW2 Midterm   Final 
+##   12.66   11.71    9.29    9.97
+```
+]
+
+---
+
+
+# `apply` — Add arguments &amp; Custom Function
+
+
+
+### Weighted mean
+
+
+``` r
+weights &lt;- c(0.10, 0.10, 0.30, 0.50)
+apply(grades, 1, weighted.mean, w = weights)
+```
+
+``` footnotesize
+##    Alina    Omari    Riley     Solo   Sahara Theodore 
+##     88.0     86.4     96.3     69.9     87.3     76.9
+```
+
+### Custom function
+
+
+``` r
+mean_dropworst &lt;- function(x)
+  mean(x[x!=min(x)])
+
+apply(grades, 1, mean_dropworst) |&gt; round(2)
+```
+
+``` footnotesize
+##    Alina    Omari    Riley     Solo   Sahara Theodore 
+##    91.67    86.33    97.00    71.33    86.67    76.00
+```
+
+
+---
+
+
+
+
+.pull-left[
+# &gt;2-dimensional arrays:
+
+
+``` r
+counts &lt;- array(
+  sample(0:30, 6*4*3, replace = TRUE),
+  dim = c(6, 4, 3),
+  dimnames = list(
+    species = c("Lynx","Moose","Wolf","Bear","Hare","Fox"),
+    site    = c("North","South","East","West"),
+    year    = c("2021","2022","2023")
+  )
+)
+
+dim(counts)
+```
+
+``` footnotesize
+## [1] 6 4 3
+```
+
+
+]
+
+.pull-right.footnotesize[
+
+
+``` r
+counts
+```
+
+``` small
+## , , year = 2021
+## 
+##        site
+## species North South East West
+##   Lynx      2    17   19    2
+##   Moose     7    15    6   10
+##   Wolf      7    25   29    4
+##   Bear     20     7   19   30
+##   Hare     14     5    1    0
+##   Fox      10     3   27   13
+## 
+## , , year = 2022
+## 
+##        site
+## species North South East West
+##   Lynx      0    30    3   18
+##   Moose    26    22    7    3
+##   Wolf     16    11   10    4
+##   Bear     29    28   15    2
+##   Hare     12    20    4   27
+##   Fox       1    21   28   24
+## 
+## , , year = 2023
+## 
+##        site
+## species North South East West
+##   Lynx     20    26   27   18
+##   Moose    28    29   23   18
+##   Wolf     29     7    9    9
+##   Bear      7    12   25   19
+##   Hare     20    14   22    8
+##   Fox      20    21   18   30
+```
+
+]
+
+
+---
+
+## Summaries across combinations of dimensions:
+
+.pull-left[
+Total abundance per species (collapse sites &amp; years)
+
+
+``` r
+apply(counts, 1, sum)
+```
+
+``` footnotesize
+##  Lynx Moose  Wolf  Bear  Hare   Fox 
+##   182   194   160   213   147   216
+```
+
+Mean abundance per site (collapse species &amp; years)
+
+``` r
+apply(counts, 2, mean)
+```
+
+``` footnotesize
+##    North    South     East     West 
+## 14.88889 17.38889 16.22222 13.27778
+```
+]
+
+.pull-right[
+Total abundance per year (collapse species &amp; sites)
+
+``` r
+apply(counts, 3, sum)
+```
+
+``` footnotesize
+## 2021 2022 2023 
+##  292  361  459
+```
+
+
+Mean abundance per species x site (collapse years only)
+
+``` r
+apply(counts, c(1,2), mean) 
+```
+
+``` footnotesize
+##        site
+## species     North    South     East      West
+##   Lynx   7.333333 24.33333 16.33333 12.666667
+##   Moose 20.333333 22.00000 12.00000 10.333333
+##   Wolf  17.333333 14.33333 16.00000  5.666667
+##   Bear  18.666667 15.66667 19.66667 17.000000
+##   Hare  15.333333 13.00000  9.00000 11.666667
+##   Fox   10.333333 15.00000 24.33333 22.333333
+```
+]
+
+---
+class: inverse
+
+## In-class Exercise
+
+Using the `airquality` dataset in R:
+
+
+``` r
+head(airquality)
+```
+
+``` footnotesize
+##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5
+## 6    28      NA 14.9   66     5   6
+```
+
+- **Q1.** Compute the mean and sd of each column. Note that some columns have `NA` — find the right argument to handle them.
+
+- **Q2.** By default, the `quantile` function returns the 0% (minimum), 25%, 50% (median), 75%, and 100% (maximum) quantiles.  Obtain the quantiles for all the columns.  What type of object is returned? 
+
+- **Q3.** The `Month` and `Day` column are grouping variables, not measurements. Rerun your summaries on only the first four columns.
+
+
+
+---
+# Mastering lists
+
+.pull-left[
+
+A list can hold anything — mixed types, mixed lengths:
+
+
+``` r
+mylist &lt;- list(
+  name   = "Fatou",
+  scores = c(95, 97, 92, 99),
+  passed = TRUE
+)
+```
+
+
+``` r
+mylist
+```
+
+``` footnotesize
+## $name
+## [1] "Fatou"
+## 
+## $scores
+## [1] 95 97 92 99
+## 
+## $passed
+## [1] TRUE
+```
+
+]
+
+Access elements with `[[` or `$`:
+
+
+``` r
+mylist[[2]]
+```
+
+``` footnotesize
+## [1] 95 97 92 99
+```
+
+``` r
+mylist$scores
+```
+
+``` footnotesize
+## [1] 95 97 92 99
+```
+
+``` r
+mylist$scores[3]
+```
+
+``` footnotesize
+## [1] 92
+```
+
+More flexible than vectors or data frames — no requirement that elements share type or length.
+
+
+
+---
+
+
+.pull-left-40[
+
+### `lapply`
+
+always returns a list:
+
+
+``` r
+lapply(mylist, length)
+```
+
+``` footnotesize
+## $name
+## [1] 1
+## 
+## $scores
+## [1] 4
+## 
+## $passed
+## [1] 1
+```
+
+What will happen here?
+
+
+``` r
+lapply(mylist, mean)
+```
+
+
+]
+
+.pull-right-60[
+
+## `sapply`
+
+... returns the simplest object it can:
+
+
+``` r
+sapply(mylist, length)
+```
+
+``` footnotesize
+##   name scores passed 
+##      1      4      1
+```
+
+If results can't be simplified, `sapply` falls back to a list.
+
+
+``` r
+sapply(mylist, is)
+```
+
+``` small
+## $name
+## [1] "character"           "vector"              "data.frameRowLabels"
+## [4] "SuperClassMethod"   
+## 
+## $scores
+## [1] "numeric" "vector" 
+## 
+## $passed
+## [1] "logical" "vector"
+```
+
+]
+
+---
+
+# In R everything is (secretly) a list
+
+.pull-left[
+A vector is a list where each element is of the same type:
+
+
+``` r
+names &lt;- rownames(grades)
+names
+```
+
+``` footnotesize
+## [1] "Alina"    "Omari"    "Riley"    "Solo"     "Sahara"   "Theodore"
+```
+
+``` r
+length(names)
+```
+
+``` footnotesize
+## [1] 6
+```
+]
+
+.pull-right[
+
+`sapply` - returns a tidy (named) vector:
+
+
+``` r
+sapply(names, nchar)
+```
+
+``` footnotesize
+##    Alina    Omari    Riley     Solo   Sahara Theodore 
+##        5        5        5        4        6        8
+```
+]
+
+---
+
+## Data frames are also lists!
+
+
+
+.pull-left[
+
+Each column in a data frame is an element of a list!
+
+
+``` r
+head(airquality)
+```
+
+``` footnotesize
+##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5
+## 6    28      NA 14.9   66     5   6
+```
+
+``` r
+length(airquality)
+```
+
+``` footnotesize
+## [1] 6
+```
+
+``` r
+is(airquality)
+```
+
+``` footnotesize
+## [1] "data.frame" "list"       "oldClass"   "vector"
+```
+
+]
+
+.pull-right[
+
+That means that you can acccess things as if it were a list.  All of the below returns the same thing.  
+
+
+
+``` r
+# as column in data frame
+airquality[, 1] 
+airquality$Ozone 
+
+# as element of list
+airquality[[1]] 
+airquality[["Ozone"]] 
+```
+
+So you can summarize using `sapply` or `lapply` (&amp; not worry about "margins")
+
+
+``` r
+sapply(airquality, mean, na.rm = TRUE) |&gt; round(2)
+```
+
+``` footnotesize
+##   Ozone Solar.R    Wind    Temp   Month     Day 
+##   42.13  185.93    9.96   77.88    6.99   15.80
+```
+
+]
+
+
+
+
+---
+## `split` + `sapply` on real data
+
+.pull-left[
+
+Split `airquality` into a list by `Month`:
+
+
+``` r
+aq_list &lt;- split(airquality, airquality$Month)
+length(aq_list)
+```
+
+``` footnotesize
+## [1] 5
+```
+
+``` r
+names(aq_list)
+```
+
+``` footnotesize
+## [1] "5" "6" "7" "8" "9"
+```
+
+Each element is a data frame for one month:
+
+
+``` r
+nrow(aq_list[["5"]])
+```
+
+``` footnotesize
+## [1] 31
+```
+]
+
+.pull-right[
+
+Apply summaries across months:
+
+
+``` r
+sapply(aq_list, nrow)
+```
+
+``` footnotesize
+##  5  6  7  8  9 
+## 31 30 31 31 30
+```
+
+Nested apply statements!
+
+
+``` r
+sapply(aq_list, apply, 2, mean, na.rm = TRUE) |&gt; round(2)
+```
+
+``` scriptsize
+##              5      6      7      8      9
+## Ozone    23.62  29.44  59.12  59.96  31.45
+## Solar.R 181.30 190.17 216.48 171.86 167.43
+## Wind     11.62  10.27   8.94   8.79  10.18
+## Temp     65.55  79.10  83.90  83.97  76.90
+## Month     5.00   6.00   7.00   8.00   9.00
+## Day      16.00  15.50  16.00  16.00  15.50
+```
+]
+
+
+---
+### **Important application**:  A fitted model is a list
+
+.pull-left[
+
+``` r
+fit &lt;- lm(Ozone ~ Temp, data = airquality)
+fit
+```
+
+``` scriptsize
+## 
+## Call:
+## lm(formula = Ozone ~ Temp, data = airquality)
+## 
+## Coefficients:
+## (Intercept)         Temp  
+##    -146.995        2.429
+```
+
+``` r
+summary(fit)
+```
+
+``` scriptsize
+## 
+## Call:
+## lm(formula = Ozone ~ Temp, data = airquality)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -40.729 -17.409  -0.587  11.306 118.271 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -146.9955    18.2872  -8.038 9.37e-13 ***
+## Temp           2.4287     0.2331  10.418  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 23.71 on 114 degrees of freedom
+##   (37 observations deleted due to missingness)
+## Multiple R-squared:  0.4877,	Adjusted R-squared:  0.4832 
+## F-statistic: 108.5 on 1 and 114 DF,  p-value: &lt; 2.2e-16
+```
+
+``` r
+names(fit)
+```
+
+``` scriptsize
+##  [1] "coefficients"  "residuals"     "effects"       "rank"         
+##  [5] "fitted.values" "assign"        "qr"            "df.residual"  
+##  [9] "na.action"     "xlevels"       "call"          "terms"        
+## [13] "model"
+```
+
+``` r
+fit$coefficients
+```
+
+``` scriptsize
+## (Intercept)        Temp 
+## -146.995491    2.428703
+```
+]
+
+
+.pull-right[
+
+Access components directly:
+
+``` r
+fit$coefficients
+```
+
+``` scriptsize
+## (Intercept)        Temp 
+## -146.995491    2.428703
+```
+
+``` r
+fit$residuals |&gt; head()
+```
+
+``` scriptsize
+##          1          2          3          4          6          7 
+##  25.272370   8.128853 -20.728554  14.415886  14.701073  12.129776
+```
+
+``` r
+fit$df.residual
+```
+
+``` scriptsize
+## [1] 114
+```
+
+`summary(fit)` is also a list:
+
+``` r
+summary(fit)$r.squared
+```
+
+``` scriptsize
+## [1] 0.4877072
+```
+
+]
+
+---
+# Lists of formulae + `lapply`
+
+Define models as a list of formulae:
+
+
+``` r
+formulae &lt;- list(Ozone ~ Temp, 
+                 Ozone ~ Wind, 
+                 Ozone ~ Solar.R, 
+                 Ozone ~ Temp + Wind, 
+                 Ozone ~ Temp + Wind + Solar.R)
+names(formulae) &lt;- as.character(formulae)
+```
+
+Fit all at once:
+
+
+``` r
+fits &lt;- lapply(formulae, lm, data = airquality)
+```
+
+
+---
+
+.pull-left[
+## This is a list of model fits
+
+
+
+``` r
+fits
+```
+
+``` tiny
+## $`Ozone ~ Temp`
+## 
+## Call:
+## FUN(formula = X[[i]], data = ..1)
+## 
+## Coefficients:
+## (Intercept)         Temp  
+##    -146.995        2.429  
+## 
+## 
+## $`Ozone ~ Wind`
+## 
+## Call:
+## FUN(formula = X[[i]], data = ..1)
+## 
+## Coefficients:
+## (Intercept)         Wind  
+##      96.873       -5.551  
+## 
+## 
+## $`Ozone ~ Solar.R`
+## 
+## Call:
+## FUN(formula = X[[i]], data = ..1)
+## 
+## Coefficients:
+## (Intercept)      Solar.R  
+##     18.5987       0.1272  
+## 
+## 
+## $`Ozone ~ Temp + Wind`
+## 
+## Call:
+## FUN(formula = X[[i]], data = ..1)
+## 
+## Coefficients:
+## (Intercept)         Temp         Wind  
+##     -71.033        1.840       -3.055  
+## 
+## 
+## $`Ozone ~ Temp + Wind + Solar.R`
+## 
+## Call:
+## FUN(formula = X[[i]], data = ..1)
+## 
+## Coefficients:
+## (Intercept)         Temp         Wind      Solar.R  
+##   -64.34208      1.65209     -3.33359      0.05982
+```
+]
+
+.pull-right[
+
+Compare AIC values:
+
+
+``` r
+sapply(fits, AIC)
+```
+
+``` footnotesize
+##                  Ozone ~ Temp                  Ozone ~ Wind 
+##                     1067.7063                     1093.1874 
+##               Ozone ~ Solar.R           Ozone ~ Temp + Wind 
+##                     1083.7144                     1049.7410 
+## Ozone ~ Temp + Wind + Solar.R 
+##                      998.7171
+```
+
+
+Obtain R^2^ values with custom function:
+
+
+``` r
+sapply(fits, function(fit) summary(fit)$r.squared)
+```
+
+``` footnotesize
+##                  Ozone ~ Temp                  Ozone ~ Wind 
+##                     0.4877072                     0.3618582 
+##               Ozone ~ Solar.R           Ozone ~ Temp + Wind 
+##                     0.1213419                     0.5687097 
+## Ozone ~ Temp + Wind + Solar.R 
+##                     0.6058946
+```
+]
+
+
+---
+## apply can replace (most) loops
+
+#### The loop way
+
+``` r
+result &lt;- rep(NA, 100)
+for(i in 1:100){
+  result[i] &lt;- sqrt(i) + log(i)
+}
+result[1:5]
+```
+
+``` footnotesize
+## [1] 1.000000 2.107361 2.830663 3.386294 3.845506
+```
+
+
+#### The `sapply` way
+
+``` r
+result &lt;- sapply(1:100, function(i) sqrt(i) + log(i))
+result[1:5]
+```
+
+``` footnotesize
+## [1] 1.000000 2.107361 2.830663 3.386294 3.845506
+```
+
+No pre-allocation, no indexing, no `for(i in 1:100)`.
+
+
+---
+## example of apply with plotting
+
+This little function plots fitted vs. predicted values:
+
+
+``` r
+plotFit &lt;- function(fit){
+  plot(fit$model[,1], fit$fitted.values, xlab = "Observed values", ylab = "Predicted values", 
+       main = paste(names(fit$coef)[-1], collapse = ", "), asp = 1)
+  title(sub = paste("R2 =", summary(fit)$r.squared |&gt; round(2)))
+}
+```
+
+
+
+
+``` r
+a &lt;-lapply(fits, plotFit)
+```
+
+&lt;img src="apply-mentality-slides_files/figure-html/unnamed-chunk-45-1.png" alt="" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+---
+class: inverse
+
+## In-class Practice: `sapply` and `lapply`
+
+Using `airquality` and the model list `fits` from above:
+
+- **Q1.** Use `sapply` to compute the number of `NA` values in each column of `airquality`. Hint: combine `is.na()` and `sum()`.
+
+- **Q2.** Use `sapply` to extract the **residual standard error** from each model in `fits`. It lives at `summary(fit)$sigma`.
+
+- **Q3.** Use `split` + `sapply` to compute the **maximum** `Ozone` value for each month. Handle `NA`s.
+
+
+
+---
+
+# Preview: `plyr` combines split + apply
+
+.pull-left-60.small[
+
+The `plyr` package formalizes the **split → apply → combine** workflow.  
+Function names encode input and output type: **d**ata frame, **l**ist, **a**rray, **_** (discard).
+
+| | **array out** | **data frame out** | **list out** | **nothing** |
+|---|---|---|---|---|
+| **array in** | `aaply` | `adply` | `alply` | `a_ply` |
+| **data frame in** | `daply` | `ddply` | `dlply` | `d_ply` |
+| **list in** | `laply` | `ldply` | `llply` | `l_ply` |
+| **n replicates** | `raply` | `rdply` | `rlply` | `r_ply` |
+| **fn arguments** | `maply` | `mdply` | `mlply` | `m_ply` |
+
+]
+
+
+.pull-right-40[
+![](plyr-logo.png)
+]
+
+
+---
+## Example
+
+.pull-left.small[
+
+Write a function that generates a tidy `\(\delta\)`AIC table from a given model
+
+
+``` r
+makeAICtable &lt;- function(fit)
+  data.frame(df     = fit$df.residual, 
+             R2 = summary(fit)$r.squared |&gt; round(3),
+             logLik = logLik(fit) |&gt; round(1),
+             AIC    = AIC(fit) |&gt; round(1))
+```
+
+generate AIC table in one pipe
+
+
+``` r
+library(plyr)
+AICtable &lt;- llply(formulae, lm, data = airquality) |&gt;
+  ldply(makeAICtable) |&gt;
+  rename(c(.id = "Model")) |&gt; 
+  mutate(dAIC = AIC - min(AIC)) |&gt;
+  arrange(dAIC)
+```
+
+
+]
+
+.pull-right[
+
+
+``` r
+AICtable
+```
+
+``` footnotesize
+##                           Model  df    R2 logLik    AIC dAIC
+## 1 Ozone ~ Temp + Wind + Solar.R 107 0.606 -494.4  998.7  0.0
+## 2           Ozone ~ Temp + Wind 113 0.569 -520.9 1049.7 51.0
+## 3                  Ozone ~ Temp 114 0.488 -530.9 1067.7 69.0
+## 4               Ozone ~ Solar.R 109 0.121 -538.9 1083.7 85.0
+## 5                  Ozone ~ Wind 114 0.362 -543.6 1093.2 94.5
+```
+]
+
+
+---
+.pull-left-40[
+# Congratulations! 
+## you are now:
+]
+
+.pull-right-60[
+![](listninja.jpg)
+
+.footenotesize[image stolen from a https://www.facebook.com/people/The-List-Ninja/61558564891027/]
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "countIncrementalSlides": false,
+  "highlightLines": true,
+  "ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
