@@ -78,6 +78,9 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - [`if`, `else`, and `ifelse()` slides](lectures/16b-if-else-and-ifelse/If-Else-Statements.html)
   - [`ddply()` slides](lectures/16c-ddply/15c-ddply.html)
 - [Lecture 15: apply mentality and becoming a list ninja](lectures/17-apply-and-lists/apply-mentality-slides.html)
+- Lecture 16: Working with Dates and `ddply()` 
+  - [slides](lectures/18-ddply-Dates/ddply-and-Dates.html)
+  - [ACW-met data (csv)](lectures/18-ddply-Dates/ACW-met.csv)
   
 ## Tools and Tricks in Reproducible Research
 

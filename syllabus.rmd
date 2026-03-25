@@ -124,9 +124,9 @@ Schedule an initial project meeting with Dr. Green or Dr. Gurarie by Feb 28 to d
 | Wed Mar 4 | Green | Writing/debugging functions | HW6 due, HW7 assigned |
 | Mar 8-15 | — | *Spring Break (no class)* | |
 | Mon Mar 16 | Gurarie | More on functions | |
-| Wed Mar 18 | Gurarie | Loops and apply | |
-| Mon Mar 23 | Gurarie | Shiny I: basics | |
-| Wed Mar 25 | Gurarie | Shiny II: reactivity and deployment | HW7 due, HW8 assigned  |
+| Wed Mar 18 | Green | `if`, `else`, and `ifelse()` | |
+| Mon Mar 23 | Gurarie | apply and becoming a list ninja| |
+| Wed Mar 25 | Green | `ddply()` and `Date` classes | HW7 due, HW8 assigned  |
 | Mon Mar 30 | Gurarie | Spatial data in R I | |
 | Wed Apr 1 | Gurarie | Spatial data in R II | HW8 due, HW9 assigned |
 | Mon Apr 6 | Gurarie | R packages I: structure and documentation |  |
