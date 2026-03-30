@@ -3756,7 +3756,7 @@ acw$Weekday &lt;- weekdays(acw$Date)</pre>
 
 </article></slide><slide class=""><hgroup><h2>Monthly temperature by year</h2></hgroup><article  id="monthly-temperature-by-year">
 
-<pre class = 'prettyprint lang-r'>ddply(acw, .(Year, Month), summarize,
+<pre class = 'prettyprint lang-r'>ddply(acw, .(Year, Month), plyr::summarize,
   Mean.Temp = round(mean(air_temp_avg), 1),
   Min.Temp  = round(min(air_temp_min), 1),
   Max.Temp  = round(max(air_temp_max), 1))</pre>
@@ -3801,7 +3801,7 @@ acw$Weekday &lt;- weekdays(acw$Date)</pre>
 
 </article></slide><slide class=""><hgroup><h2>Plotting monthly means</h2></hgroup><article  id="plotting-monthly-means">
 
-<pre class = 'prettyprint lang-r'>monthly &lt;- ddply(acw, .(Year, Month), summarize,
+<pre class = 'prettyprint lang-r'>monthly &lt;- ddply(acw, .(Year, Month), plyr::summarize,
   Mean.Temp = mean(air_temp_avg))
 
 plot(Mean.Temp ~ Month, data = monthly, 
@@ -3840,7 +3840,7 @@ df |&gt; group_by(var1, var2) |&gt; summarise(...)</pre>
 <pre >## Warning: package &#39;dplyr&#39; was built under R version 4.5.2</pre>
 
 <pre class = 'prettyprint lang-r'># plyr
-ddply(acw, .(Year, Month), summarize,
+ddply(acw, .(Year, Month), plyr::summarize,
   Mean.Temp = round(mean(air_temp_avg), 1),
   Min.Temp  = round(min(air_temp_min), 1),
   Max.Temp  = round(max(air_temp_max), 1))</pre>
@@ -3893,7 +3893,7 @@ acw |&gt;
     Mean.Temp = round(mean(air_temp_avg), 1),
     Min.Temp  = round(min(air_temp_min), 1),
     Max.Temp  = round(max(air_temp_max), 1),
-    .groups = &quot;drop&quot;)</pre>
+    .groups = &quot;drop&quot;) #Drops persistent grouping. See `?dplyr_by`.</pre>
 
 <pre >## # A tibble: 36 × 5
 ##     Year Month Mean.Temp Min.Temp Max.Temp
@@ -3920,7 +3920,7 @@ acw |&gt;
 <li><code>?ddply</code>, <code>?summarize</code> (package <code>plyr</code>)</li>
 <li><code>?as.Date</code>, <code>?strptime</code>, <code>?difftime</code>, <code>?seq.Date</code></li>
 <li>Wickham, H. (2011). The Split-Apply-Combine Strategy for Data Analysis. <em>Journal of Statistical Software</em>, 40(1), 1–29.</li>
-<li>Ackerman Clearing meteorological data, Huntington Wildlife Forest, Adirondack Park</li>
+<li>Ackerman Clearing meteorological data, Huntington Wildlife Forest, Adirondack Park (adk-ltm.org)</li>
 <li><code>?airquality</code></li>
 </ul></article></slide>
 
