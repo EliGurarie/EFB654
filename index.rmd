@@ -81,7 +81,10 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - Lecture 16: Working with Dates and `ddply()` 
   - [slides](lectures/18-ddply-Dates/ddply-and-Dates.html)
   - [ACW-met data (csv)](lectures/18-ddply-Dates/ACW-met.csv)
-- [Lecture 17: Creating R-Shiny Apps](lectures/19-shinyapps/shiny-slides.html)
+- Lecture 17: Creating R-Shiny Apps
+  - [slides](lectures/19-shinyapps/shiny-slides.html)
+  - [document style](lectures/19-shinyapps/shiny-lab.html)
+  
 
   
 ## Tools and Tricks in Reproducible Research
