@@ -1,0 +1,876 @@
+---
+title: "Developing Interactive Tools with R-Shiny"
+author: "Elie Gurarie"
+subtitle: "[EFB 654: R and Reproducible Research](https://eligurarie.github.io/EFB654/)"
+date: "**April 1, 2026**"
+output: 
+  xaringan::moon_reader:
+    css: ["default", "default-fonts", "mycss.css"]
+    nature:      
+      highlightStyle: github
+      countIncrementalSlides: false
+      highlightLines: true
+      titleSlideClass: ["center","middle","inverse"]
+      ratio: '16:9'
+editor_options: 
+  chunk_output_type: console
+---
+class: inverse, middle
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      fig.align = "center", dpi = 200, class.output="footnotesize")
+```
+
+```{r cache = FALSE, echo = FALSE}
+pars <- function(...){
+  par(mar = c(3,3,2,2), bty = "l", mgp = c(1.5,.25,0),
+      tck = 0.01, cex.lab = 1.2, ...)
+}
+```
+
+```{r xaringan-extras, echo=FALSE}
+xaringanExtra::use_scribble()
+xaringanExtra::use_tile_view()
+```
+```{r eval = FALSE, echo = FALSE}
+xaringan::inf_mr()
+```
+
+# Uses of Shiny Apps
+
+
+.pull-left-70.Large[
+
+- **Data exploration** — interact with your own datasets in real time
+
+- **Simulation manipulation** — adjust parameters and see results instantly
+
+- **Sharing results** — no R required for the end user
+
+- **Making tools accessible** — wrap complex analyses in a simple interface
+]
+
+.pull-right-30[
+![](https://rstudio.github.io/shiny/reference/figures/logo.png)
+
+]
+
+
+
+---
+class: inverse, middle, center 
+
+# Gallery: https://shiny.posit.co/r/gallery/
+
+
+---
+class: inverse, middle, center
+
+# Structure of a Shiny App
+
+---
+
+## Two Essential Pieces
+
+Every Shiny app has exactly **two components**:
+
+.pull-left[
+### `ui` — User Interface
+- What the user **sees**
+- Defines layout, inputs, and output placeholders
+- Built with layout and widget functions
+]
+
+.pull-right[
+### `server` — Server Function
+- What R **does**
+- Reacts to inputs
+- Renders outputs back to the UI
+- Always: `function(input, output)`
+]
+
+<br>
+  
+```r
+shinyApp(ui = ui, server = server)
+```
+
+> These two are **linked by matching IDs** — output names in `ui` must match what `server` renders.
+
+---
+
+## The Flow of a Shiny App
+
+.pull-left.large[
+```
+User changes input  →  
+   input$id updates  →  
+      server reacts  →  
+          output$id re-renders  →  
+             UI updates
+```
+]
+
+.pull-right[
+
+- **Reactive** — outputs automatically update when inputs change
+
+- **IDs are the glue** — every input and output has a unique string ID
+
+- `input$bins` in the server reads the widget named `"bins"` in the UI
+
+- `output$distPlot` in the server fills the placeholder named `"distPlot"` in the UI
+]
+
+---
+
+## Anatomy of `app.R`
+
+
+.pull-left-60[
+```r
+library(shiny)
+
+ui <- fluidPage(          # defines the page layout
+  titlePanel("..."),      # title at top
+  sidebarLayout(          # two-column layout
+    sidebarPanel(...),    # LEFT: inputs go here
+    mainPanel(...)        # RIGHT: outputs go here
+  )
+)
+
+server <- function(input, output) {
+  output$myPlot <- renderPlot({
+    # code that uses input$... to make a plot
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```
+]
+
+.pull-right-40[
+
+```{r, echo = -1}
+pars()
+hist(faithful[,2])
+```
+
+]
+
+---
+
+## Old Faithful App:  .small[`  File -> New File -> Shiny Web App`]
+.pull-left.small[
+
+#### User Input
+
+```r
+ui <- fluidPage(
+  titlePanel("Old Faithful Geyser Data"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",     # input ID
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)  # default value
+    ),
+    mainPanel(
+      plotOutput("distPlot")  # output ID placeholder
+)))
+```
+
+| Element | Role |
+|---|---|
+| **input**: | `sliderInput` with ID `"bins"` |
+| **output**: | `plotOutput` with ID `"distPlot"` |
+]
+
+.pull-right.small[
+
+#### Server Side
+
+```r
+server <- function(input, output) {
+
+    output$distPlot <- renderPlot({
+        # generate bins based on input$bins from ui.R
+        x    <- faithful[, 2]
+        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+        # draw the histogram with the specified number of bins
+        hist(x, breaks = bins, col = 'darkgray', border = 'white',
+             xlab = 'Waiting time to next eruption (in mins)',
+             main = 'Histogram of waiting times')
+    })
+}
+```
+
+
+| Element | Role |
+|---|---|
+| `input$bins` | reads the slider value |
+| `renderPlot({})` | wraps plotting code; re-renders on every input change |
+| `output$distPlot` | sends the plot to the UI placeholder |
+
+]
+
+---
+
+## ID Matching
+
+.pull-left[
+**In `ui`:**
+```r
+sliderInput("bins", ...)
+
+plotOutput("distPlot")
+```
+]
+
+.pull-right[
+**In `server`:**
+```r
+input$bins
+
+output$distPlot <- renderPlot({...})
+```
+]
+
+<br>
+
+| UI function | creates/displays | Server counterpart |
+|---|---|---|
+| `sliderInput("bins", ...)` | input widget | `input$bins` |
+| `plotOutput("distPlot")` | output placeholder | `output$distPlot <- renderPlot({})` |
+<br>
+> **IDs must match exactly** — spelling and capitalization matter.
+
+---
+class: inverse, large
+
+# Practice
+
+.pull-left-60.Large[
+1. Make the Old Faithful Shiny App work
+ - click on **Run** or run the `shinyApp(ui = ui, server = server)`
+
+2. Modify the title of the Shiny App - to include your name - and re-run it.  
+
+]
+
+.pull-right-40[ ![](animaltraining.jpg) 
+]
+
+---
+class: inverse, middle, center
+
+# Adding Inputs
+
+---
+
+## Some useful options:
+
+| Function | What it creates | Returns |
+|---|---|---|
+| `sliderInput()` | Slider bar | numeric |
+| `numericInput()` | Number entry box | numeric |
+| `textInput()` | Text box | character |
+| `selectInput()` | Dropdown menu | character |
+| `radioButtons()` | Radio button group | character |
+| `checkboxInput()` | Single checkbox | logical |
+| `checkboxGroupInput()` | Multiple checkboxes | character vector |
+| `colorInput()` | Color picker | hex string |
+
+All share the same first two arguments: **`inputId`**, **`label`**
+
+---
+
+## `numericInput()` — Control the Y-axis
+
+Add a numeric input for `ylim` in the sidebar:
+
+```r
+numericInput("ymax",
+             "Y-axis maximum:",
+             value = 40,
+             min = 1,
+             max = 200)
+```
+
+Use it in the server:
+
+```r
+hist(x, breaks = bins,
+     col = 'darkgray', border = 'white',
+     ylim = c(0, input$ymax),          # <-- reactive y limit
+     xlab = 'Waiting time (mins)',
+     main = 'Histogram of waiting times')
+```
+
+---
+
+## `selectInput()` — Choose a Color
+
+Add a dropdown for histogram color:
+
+```r
+selectInput("color",
+            "Bar color:",
+            choices = c("darkgray", "steelblue", "tomato",
+                        "forestgreen", "goldenrod"),
+            selected = "darkgray")
+```
+
+Use it in the server:
+
+```r
+hist(x, breaks = bins,
+     col = input$color,               # <-- reactive color
+     border = 'white',
+     ylim = c(0, input$ymax),
+     xlab = 'Waiting time (mins)',
+     main = 'Histogram of waiting times')
+```
+
+---
+
+## `app2.R` — Full Updated App
+
+.small[
+```r
+library(shiny)
+
+ui <- fluidPage(
+  titlePanel("Old Faithful Geyser Data"),
+  sidebarLayout(
+    sidebarPanel(
+    
+      sliderInput("bins", "Number of bins:", min = 1, max = 50, value = 30), # <- note commas!
+      
+      numericInput("ymax", "Y-axis maximum:", value = 40, min = 1, max = 200), 
+      
+      selectInput("color", "Bar color:",
+                  choices = c("darkgray", "steelblue", "tomato",
+                              "forestgreen", "goldenrod"),
+                  selected = "darkgray")
+    ),
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    hist(x, breaks = bins,
+         col = input$color, border = 'white',
+         ylim = c(0, input$ymax),
+         xlab = 'Waiting time to next eruption (in mins)',
+         main = 'Histogram of waiting times')
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```
+]
+
+
+
+---
+class: inverse, large
+
+# Practice Adding Inputs
+
+.pull-left-60.Large[
+
+Add a `selectInput()` flag that chooses whether to plot the histogram of the `$waiting` column or the `eruptions` column.   
+
+- **To make it easy:**  The `ui()` line will look like this: 
+
+```r 
+selectInput("column", "What to plot:",
+             choices = c("eruptions", "waiting"),
+             selected = "eruptions")
+```
+
+
+]
+
+.pull-right-40[ ![](animaltraining.jpg) 
+]
+
+
+**Now - how do you modify the `server` function?**
+
+
+---
+class: inverse, middle, center
+
+# Output Types
+
+---
+
+## **Output Types:** Common Output Functions
+
+Every output needs a **UI placeholder** and a **server renderer** — they always come in pairs:
+
+
+| UI (placeholder) | Server (renderer) | Produces |
+|---|---|---|
+| `plotOutput()` | `renderPlot({})` | plot |
+| `textOutput()` | `renderText({})` | inline text |
+| `verbatimTextOutput()` | `renderPrint({})` | console-style output |
+| `tableOutput()` | `renderTable({})` | simple HTML table |
+| `dataTableOutput()` | `renderDT({})` | interactive table (`DT` package) |
+| `uiOutput()` | `renderUI({})` | dynamically generated UI |
+
+---
+
+## `renderPrint` — Console-Style Output
+
+Show `summary(faithful)` reactively — useful for model output, `str()`, etc.
+
+.pull-left[
+**UI:**
+```r
+verbatimTextOutput("stats")
+```
+]
+
+.pull-right[
+**Server:**
+```r
+output$stats <- renderPrint({
+  x <- faithful,[input$column]
+  summary(x)
+})
+```
+]
+
+<br>
+
+- `verbatimTextOutput` preserves monospace formatting
+- `renderPrint` captures anything that would print to the console
+- Works with `summary()`, `str()`, `print()`, model objects, etc.
+
+
+
+---
+
+## `renderText` — Reactive Inline Text
+
+Show a summary sentence that updates with the slider:
+
+.pull-left[
+**UI:**
+```r
+mainPanel(
+  plotOutput("distPlot"),
+  textOutput("summary")   # <- add below plot
+)
+```
+]
+
+.pull-right[
+**Server:**
+```r
+output$summary <- renderText({
+  x    <- faithful[, 2]
+  bins <- seq(min(x), max(x), 
+              length.out = input$bins + 1)
+  counts <- hist(x, breaks = bins, plot = FALSE)$counts
+  
+  paste("Showing", input$bins, "bins.",
+        "Largest bin count:", max(counts))
+})
+```
+]
+
+> `renderText` returns a **single string**. Use `paste()` or `paste0()` to build it.
+
+
+
+---
+
+## `app4.R` — Plot + Summary + Stats
+
+.small[
+```r
+library(shiny)
+ui <- fluidPage(
+  titlePanel("Old Faithful Geyser Data"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins", "Number of bins:", min = 1, max = 50, value = 30),
+      numericInput("ymax", "Y-axis maximum:", value = 40, min = 1, max = 200),
+      selectInput("column", "What to plot:",
+                  choices = c("eruptions", "waiting"),
+                  selected = "eruptions"), 
+    ),
+    
+    mainPanel(
+      plotOutput("distPlot"),
+      textOutput("summary"),
+      verbatimTextOutput("stats")
+    )
+  )
+)
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+    x    <- faithful[, input$column]
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    hist(x, breaks = bins,
+         col = "grey", border = 'darkgrey',
+         ylim = c(0, input$ymax),
+         xlab = ifelse(input$column == "column", 
+                       'Waiting time to next eruption (mins)', 
+                       "Duration of eruptions (min)"), 
+         main = 'Histogram of waiting times')
+  })
+  
+  output$summary <- renderText({
+    x    <- faithful[,input$column]
+    bins <- seq(min(x), max(x), 
+                length.out = input$bins + 1)
+    counts <- hist(x, breaks = bins, plot = FALSE)$counts
+    
+    paste("Showing", input$bins, "bins.",
+          "Largest bin count:", max(counts))
+  })
+  
+  output$stats <- renderPrint({
+    x <- faithful[,input$column]
+    summary(x)
+  })
+}
+shinyApp(ui = ui, server = server)
+```
+]
+
+
+
+---
+class: inverse, large
+
+# Practice
+
+.pull-left-60.Large[
+
+Starting from `app4.R`:
+
+Add a `textOutput` that reports how many observations fall **above the mean** for the selected variable.
+
+]
+
+.pull-right-40[ ![](animaltraining.jpg) ]
+
+
+
+---
+class: inverse, middle, center
+
+# Multiple Outputs with Tabs
+
+---
+
+## `tabsetPanel` — Organizing Outputs
+
+Instead of stacking outputs vertically in `mainPanel`, wrap them in tabs:
+
+.pull-left[
+**Before:**
+```r
+mainPanel(
+  plotOutput("distPlot"),
+  textOutput("summary"),
+  verbatimTextOutput("stats")
+)
+```
+]
+
+.pull-right[
+**After:**
+```r
+mainPanel(
+  tabsetPanel(
+    tabPanel("Plot",    plotOutput("distPlot")),
+    tabPanel("Summary", textOutput("summary"),
+                        verbatimTextOutput("stats"))
+  )
+)
+```
+]
+
+<br>
+
+- `tabsetPanel` wraps any number of `tabPanel()` calls
+- Each `tabPanel` takes a **label** then any UI elements
+- The server side is **unchanged** — same `output$` names
+
+---
+
+## Separate Tabs per Variable
+
+Rather than a dropdown to switch variables, give each its own tab:
+
+```r
+mainPanel(
+  tabsetPanel(
+    tabPanel("Waiting Time",
+             plotOutput("waitPlot"),
+             verbatimTextOutput("waitStats")),
+    tabPanel("Eruption Duration",
+             plotOutput("eruptPlot"),
+             verbatimTextOutput("eruptStats"))
+  )
+)
+```
+
+Now the **sidebar controls** (bins, color) apply to **both** tabs — and the server renders all four outputs independently.
+
+---
+
+## `app5.R` — Two Variable Tabs
+
+.small[
+```r
+library(shiny)
+
+ui <- fluidPage(
+  titlePanel("Old Faithful Geyser Data"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins", "Number of bins:", min = 1, max = 50, value = 30),
+      selectInput("color", "Bar color:",
+                  choices = c("darkgray", "steelblue", "tomato",
+                              "forestgreen", "goldenrod"),
+                  selected = "darkgray")
+    ),
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Waiting Time",
+                 plotOutput("waitPlot"),
+                 verbatimTextOutput("waitStats")),
+        tabPanel("Eruption Duration",
+                 plotOutput("eruptPlot"),
+                 verbatimTextOutput("eruptStats"))
+      )
+    )
+  )
+)
+
+server <- function(input, output) {
+
+  output$waitPlot <- renderPlot({
+    x <- faithful$waiting
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    hist(x, breaks = bins, col = input$color, border = "white",
+         xlab = "Waiting time (mins)", main = "Waiting Time")
+  })
+
+  output$eruptPlot <- renderPlot({
+    x <- faithful$eruptions
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    hist(x, breaks = bins, col = input$color, border = "white",
+         xlab = "Eruption duration (mins)", main = "Eruption Duration")
+  })
+
+  output$waitStats  <- renderPrint({ summary(faithful$waiting) })
+  output$eruptStats <- renderPrint({ summary(faithful$eruptions) })
+}
+
+shinyApp(ui = ui, server = server)
+```
+]
+
+---
+class: inverse, large
+
+# Practice adding tabs
+
+.pull-left-60.large[
+
+Add a **third tab** called `"Scatter Plot"` that plots eruption duration vs. waiting time.
+
+- UI: add a third `tabPanel` with a `plotOutput("scatterPlot")`
+
+- Server: add `output$scatterPlot <- renderPlot({...})` using `plot(faithful$waiting, faithful$eruptions, ...)`
+
+**Bonus:** make the point color respond to `input$color`
+
+]
+
+.pull-right-40[ ![](animaltraining.jpg) ]
+
+
+---
+class: inverse, middle, center
+
+# Shiny Apps Inside R Markdown
+
+---
+
+## Two Ways to Share a Shiny App
+
+| Approach | How | Requires R? |
+|---|---|---|
+| Standalone `app.R` | Run in RStudio or deploy to `shinyapps.io` | Yes |
+| Embedded in `.Rmd` | One line in YAML; widgets live inside the document | Yes (to view) |
+
+<br>
+
+Embedding is useful when you want **narrative + interactivity together** — e.g., a report where the reader can explore the data themselves.
+
+---
+
+## The One Required Change: YAML
+
+Add `runtime: shiny` to your document's YAML header:
+
+```yaml
+---
+title: "Old Faithful Explorer"
+output: html_document
+runtime: shiny
+---
+```
+
+> - This turns a normal knitted HTML into a **live Shiny document**
+> - It can no longer be knitted to a static file — it must be **Run** (RStudio shows "Run Document" instead of "Knit")
+> - Requires R to be running to view — not a standalone HTML
+
+
+
+---
+
+# Old Faithful Rmd
+
+.pull-left-70[
+
+````{r eval=FALSE, echo=TRUE}
+---
+title: "Old Faithful Explorer"
+output: html_document
+runtime: shiny
+---
+
+Let's explore Old Faithful eruption durations and intervals!
+
+
+```{r, echo = FALSE}
+shinyAppFile("app5.R")
+```
+
+
+This is old Faithful when it was a teeny bit less old:
+
+![](https://upload.wikimedia.org/wikipedia/commons/6/60/Old_Faithful%2C_William_Henry_Jackson.jpg)
+
+````
+]
+
+.pull-right-30[
+![](https://upload.wikimedia.org/wikipedia/commons/6/60/Old_Faithful%2C_William_Henry_Jackson.jpg)
+]
+
+
+---
+
+##  Deploying to shinyapps.io
+
+So far your app only runs **locally** — only you can see it. Deploying pushes it to a server so anyone with a link can use it, no R required.
+
+**[shinyapps.io](https://www.shinyapps.io)** — free hosting for Shiny apps (Posit's service)
+
+**One-time setup:**
+
+```r
+install.packages("rsconnect")
+```
+
+1. Create a free account at **shinyapps.io**
+
+2. In RStudio: *Tools → Global Options → Publishing → Connect* — paste in your account token
+
+3. That's it.
+
+---
+
+## Deploying
+
+With your `app.R` open in RStudio, **Click:** the blue **Publish** button (top right of the script pane)  
+
+RStudio bundles your app files, uploads them, and gives you a URL:
+
+```
+https://yourusername.shinyapps.io/yourappname/
+```
+
+- Free tier allows **5 apps** and **25 active hours/month**
+
+- To update: just run `deployApp()` again — it overwrites
+
+- To share: send the URL — recipient needs no R, no RStudio
+
+Shiny Rmd documents (with `runtime: shiny`) deploy the **same way** — just publish the `.Rmd` file instead of `app.R`
+
+> my shinyapps:  https://www.shinyapps.io/admin/#/dashboard
+
+
+
+
+---
+class: inverse
+
+# Final thoughts
+
+.Large[
+
+- Shiny apps can be Extremely Powerful - for **exploration**, **education** and **communication**
+
+- Just about nything anyone can put onto a webpage, you can add.  Is *"infinitely customizable"* - with an R engine underneath.  
+
+- **But** the code can be very clunky, fussy, confusing, hard to learn, .red[hard to debug].  So much precise matching of parentheses / brackets / commas / semi-colots. 
+
+- You will save yourself **A LOT** of time [*and - if you're concerned about the environment - a lot of Google-search energy*] if you let an LLM  like `Claude.ai` help you out.  
+]
+
+
+
+---
+
+# Prompting Claude to Extend `app5.R`
+
+.pull-left[
+### Example prompt:
+
+> `See shiny app called app5.R. Add features:`
+
+> `1. Scatter plot tab showing eruptions vs. waiting time with fitted regression line and R² displayed`
+
+> `2. Interactive data table tab showing raw faithful data`
+
+> `3. Download button for the currently displayed plot as PNG`
+
+]
+
+.pull-right[
+### Tips for prompting:
+
+- **Always paste the full code** — no context = bad output
+
+- **Ask for one feature at a time**.  
+  - Prepare to iterate frequently, don't delete old versions. 
+  
+- **Ask it to explain** any new functions it introduces
+
+- If something breaks: *"Here is the error: [paste]. Fix it."*
+
+- Always ***understand what it is doing!***
+
+]

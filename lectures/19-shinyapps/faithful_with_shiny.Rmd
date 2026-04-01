@@ -1,0 +1,17 @@
+---
+title: "Old Faithful Explorer"
+output: html_document
+runtime: shiny
+---
+
+Let's explore Old Faithful eruption durations and intervals!
+
+
+```{r, echo = FALSE}
+shinyAppFile("app5.R")
+```
+
+
+This is old Faithful when it was a teeny bit less old:
+
+![](https://upload.wikimedia.org/wikipedia/commons/6/60/Old_Faithful%2C_William_Henry_Jackson.jpg)
