@@ -1,0 +1,15 @@
+USGS 04240105 Onondaga Creek at Dorwin Ave., Syracuse NY  lat:43.0281 long:-76.1522 drain_area_sqmi:82.2
+USGS 04235600 Grout Brook at NY 41 near Homer NY  lat:42.6456 long:-76.1600 drain_area_sqmi:17.6
+USGS 04249000 Oswego River at Lock 7 at Oswego NY  lat:43.4539 long:-76.5072 drain_area_sqmi:5122.0
+USGS 04232482 Flint Creek at Phelps NY  lat:42.9564 long:-77.0564 drain_area_sqmi:101.8
+USGS 01315000 Hudson River at North Creek NY  lat:43.6981 long:-74.0006 drain_area_sqmi:792.0
+USGS 04213500 Cattaraugus Creek at Gowanda NY  lat:42.4617 long:-78.9358 drain_area_sqmi:436.0
+USGS 01357500 Mohawk River at Cohoes NY  lat:42.7836 long:-73.7078 drain_area_sqmi:3450.0
+USGS 04260500 Black River at Watertown NY  lat:43.9728 long:-75.9108 drain_area_sqmi:1864.0
+USGS 01413500 East Branch Delaware River at Margaretville NY  lat:42.1483 long:-74.6492 drain_area_sqmi:163.0
+USGS 04232000 Keuka Lake Outlet at Penn Yan NY  lat:42.6592 long:-77.0536 drain_area_sqmi:206.0
+USGS 01350000 Schoharie Creek at Prattsville NY  lat:42.3172 long:-74.4392 drain_area_sqmi:236.0
+USGS 04250750 Sandy Creek at Adams NY  lat:43.8100 long:-76.0236 drain_area_sqmi:128.0
+USGS 01362500 Esopus Creek at Shandaken NY  lat:42.1172 long:-74.3969 drain_area_sqmi:59.5
+USGS 04245840 Oneida Creek at Oneida NY  lat:43.0764 long:-75.6536 drain_area_sqmi:108.0
+USGS 04234000 Fall Creek near Ithaca NY  lat:42.4531 long:-76.4733 drain_area_sqmi:126.0

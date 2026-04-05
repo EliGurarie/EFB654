@@ -84,8 +84,10 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - Lecture 17: Creating R-Shiny Apps
   - [slides](lectures/19-shinyapps/shiny-slides.html)
   - [document style](lectures/19-shinyapps/shiny-lab.html)
-  
-
+- Lecture 18: Regular Expressions
+  - [slides](lectures/20-Regex/Using-Claude-for-R-Work.html)
+  - [NCBI 16S Headers (txt)](lectures/20-Regex/ncbi_16S_headers.txt)  
+  - [USGS Gauges (txt)](lectures/20-Regex/usgs_gauges.txt)
   
 ## Tools and Tricks in Reproducible Research
 

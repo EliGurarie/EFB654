@@ -1,0 +1,78 @@
+<svg width="100%" viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg">
+
+<style>
+  .ts { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 12px; fill: #5F5E5A; }
+  .th { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; fill: #2C2C2A; font-weight: 500; }
+
+  /* Group 1: Blue */
+  .g1-box { fill: #E6F1FB; stroke: #185FA5; stroke-width: 0.5; }
+  .g1-title { fill: #0C447C; }
+  .g1-sub { fill: #185FA5; }
+
+  /* Groups 2+3: Teal */
+  .g23-box { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.5; }
+  .g23-title { fill: #085041; }
+  .g23-sub { fill: #0F6E56; }
+
+  /* Group 4: Amber */
+  .g4-box { fill: #FAEEDA; stroke: #854F0B; stroke-width: 0.5; }
+  .g4-title { fill: #633806; }
+  .g4-sub { fill: #854F0B; }
+
+  /* Group 5: Coral */
+  .g5-box { fill: #FAECE7; stroke: #993C1D; stroke-width: 0.5; }
+  .g5-title { fill: #712B13; }
+  .g5-sub { fill: #993C1D; }
+
+  /* Connective: Gray */
+  .gc-box { fill: #F1EFE8; stroke: #5F5E5A; stroke-width: 0.5; }
+  .gc-title { fill: #444441; }
+  .gc-sub { fill: #5F5E5A; }
+</style>
+
+<!-- Title -->
+<text class="th" x="340" y="28" text-anchor="middle">Anatomy of the NCBI header regex</text>
+
+<!-- Regex string with colored tokens -->
+<rect x="30" y="44" width="620" height="50" rx="8" fill="#F1EFE8" stroke="#D3D1C7" stroke-width="0.5"/>
+<text y="64" font-family="ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, monospace" font-size="11.5">
+<tspan x="44" fill="#888780">&gt;</tspan><tspan fill="#185FA5" font-weight="500">(NR_\d+\.\d+)</tspan><tspan fill="#888780">\s+</tspan><tspan fill="#0F6E56" font-weight="500">([A-Z][a-z]+)</tspan><tspan fill="#888780">\s</tspan><tspan fill="#0F6E56" font-weight="500">([a-z]+)</tspan><tspan fill="#888780">\s+strain\s+</tspan><tspan fill="#854F0B" font-weight="500">(.+?)</tspan><tspan fill="#888780">\s+16S.*?</tspan><tspan fill="#993C1D" font-weight="500">(partial|complete)</tspan>
+</text>
+<text y="84" font-size="10" font-family="ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, monospace">
+<tspan x="62" fill="#185FA5">group 1</tspan><tspan x="196" fill="#0F6E56">group 2</tspan><tspan x="306" fill="#0F6E56">group 3</tspan><tspan x="400" fill="#854F0B">group 4</tspan><tspan x="510" fill="#993C1D">group 5</tspan>
+</text>
+
+<!-- Group 1: Accession -->
+<rect class="g1-box" x="40" y="110" width="220" height="100" rx="10"/>
+<text class="th g1-title" x="150" y="134" text-anchor="middle">Group 1: accession</text>
+<text class="ts g1-sub" x="150" y="156" text-anchor="middle" font-family="ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, monospace">(NR_\d+\.\d+)</text>
+<text class="ts g1-sub" x="150" y="176" text-anchor="middle">\d+ = one or more digits</text>
+<text class="ts g1-sub" x="150" y="192" text-anchor="middle">\. = literal dot (escaped)</text>
+
+<!-- Groups 2+3: Genus + species -->
+<rect class="g23-box" x="280" y="110" width="220" height="100" rx="10"/>
+<text class="th g23-title" x="390" y="134" text-anchor="middle">Groups 2+3: species</text>
+<text class="ts g23-sub" x="390" y="156" text-anchor="middle" font-family="ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, monospace">([A-Z][a-z]+)\s([a-z]+)</text>
+<text class="ts g23-sub" x="390" y="176" text-anchor="middle">[A-Z] = one capital letter</text>
+<text class="ts g23-sub" x="390" y="192" text-anchor="middle">[a-z]+ = lowercase letters</text>
+
+<!-- Group 4: Strain -->
+<rect class="g4-box" x="520" y="110" width="130" height="100" rx="10"/>
+<text class="th g4-title" x="585" y="134" text-anchor="middle">Group 4: strain</text>
+<text class="ts g4-sub" x="585" y="156" text-anchor="middle" font-family="ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, monospace">(.+?)</text>
+<text class="ts g4-sub" x="585" y="176" text-anchor="middle">.+? = lazy match</text>
+<text class="ts g4-sub" x="585" y="192" text-anchor="middle">stops at first 16S</text>
+
+<!-- Group 5: Coverage -->
+<rect class="g5-box" x="40" y="230" width="250" height="86" rx="10"/>
+<text class="th g5-title" x="165" y="254" text-anchor="middle">Group 5: coverage</text>
+<text class="ts g5-sub" x="165" y="276" text-anchor="middle" font-family="ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, monospace">(partial|complete)</text>
+<text class="ts g5-sub" x="165" y="296" text-anchor="middle">| = alternation (OR)</text>
+
+<!-- Connective tissue -->
+<rect class="gc-box" x="310" y="230" width="340" height="86" rx="10"/>
+<text class="th gc-title" x="480" y="254" text-anchor="middle">Connective tissue (gray)</text>
+<text class="ts gc-sub" x="480" y="276" text-anchor="middle" font-family="ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, monospace">\s+  strain  16S = literals</text>
+<text class="ts gc-sub" x="480" y="296" text-anchor="middle">matched but not captured</text>
+
+</svg>

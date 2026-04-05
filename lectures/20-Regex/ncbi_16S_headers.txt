@@ -1,0 +1,10 @@
+>NR_074769.1 Escherichia coli strain U 5/41 16S ribosomal RNA, partial sequence
+>NR_028687.1 Pseudomonas fluorescens strain ATCC 13525 16S ribosomal RNA, complete sequence
+>NR_112116.1 Bacillus cereus strain ATCC 14579 16S ribosomal RNA, partial sequence
+>NR_041263.1 Clostridium botulinum strain ATCC 25763 16S ribosomal RNA, complete sequence
+>NR_044946.1 Pseudomonas putida strain NBRC 14164 16S ribosomal RNA, partial sequence
+>NR_113266.1 Bacillus subtilis strain JCM 1465 16S ribosomal RNA, complete sequence
+>NR_036861.1 Streptomyces griseus strain NBRC 13350 16S ribosomal RNA, partial sequence
+>NR_074828.1 Escherichia coli strain K-12 substr. MG1655 16S ribosomal RNA, complete sequence
+>NR_025530.1 Pseudomonas aeruginosa strain DSM 50071 16S ribosomal RNA, partial sequence
+>NR_116594.1 Clostridium difficile strain ATCC 9689 16S ribosomal RNA, complete sequence

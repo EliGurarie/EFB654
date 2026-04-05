@@ -1,0 +1,41 @@
+<svg width="100%" viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg">
+
+<style>
+  .ts { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 12px; fill: #5F5E5A; }
+  .mono { font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, monospace; font-size: 12px; }
+  .bg-box { fill: #F1EFE8; stroke: #D3D1C7; stroke-width: 0.5; }
+</style>
+
+<rect class="bg-box" x="30" y="10" width="620" height="110" rx="8"/>
+
+<text class="mono" y="32">
+<tspan x="42" fill="#888780">&gt;</tspan><tspan fill="#185FA5" font-weight="500">NR_074769.1</tspan><tspan fill="#888780"> </tspan><tspan fill="#0F6E56" font-weight="500">Escherichia coli</tspan><tspan fill="#888780"> strain </tspan><tspan fill="#854F0B" font-weight="500">U 5/41</tspan><tspan fill="#888780"> 16S ribosomal RNA, </tspan><tspan fill="#993C1D" font-weight="500">partial</tspan><tspan fill="#888780"> sequence</tspan>
+</text>
+
+<text class="mono" y="50">
+<tspan x="42" fill="#888780">&gt;</tspan><tspan fill="#185FA5" font-weight="500">NR_028687.1</tspan><tspan fill="#888780"> </tspan><tspan fill="#0F6E56" font-weight="500">Pseudomonas fluorescens</tspan><tspan fill="#888780"> strain </tspan><tspan fill="#854F0B" font-weight="500">ATCC 13525</tspan><tspan fill="#888780"> 16S ... </tspan><tspan fill="#993C1D" font-weight="500">complete</tspan><tspan fill="#888780"> seq</tspan>
+</text>
+
+<text class="mono" y="68">
+<tspan x="42" fill="#888780">&gt;</tspan><tspan fill="#185FA5" font-weight="500">NR_112116.1</tspan><tspan fill="#888780"> </tspan><tspan fill="#0F6E56" font-weight="500">Bacillus cereus</tspan><tspan fill="#888780"> strain </tspan><tspan fill="#854F0B" font-weight="500">ATCC 14579</tspan><tspan fill="#888780"> 16S ... </tspan><tspan fill="#993C1D" font-weight="500">partial</tspan><tspan fill="#888780"> seq</tspan>
+</text>
+
+<text class="mono" y="86">
+<tspan x="42" fill="#888780">&gt;</tspan><tspan fill="#185FA5" font-weight="500">NR_036861.1</tspan><tspan fill="#888780"> </tspan><tspan fill="#0F6E56" font-weight="500">Streptomyces griseus</tspan><tspan fill="#888780"> strain </tspan><tspan fill="#854F0B" font-weight="500">NBRC 13350</tspan><tspan fill="#888780"> 16S ... </tspan><tspan fill="#993C1D" font-weight="500">partial</tspan><tspan fill="#888780"> seq</tspan>
+</text>
+
+<text class="mono" y="104">
+<tspan x="42" fill="#888780">&gt;</tspan><tspan fill="#185FA5" font-weight="500">NR_074828.1</tspan><tspan fill="#888780"> </tspan><tspan fill="#0F6E56" font-weight="500">Escherichia coli</tspan><tspan fill="#888780"> strain </tspan><tspan fill="#854F0B" font-weight="500">K-12 substr. MG1655</tspan><tspan fill="#888780"> 16S ... </tspan><tspan fill="#993C1D" font-weight="500">complete</tspan><tspan fill="#888780"> seq</tspan>
+</text>
+
+<!-- Legend -->
+<rect rx="2" x="42" y="140" width="12" height="12" fill="#185FA5"/>
+<text class="ts" x="60" y="151">accession</text>
+<rect rx="2" x="140" y="140" width="12" height="12" fill="#0F6E56"/>
+<text class="ts" x="158" y="151">genus + species</text>
+<rect rx="2" x="280" y="140" width="12" height="12" fill="#854F0B"/>
+<text class="ts" x="298" y="151">strain</text>
+<rect rx="2" x="370" y="140" width="12" height="12" fill="#993C1D"/>
+<text class="ts" x="388" y="151">coverage</text>
+
+</svg>
