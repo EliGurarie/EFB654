@@ -1,6 +1,6 @@
 ---
 title: Regular Expressions in R
-author: Hyatt Green
+author: ""
 date: April 6, 2026
 output: 
   ioslides_presentation:
@@ -53,6 +53,17 @@ Regex vocabulary
 Regex vocabulary (continued)
 ----
 
+| Token | Meaning | Negation | Meaning |
+|-------|---------|----------|---------|
+| `\\d` | any digit (0-9) | `\\D` | any non-digit |
+| `\\w` | word character (letter, digit, _) | `\\W` | any non-word character |
+| `\\s` | whitespace (space, tab, newline) | `\\S` | any non-whitespace |
+| `\\b` | word boundary | `\\B` | non-boundary position |
+
+
+Regex vocabulary (continued)
+----
+
 | Token | Meaning | Example |
 |-------|---------|---------|
 | `{n}` | exactly n times | `\\d{4}` matches "2025" |
@@ -73,7 +84,7 @@ Regex vocabulary (continued)
 | `(?<=...)` | positive lookbehind: "preceded by" | `(?<=USGS )\\d+` matches digits after "USGS " |
 | `(?<!...)` | negative lookbehind: "not preceded by" | `(?<!Dr\\.)\\s[A-Z]` skips titles |
 | `.+?` | lazy quantifier: match as few as possible | `.+?\\s` stops at first space |
-| `|` | alternation (OR) | `partial\|complete` matches either |
+| `|` | alternation (OR) | `partial|complete` matches either |
 
 **`perl = TRUE`** is required for lookaheads in R.
 
@@ -267,16 +278,49 @@ grep("^(?!.*Clostridium)", seqs, value = TRUE, perl = TRUE)
 
  - `^(?!.*Clostridium)` -- "from the start, never encounter 'Clostridium' anywhere on this line"
 
-Exclusion patterns summary
+Exclude entire lines
 ----
 
-| Goal | Pattern |
-|------|---------|
-| Exclude one species | `Pseudo\\s+(?!aerug\\b)\\w+` |
-| Exclude several | `Pseudo\\s+(?!aerug\\b\|putida\\b)\\w+` |
-| Exclude lines with a genus | `^(?!.*Clostridium)` |
+Another option: postively match `Clostridium`, but use `invert = TRUE` to invert the selection.
 
-All require `perl = TRUE`.
+
+``` r
+grep("Clostridium", seqs, value = TRUE, perl = TRUE, invert = TRUE)
+```
+
+```
+## [1] ">NR_074769.1 Escherichia coli strain U 5/41 16S ribosomal RNA, partial sequence"              
+## [2] ">NR_028687.1 Pseudomonas fluorescens strain ATCC 13525 16S ribosomal RNA, complete sequence"  
+## [3] ">NR_112116.1 Bacillus cereus strain ATCC 14579 16S ribosomal RNA, partial sequence"           
+## [4] ">NR_044946.1 Pseudomonas putida strain NBRC 14164 16S ribosomal RNA, partial sequence"        
+## [5] ">NR_113266.1 Bacillus subtilis strain JCM 1465 16S ribosomal RNA, complete sequence"          
+## [6] ">NR_036861.1 Streptomyces griseus strain NBRC 13350 16S ribosomal RNA, partial sequence"      
+## [7] ">NR_074828.1 Escherichia coli strain K-12 substr. MG1655 16S ribosomal RNA, complete sequence"
+## [8] ">NR_025530.1 Pseudomonas aeruginosa strain DSM 50071 16S ribosomal RNA, partial sequence"
+```
+
+Exclude entire lines
+----
+
+An option that's much more restrictive (`fixed = TRUE`), but simpler to write.
+
+
+``` r
+grep("Clostridium", seqs, value = TRUE, fixed = TRUE, invert = TRUE)
+```
+
+```
+## [1] ">NR_074769.1 Escherichia coli strain U 5/41 16S ribosomal RNA, partial sequence"              
+## [2] ">NR_028687.1 Pseudomonas fluorescens strain ATCC 13525 16S ribosomal RNA, complete sequence"  
+## [3] ">NR_112116.1 Bacillus cereus strain ATCC 14579 16S ribosomal RNA, partial sequence"           
+## [4] ">NR_044946.1 Pseudomonas putida strain NBRC 14164 16S ribosomal RNA, partial sequence"        
+## [5] ">NR_113266.1 Bacillus subtilis strain JCM 1465 16S ribosomal RNA, complete sequence"          
+## [6] ">NR_036861.1 Streptomyces griseus strain NBRC 13350 16S ribosomal RNA, partial sequence"      
+## [7] ">NR_074828.1 Escherichia coli strain K-12 substr. MG1655 16S ribosomal RNA, complete sequence"
+## [8] ">NR_025530.1 Pseudomonas aeruginosa strain DSM 50071 16S ribosomal RNA, partial sequence"
+```
+
+ - Not working with regular expressions anymore. Verbatim matches only.
 
 # Using Claude to Build a Harder Regex
 
@@ -289,6 +333,13 @@ We want **five fields** from each header in a data frame: accession, genus, spec
 
 That's harder than anything we've written so far. This is where Claude can help -- **if you use it well**.
 
+
+Major Issues with AI (at least)
+----
+
+ - Cognitive offloading, leading to skill atrophy
+ - Validity of output
+ - Environmental footprint
 
 ----
 
@@ -312,7 +363,7 @@ Using AI well
 | **Invalid output** | Always run the code and check edge cases |
 | | Include example data in your prompt |
 | **Energy footprint** | One specific prompt beats five vague ones |
-| | Use the smallest model that fits the task |
+| | Use the smallest model that fits the task (i.e., Sonnet vs Opus)|
 
 
 The prompt
@@ -348,6 +399,10 @@ Use `regexec()` with `perl = TRUE`, then `regmatches()` to extract.
 
 Energy: ~0.3 Wh for this query. At 7W for a laptop screen, that's about 2.6 minutes of screen time.
 </div>
+
+----
+
+<img src="./imgs/ncbi_regex_anatomy.svg" alt="" width="100%" />
 
 `regexec()` + `regmatches()`
 ----
@@ -477,10 +532,6 @@ regexec(pattern, seqs, perl = TRUE)
 ## [1] "chars"
 ```
 
-----
-
-<img src="./imgs/ncbi_regex_anatomy.svg" alt="" width="100%" />
-
 Building a data frame from the matches
 ----
 
@@ -504,7 +555,7 @@ do.call(rbind, lapply(m, function(x) x[2:6]))
 
  > - `lapply(m, function(x) x[2:6])` -- loop over the list, pull out positions 2--6 (the five capture groups) from each element
  > - `do.call(rbind, ...)` -- take that list and stack each element as a row in a matrix
- > - Same as `rbind(m[[1]][2:6], m[[2]][2:6], ...)` but without typing every element
+ > - Same as `rbind(m[[1]][2:6], m[[2]][2:6], ...)` but without all that typing
 
 Result
 ----
@@ -530,13 +581,21 @@ result
 
 # Closing
 
-Energy context
+Considerations for Regular Expressions
+----
+
+ - All dependent on how well you know your data
+ - Formatting standards are crucial 
+ - Testing your regex is crucial
+ - If possible, use data frames with one variable assigned to one column
+
+AI Energy Usage (approximate)
 ----
 
  > - A typical Claude query: ~0.3 Wh (Epoch AI; Google, 2025)
  > - Complex reasoning queries: 7--40 Wh
  > - Five sloppy prompts = 5x the energy of one good one
- > - Asking Claude to develop the regex took an equivalent of roughly 2.6 min of laptop power. 
+ > - Asking Claude to develop the regex took an equivalent of roughly 5 min of laptop power including generating a diagram showing me how it works. 
  >      + Is that worth it? It would have taken me maybe *2 hours* on my laptop.
  >      + What about water usage for cooling? Other unaccounted for environmental impacts?
 
@@ -573,15 +632,3 @@ Solution (for next class)
 
  - `(?<=USGS )` -- **positive lookbehind**: match digits *after* "USGS "
  - Lookbehinds check what comes *before* the match
-
-References
-----
-
-| Topic | Source |
-|-------|--------|
-| Energy per query (~0.3 Wh) | Epoch AI, 2025; Google, 2025 |
-| Reasoning model energy (7--40 Wh) | IEEE Spectrum, 2025 |
-| Cognitive offloading | Gerlich, 2025 (n=666) |
-| Student AI use patterns | Anthropic, 2025 |
-| Code hallucinations (~20%) | UT / VT / OU joint study |
-| Regex in R | `?regex`; R docs on PCRE |

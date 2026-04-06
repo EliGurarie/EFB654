@@ -30,7 +30,7 @@
       // Author information
       presenters: [
             {
-        name:  'Hyatt Green' ,
+        name:  '' ,
         company: '',
         gplus: '',
         twitter: '',
@@ -3282,6 +3282,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 </article></slide><slide class=""><hgroup><h2>Regex vocabulary (continued)</h2></hgroup><article  id="regex-vocabulary-continued">
 
 <table class = 'rmdtable'>
+<col width="20.000000%" />
+<col width="25.714286%" />
+<col width="28.571429%" />
+<col width="25.714286%" />
+<tr class="header">
+<th align="left">Token</th>
+<th align="left">Meaning</th>
+<th align="left">Negation</th>
+<th align="left">Meaning</th>
+</tr>
+<tr class="odd">
+<td align="left"><code>\\d</code></td>
+<td align="left">any digit (0-9)</td>
+<td align="left"><code>\\D</code></td>
+<td align="left">any non-digit</td>
+</tr>
+<tr class="even">
+<td align="left"><code>\\w</code></td>
+<td align="left">word character (letter, digit, _)</td>
+<td align="left"><code>\\W</code></td>
+<td align="left">any non-word character</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>\\s</code></td>
+<td align="left">whitespace (space, tab, newline)</td>
+<td align="left"><code>\\S</code></td>
+<td align="left">any non-whitespace</td>
+</tr>
+<tr class="even">
+<td align="left"><code>\\b</code></td>
+<td align="left">word boundary</td>
+<td align="left"><code>\\B</code></td>
+<td align="left">non-boundary position</td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2>Regex vocabulary (continued)</h2></hgroup><article  id="regex-vocabulary-continued-1">
+
+<table class = 'rmdtable'>
 <tr class="header">
 <th align="left">Token</th>
 <th align="left">Meaning</th>
@@ -3324,7 +3363,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2>Regex vocabulary (continued)</h2></hgroup><article  id="regex-vocabulary-continued-1">
+</article></slide><slide class=""><hgroup><h2>Regex vocabulary (continued)</h2></hgroup><article  id="regex-vocabulary-continued-2">
 
 <table class = 'rmdtable'>
 <col width="28.000000%" />
@@ -3363,7 +3402,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 <tr class="even">
 <td align="left"><code>|</code></td>
 <td align="left">alternation (OR)</td>
-<td align="left"><code>partial\|complete</code> matches either</td>
+<td align="left"><code>partial|complete</code> matches either</td>
 </tr>
 </table>
 
@@ -3508,28 +3547,39 @@ seqs[1:3]</pre>
 <li><code>^(?!.*Clostridium)</code> – &ldquo;from the start, never encounter &lsquo;Clostridium&rsquo; anywhere on this line&rdquo;</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Exclusion patterns summary</h2></hgroup><article  id="exclusion-patterns-summary">
+</article></slide><slide class=""><hgroup><h2>Exclude entire lines</h2></hgroup><article  id="exclude-entire-lines-1">
 
-<table class = 'rmdtable'>
-<tr class="header">
-<th align="left">Goal</th>
-<th align="left">Pattern</th>
-</tr>
-<tr class="odd">
-<td align="left">Exclude one species</td>
-<td align="left"><code>Pseudo\\s+(?!aerug\\b)\\w+</code></td>
-</tr>
-<tr class="even">
-<td align="left">Exclude several</td>
-<td align="left"><code>Pseudo\\s+(?!aerug\\b\|putida\\b)\\w+</code></td>
-</tr>
-<tr class="odd">
-<td align="left">Exclude lines with a genus</td>
-<td align="left"><code>^(?!.*Clostridium)</code></td>
-</tr>
-</table>
+<p>Another option: postively match <code>Clostridium</code>, but use <code>invert = TRUE</code> to invert the selection.</p>
 
-<p>All require <code>perl = TRUE</code>.</p>
+<pre class = 'prettyprint lang-r'>grep(&quot;Clostridium&quot;, seqs, value = TRUE, perl = TRUE, invert = TRUE)</pre>
+
+<pre >## [1] &quot;&gt;NR_074769.1 Escherichia coli strain U 5/41 16S ribosomal RNA, partial sequence&quot;              
+## [2] &quot;&gt;NR_028687.1 Pseudomonas fluorescens strain ATCC 13525 16S ribosomal RNA, complete sequence&quot;  
+## [3] &quot;&gt;NR_112116.1 Bacillus cereus strain ATCC 14579 16S ribosomal RNA, partial sequence&quot;           
+## [4] &quot;&gt;NR_044946.1 Pseudomonas putida strain NBRC 14164 16S ribosomal RNA, partial sequence&quot;        
+## [5] &quot;&gt;NR_113266.1 Bacillus subtilis strain JCM 1465 16S ribosomal RNA, complete sequence&quot;          
+## [6] &quot;&gt;NR_036861.1 Streptomyces griseus strain NBRC 13350 16S ribosomal RNA, partial sequence&quot;      
+## [7] &quot;&gt;NR_074828.1 Escherichia coli strain K-12 substr. MG1655 16S ribosomal RNA, complete sequence&quot;
+## [8] &quot;&gt;NR_025530.1 Pseudomonas aeruginosa strain DSM 50071 16S ribosomal RNA, partial sequence&quot;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Exclude entire lines</h2></hgroup><article  id="exclude-entire-lines-2">
+
+<p>An option that’s much more restrictive (<code>fixed = TRUE</code>), but simpler to write.</p>
+
+<pre class = 'prettyprint lang-r'>grep(&quot;Clostridium&quot;, seqs, value = TRUE, fixed = TRUE, invert = TRUE)</pre>
+
+<pre >## [1] &quot;&gt;NR_074769.1 Escherichia coli strain U 5/41 16S ribosomal RNA, partial sequence&quot;              
+## [2] &quot;&gt;NR_028687.1 Pseudomonas fluorescens strain ATCC 13525 16S ribosomal RNA, complete sequence&quot;  
+## [3] &quot;&gt;NR_112116.1 Bacillus cereus strain ATCC 14579 16S ribosomal RNA, partial sequence&quot;           
+## [4] &quot;&gt;NR_044946.1 Pseudomonas putida strain NBRC 14164 16S ribosomal RNA, partial sequence&quot;        
+## [5] &quot;&gt;NR_113266.1 Bacillus subtilis strain JCM 1465 16S ribosomal RNA, complete sequence&quot;          
+## [6] &quot;&gt;NR_036861.1 Streptomyces griseus strain NBRC 13350 16S ribosomal RNA, partial sequence&quot;      
+## [7] &quot;&gt;NR_074828.1 Escherichia coli strain K-12 substr. MG1655 16S ribosomal RNA, complete sequence&quot;
+## [8] &quot;&gt;NR_025530.1 Pseudomonas aeruginosa strain DSM 50071 16S ribosomal RNA, partial sequence&quot;</pre>
+
+<ul>
+<li>Not working with regular expressions anymore. Verbatim matches only.</li>
+</ul>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Using Claude to Build a Harder Regex</h2></hgroup><article  id="using-claude-to-build-a-harder-regex">
 
@@ -3540,6 +3590,14 @@ seqs[1:3]</pre>
 <p><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgdmlld0JveD0iMCAwIDY4MCAxNzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgo8c3R5bGU+CiAgLnRzIHsgZm9udC1mYW1pbHk6IC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgIlNlZ29lIFVJIiwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB4OyBmaWxsOiAjNUY1RTVBOyB9CiAgLm1vbm8geyBmb250LWZhbWlseTogdWktbW9ub3NwYWNlLCAnQ2FzY2FkaWEgQ29kZScsICdTRiBNb25vJywgTWVubG8sIG1vbm9zcGFjZTsgZm9udC1zaXplOiAxMnB4OyB9CiAgLmJnLWJveCB7IGZpbGw6ICNGMUVGRTg7IHN0cm9rZTogI0QzRDFDNzsgc3Ryb2tlLXdpZHRoOiAwLjU7IH0KPC9zdHlsZT4KCjxyZWN0IGNsYXNzPSJiZy1ib3giIHg9IjMwIiB5PSIxMCIgd2lkdGg9IjYyMCIgaGVpZ2h0PSIxMTAiIHJ4PSI4Ii8+Cgo8dGV4dCBjbGFzcz0ibW9ubyIgeT0iMzIiPgo8dHNwYW4geD0iNDIiIGZpbGw9IiM4ODg3ODAiPiZndDs8L3RzcGFuPjx0c3BhbiBmaWxsPSIjMTg1RkE1IiBmb250LXdlaWdodD0iNTAwIj5OUl8wNzQ3NjkuMTwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPiA8L3RzcGFuPjx0c3BhbiBmaWxsPSIjMEY2RTU2IiBmb250LXdlaWdodD0iNTAwIj5Fc2NoZXJpY2hpYSBjb2xpPC90c3Bhbj48dHNwYW4gZmlsbD0iIzg4ODc4MCI+IHN0cmFpbiA8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODU0RjBCIiBmb250LXdlaWdodD0iNTAwIj5VIDUvNDE8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODg4NzgwIj4gMTZTIHJpYm9zb21hbCBSTkEsIDwvdHNwYW4+PHRzcGFuIGZpbGw9IiM5OTNDMUQiIGZvbnQtd2VpZ2h0PSI1MDAiPnBhcnRpYWw8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODg4NzgwIj4gc2VxdWVuY2U8L3RzcGFuPgo8L3RleHQ+Cgo8dGV4dCBjbGFzcz0ibW9ubyIgeT0iNTAiPgo8dHNwYW4geD0iNDIiIGZpbGw9IiM4ODg3ODAiPiZndDs8L3RzcGFuPjx0c3BhbiBmaWxsPSIjMTg1RkE1IiBmb250LXdlaWdodD0iNTAwIj5OUl8wMjg2ODcuMTwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPiA8L3RzcGFuPjx0c3BhbiBmaWxsPSIjMEY2RTU2IiBmb250LXdlaWdodD0iNTAwIj5Qc2V1ZG9tb25hcyBmbHVvcmVzY2VuczwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPiBzdHJhaW4gPC90c3Bhbj48dHNwYW4gZmlsbD0iIzg1NEYwQiIgZm9udC13ZWlnaHQ9IjUwMCI+QVRDQyAxMzUyNTwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPiAxNlMgLi4uIDwvdHNwYW4+PHRzcGFuIGZpbGw9IiM5OTNDMUQiIGZvbnQtd2VpZ2h0PSI1MDAiPmNvbXBsZXRlPC90c3Bhbj48dHNwYW4gZmlsbD0iIzg4ODc4MCI+IHNlcTwvdHNwYW4+CjwvdGV4dD4KCjx0ZXh0IGNsYXNzPSJtb25vIiB5PSI2OCI+Cjx0c3BhbiB4PSI0MiIgZmlsbD0iIzg4ODc4MCI+Jmd0OzwvdHNwYW4+PHRzcGFuIGZpbGw9IiMxODVGQTUiIGZvbnQtd2VpZ2h0PSI1MDAiPk5SXzExMjExNi4xPC90c3Bhbj48dHNwYW4gZmlsbD0iIzg4ODc4MCI+IDwvdHNwYW4+PHRzcGFuIGZpbGw9IiMwRjZFNTYiIGZvbnQtd2VpZ2h0PSI1MDAiPkJhY2lsbHVzIGNlcmV1czwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPiBzdHJhaW4gPC90c3Bhbj48dHNwYW4gZmlsbD0iIzg1NEYwQiIgZm9udC13ZWlnaHQ9IjUwMCI+QVRDQyAxNDU3OTwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPiAxNlMgLi4uIDwvdHNwYW4+PHRzcGFuIGZpbGw9IiM5OTNDMUQiIGZvbnQtd2VpZ2h0PSI1MDAiPnBhcnRpYWw8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODg4NzgwIj4gc2VxPC90c3Bhbj4KPC90ZXh0PgoKPHRleHQgY2xhc3M9Im1vbm8iIHk9Ijg2Ij4KPHRzcGFuIHg9IjQyIiBmaWxsPSIjODg4NzgwIj4mZ3Q7PC90c3Bhbj48dHNwYW4gZmlsbD0iIzE4NUZBNSIgZm9udC13ZWlnaHQ9IjUwMCI+TlJfMDM2ODYxLjE8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODg4NzgwIj4gPC90c3Bhbj48dHNwYW4gZmlsbD0iIzBGNkU1NiIgZm9udC13ZWlnaHQ9IjUwMCI+U3RyZXB0b215Y2VzIGdyaXNldXM8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODg4NzgwIj4gc3RyYWluIDwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4NTRGMEIiIGZvbnQtd2VpZ2h0PSI1MDAiPk5CUkMgMTMzNTA8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODg4NzgwIj4gMTZTIC4uLiA8L3RzcGFuPjx0c3BhbiBmaWxsPSIjOTkzQzFEIiBmb250LXdlaWdodD0iNTAwIj5wYXJ0aWFsPC90c3Bhbj48dHNwYW4gZmlsbD0iIzg4ODc4MCI+IHNlcTwvdHNwYW4+CjwvdGV4dD4KCjx0ZXh0IGNsYXNzPSJtb25vIiB5PSIxMDQiPgo8dHNwYW4geD0iNDIiIGZpbGw9IiM4ODg3ODAiPiZndDs8L3RzcGFuPjx0c3BhbiBmaWxsPSIjMTg1RkE1IiBmb250LXdlaWdodD0iNTAwIj5OUl8wNzQ4MjguMTwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPiA8L3RzcGFuPjx0c3BhbiBmaWxsPSIjMEY2RTU2IiBmb250LXdlaWdodD0iNTAwIj5Fc2NoZXJpY2hpYSBjb2xpPC90c3Bhbj48dHNwYW4gZmlsbD0iIzg4ODc4MCI+IHN0cmFpbiA8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODU0RjBCIiBmb250LXdlaWdodD0iNTAwIj5LLTEyIHN1YnN0ci4gTUcxNjU1PC90c3Bhbj48dHNwYW4gZmlsbD0iIzg4ODc4MCI+IDE2UyAuLi4gPC90c3Bhbj48dHNwYW4gZmlsbD0iIzk5M0MxRCIgZm9udC13ZWlnaHQ9IjUwMCI+Y29tcGxldGU8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODg4NzgwIj4gc2VxPC90c3Bhbj4KPC90ZXh0PgoKPCEtLSBMZWdlbmQgLS0+CjxyZWN0IHJ4PSIyIiB4PSI0MiIgeT0iMTQwIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9IiMxODVGQTUiLz4KPHRleHQgY2xhc3M9InRzIiB4PSI2MCIgeT0iMTUxIj5hY2Nlc3Npb248L3RleHQ+CjxyZWN0IHJ4PSIyIiB4PSIxNDAiIHk9IjE0MCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjMEY2RTU2Ii8+Cjx0ZXh0IGNsYXNzPSJ0cyIgeD0iMTU4IiB5PSIxNTEiPmdlbnVzICsgc3BlY2llczwvdGV4dD4KPHJlY3Qgcng9IjIiIHg9IjI4MCIgeT0iMTQwIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9IiM4NTRGMEIiLz4KPHRleHQgY2xhc3M9InRzIiB4PSIyOTgiIHk9IjE1MSI+c3RyYWluPC90ZXh0Pgo8cmVjdCByeD0iMiIgeD0iMzcwIiB5PSIxNDAiIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgZmlsbD0iIzk5M0MxRCIvPgo8dGV4dCBjbGFzcz0idHMiIHg9IjM4OCIgeT0iMTUxIj5jb3ZlcmFnZTwvdGV4dD4KCjwvc3ZnPg==" alt="" width="100%" /></p>
 
 <p>That’s harder than anything we’ve written so far. This is where Claude can help – <strong>if you use it well</strong>.</p>
+
+</article></slide><slide class=""><hgroup><h2>Major Issues with AI (at least)</h2></hgroup><article  id="major-issues-with-ai-at-least">
+
+<ul>
+<li>Cognitive offloading, leading to skill atrophy</li>
+<li>Validity of output</li>
+<li>Environmental footprint</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
@@ -3613,7 +3671,7 @@ seqs[1:3]</pre>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">Use the smallest model that fits the task</td>
+<td align="left">Use the smallest model that fits the task (i.e., Sonnet vs Opus)</td>
 </tr>
 </table>
 
@@ -3646,6 +3704,10 @@ seqs[1:3]</pre>
 <p>Use <code>regexec()</code> with <code>perl = TRUE</code>, then <code>regmatches()</code> to extract.</p>
 
 <p>Energy: ~0.3 Wh for this query. At 7W for a laptop screen, that’s about 2.6 minutes of screen time.</p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<p><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgdmlld0JveD0iMCAwIDY4MCAzNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgo8c3R5bGU+CiAgLnRzIHsgZm9udC1mYW1pbHk6IC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgIlNlZ29lIFVJIiwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB4OyBmaWxsOiAjNUY1RTVBOyB9CiAgLnRoIHsgZm9udC1mYW1pbHk6IC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgIlNlZ29lIFVJIiwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyBmaWxsOiAjMkMyQzJBOyBmb250LXdlaWdodDogNTAwOyB9CgogIC8qIEdyb3VwIDE6IEJsdWUgKi8KICAuZzEtYm94IHsgZmlsbDogI0U2RjFGQjsgc3Ryb2tlOiAjMTg1RkE1OyBzdHJva2Utd2lkdGg6IDAuNTsgfQogIC5nMS10aXRsZSB7IGZpbGw6ICMwQzQ0N0M7IH0KICAuZzEtc3ViIHsgZmlsbDogIzE4NUZBNTsgfQoKICAvKiBHcm91cHMgMiszOiBUZWFsICovCiAgLmcyMy1ib3ggeyBmaWxsOiAjRTFGNUVFOyBzdHJva2U6ICMwRjZFNTY7IHN0cm9rZS13aWR0aDogMC41OyB9CiAgLmcyMy10aXRsZSB7IGZpbGw6ICMwODUwNDE7IH0KICAuZzIzLXN1YiB7IGZpbGw6ICMwRjZFNTY7IH0KCiAgLyogR3JvdXAgNDogQW1iZXIgKi8KICAuZzQtYm94IHsgZmlsbDogI0ZBRUVEQTsgc3Ryb2tlOiAjODU0RjBCOyBzdHJva2Utd2lkdGg6IDAuNTsgfQogIC5nNC10aXRsZSB7IGZpbGw6ICM2MzM4MDY7IH0KICAuZzQtc3ViIHsgZmlsbDogIzg1NEYwQjsgfQoKICAvKiBHcm91cCA1OiBDb3JhbCAqLwogIC5nNS1ib3ggeyBmaWxsOiAjRkFFQ0U3OyBzdHJva2U6ICM5OTNDMUQ7IHN0cm9rZS13aWR0aDogMC41OyB9CiAgLmc1LXRpdGxlIHsgZmlsbDogIzcxMkIxMzsgfQogIC5nNS1zdWIgeyBmaWxsOiAjOTkzQzFEOyB9CgogIC8qIENvbm5lY3RpdmU6IEdyYXkgKi8KICAuZ2MtYm94IHsgZmlsbDogI0YxRUZFODsgc3Ryb2tlOiAjNUY1RTVBOyBzdHJva2Utd2lkdGg6IDAuNTsgfQogIC5nYy10aXRsZSB7IGZpbGw6ICM0NDQ0NDE7IH0KICAuZ2Mtc3ViIHsgZmlsbDogIzVGNUU1QTsgfQo8L3N0eWxlPgoKPCEtLSBUaXRsZSAtLT4KPHRleHQgY2xhc3M9InRoIiB4PSIzNDAiIHk9IjI4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BbmF0b215IG9mIHRoZSBOQ0JJIGhlYWRlciByZWdleDwvdGV4dD4KCjwhLS0gUmVnZXggc3RyaW5nIHdpdGggY29sb3JlZCB0b2tlbnMgLS0+CjxyZWN0IHg9IjMwIiB5PSI0NCIgd2lkdGg9IjYyMCIgaGVpZ2h0PSI1MCIgcng9IjgiIGZpbGw9IiNGMUVGRTgiIHN0cm9rZT0iI0QzRDFDNyIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KPHRleHQgeT0iNjQiIGZvbnQtZmFtaWx5PSJ1aS1tb25vc3BhY2UsICdDYXNjYWRpYSBDb2RlJywgJ1NGIE1vbm8nLCBNZW5sbywgbW9ub3NwYWNlIiBmb250LXNpemU9IjExLjUiPgo8dHNwYW4geD0iNDQiIGZpbGw9IiM4ODg3ODAiPiZndDs8L3RzcGFuPjx0c3BhbiBmaWxsPSIjMTg1RkE1IiBmb250LXdlaWdodD0iNTAwIj4oTlJfXGQrXC5cZCspPC90c3Bhbj48dHNwYW4gZmlsbD0iIzg4ODc4MCI+XHMrPC90c3Bhbj48dHNwYW4gZmlsbD0iIzBGNkU1NiIgZm9udC13ZWlnaHQ9IjUwMCI+KFtBLVpdW2Etel0rKTwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPlxzPC90c3Bhbj48dHNwYW4gZmlsbD0iIzBGNkU1NiIgZm9udC13ZWlnaHQ9IjUwMCI+KFthLXpdKyk8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODg4NzgwIj5ccytzdHJhaW5ccys8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODU0RjBCIiBmb250LXdlaWdodD0iNTAwIj4oLis/KTwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPlxzKzE2Uy4qPzwvdHNwYW4+PHRzcGFuIGZpbGw9IiM5OTNDMUQiIGZvbnQtd2VpZ2h0PSI1MDAiPihwYXJ0aWFsfGNvbXBsZXRlKTwvdHNwYW4+CjwvdGV4dD4KPHRleHQgeT0iODQiIGZvbnQtc2l6ZT0iMTAiIGZvbnQtZmFtaWx5PSJ1aS1tb25vc3BhY2UsICdDYXNjYWRpYSBDb2RlJywgJ1NGIE1vbm8nLCBNZW5sbywgbW9ub3NwYWNlIj4KPHRzcGFuIHg9IjYyIiBmaWxsPSIjMTg1RkE1Ij5ncm91cCAxPC90c3Bhbj48dHNwYW4geD0iMTk2IiBmaWxsPSIjMEY2RTU2Ij5ncm91cCAyPC90c3Bhbj48dHNwYW4geD0iMzA2IiBmaWxsPSIjMEY2RTU2Ij5ncm91cCAzPC90c3Bhbj48dHNwYW4geD0iNDAwIiBmaWxsPSIjODU0RjBCIj5ncm91cCA0PC90c3Bhbj48dHNwYW4geD0iNTEwIiBmaWxsPSIjOTkzQzFEIj5ncm91cCA1PC90c3Bhbj4KPC90ZXh0PgoKPCEtLSBHcm91cCAxOiBBY2Nlc3Npb24gLS0+CjxyZWN0IGNsYXNzPSJnMS1ib3giIHg9IjQwIiB5PSIxMTAiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTAwIiByeD0iMTAiLz4KPHRleHQgY2xhc3M9InRoIGcxLXRpdGxlIiB4PSIxNTAiIHk9IjEzNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R3JvdXAgMTogYWNjZXNzaW9uPC90ZXh0Pgo8dGV4dCBjbGFzcz0idHMgZzEtc3ViIiB4PSIxNTAiIHk9IjE1NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InVpLW1vbm9zcGFjZSwgJ0Nhc2NhZGlhIENvZGUnLCAnU0YgTW9ubycsIE1lbmxvLCBtb25vc3BhY2UiPihOUl9cZCtcLlxkKyk8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnMS1zdWIiIHg9IjE1MCIgeT0iMTc2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5cZCsgPSBvbmUgb3IgbW9yZSBkaWdpdHM8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnMS1zdWIiIHg9IjE1MCIgeT0iMTkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5cLiA9IGxpdGVyYWwgZG90IChlc2NhcGVkKTwvdGV4dD4KCjwhLS0gR3JvdXBzIDIrMzogR2VudXMgKyBzcGVjaWVzIC0tPgo8cmVjdCBjbGFzcz0iZzIzLWJveCIgeD0iMjgwIiB5PSIxMTAiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTAwIiByeD0iMTAiLz4KPHRleHQgY2xhc3M9InRoIGcyMy10aXRsZSIgeD0iMzkwIiB5PSIxMzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdyb3VwcyAyKzM6IHNwZWNpZXM8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnMjMtc3ViIiB4PSIzOTAiIHk9IjE1NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InVpLW1vbm9zcGFjZSwgJ0Nhc2NhZGlhIENvZGUnLCAnU0YgTW9ubycsIE1lbmxvLCBtb25vc3BhY2UiPihbQS1aXVthLXpdKylccyhbYS16XSspPC90ZXh0Pgo8dGV4dCBjbGFzcz0idHMgZzIzLXN1YiIgeD0iMzkwIiB5PSIxNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPltBLVpdID0gb25lIGNhcGl0YWwgbGV0dGVyPC90ZXh0Pgo8dGV4dCBjbGFzcz0idHMgZzIzLXN1YiIgeD0iMzkwIiB5PSIxOTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlthLXpdKyA9IGxvd2VyY2FzZSBsZXR0ZXJzPC90ZXh0PgoKPCEtLSBHcm91cCA0OiBTdHJhaW4gLS0+CjxyZWN0IGNsYXNzPSJnNC1ib3giIHg9IjUyMCIgeT0iMTEwIiB3aWR0aD0iMTMwIiBoZWlnaHQ9IjEwMCIgcng9IjEwIi8+Cjx0ZXh0IGNsYXNzPSJ0aCBnNC10aXRsZSIgeD0iNTg1IiB5PSIxMzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdyb3VwIDQ6IHN0cmFpbjwvdGV4dD4KPHRleHQgY2xhc3M9InRzIGc0LXN1YiIgeD0iNTg1IiB5PSIxNTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJ1aS1tb25vc3BhY2UsICdDYXNjYWRpYSBDb2RlJywgJ1NGIE1vbm8nLCBNZW5sbywgbW9ub3NwYWNlIj4oLis/KTwvdGV4dD4KPHRleHQgY2xhc3M9InRzIGc0LXN1YiIgeD0iNTg1IiB5PSIxNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi4rPyA9IGxhenkgbWF0Y2g8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnNC1zdWIiIHg9IjU4NSIgeT0iMTkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5zdG9wcyBhdCBmaXJzdCAxNlM8L3RleHQ+Cgo8IS0tIEdyb3VwIDU6IENvdmVyYWdlIC0tPgo8cmVjdCBjbGFzcz0iZzUtYm94IiB4PSI0MCIgeT0iMjMwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9Ijg2IiByeD0iMTAiLz4KPHRleHQgY2xhc3M9InRoIGc1LXRpdGxlIiB4PSIxNjUiIHk9IjI1NCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R3JvdXAgNTogY292ZXJhZ2U8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnNS1zdWIiIHg9IjE2NSIgeT0iMjc2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0idWktbW9ub3NwYWNlLCAnQ2FzY2FkaWEgQ29kZScsICdTRiBNb25vJywgTWVubG8sIG1vbm9zcGFjZSI+KHBhcnRpYWx8Y29tcGxldGUpPC90ZXh0Pgo8dGV4dCBjbGFzcz0idHMgZzUtc3ViIiB4PSIxNjUiIHk9IjI5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+fCA9IGFsdGVybmF0aW9uIChPUik8L3RleHQ+Cgo8IS0tIENvbm5lY3RpdmUgdGlzc3VlIC0tPgo8cmVjdCBjbGFzcz0iZ2MtYm94IiB4PSIzMTAiIHk9IjIzMCIgd2lkdGg9IjM0MCIgaGVpZ2h0PSI4NiIgcng9IjEwIi8+Cjx0ZXh0IGNsYXNzPSJ0aCBnYy10aXRsZSIgeD0iNDgwIiB5PSIyNTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNvbm5lY3RpdmUgdGlzc3VlIChncmF5KTwvdGV4dD4KPHRleHQgY2xhc3M9InRzIGdjLXN1YiIgeD0iNDgwIiB5PSIyNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJ1aS1tb25vc3BhY2UsICdDYXNjYWRpYSBDb2RlJywgJ1NGIE1vbm8nLCBNZW5sbywgbW9ub3NwYWNlIj5ccysgIHN0cmFpbiAgMTZTID0gbGl0ZXJhbHM8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnYy1zdWIiIHg9IjQ4MCIgeT0iMjk2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5tYXRjaGVkIGJ1dCBub3QgY2FwdHVyZWQ8L3RleHQ+Cgo8L3N2Zz4=" alt="" width="100%" /></p>
 
 </article></slide><slide class=""><hgroup><h2><code>regexec()</code> + <code>regmatches()</code></h2></hgroup><article  id="regexec-regmatches">
 
@@ -3763,10 +3825,6 @@ m[[1]]</pre>
 ## attr(,&quot;index.type&quot;)
 ## [1] &quot;chars&quot;</pre>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
-
-<p><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgdmlld0JveD0iMCAwIDY4MCAzNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgo8c3R5bGU+CiAgLnRzIHsgZm9udC1mYW1pbHk6IC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgIlNlZ29lIFVJIiwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB4OyBmaWxsOiAjNUY1RTVBOyB9CiAgLnRoIHsgZm9udC1mYW1pbHk6IC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgIlNlZ29lIFVJIiwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyBmaWxsOiAjMkMyQzJBOyBmb250LXdlaWdodDogNTAwOyB9CgogIC8qIEdyb3VwIDE6IEJsdWUgKi8KICAuZzEtYm94IHsgZmlsbDogI0U2RjFGQjsgc3Ryb2tlOiAjMTg1RkE1OyBzdHJva2Utd2lkdGg6IDAuNTsgfQogIC5nMS10aXRsZSB7IGZpbGw6ICMwQzQ0N0M7IH0KICAuZzEtc3ViIHsgZmlsbDogIzE4NUZBNTsgfQoKICAvKiBHcm91cHMgMiszOiBUZWFsICovCiAgLmcyMy1ib3ggeyBmaWxsOiAjRTFGNUVFOyBzdHJva2U6ICMwRjZFNTY7IHN0cm9rZS13aWR0aDogMC41OyB9CiAgLmcyMy10aXRsZSB7IGZpbGw6ICMwODUwNDE7IH0KICAuZzIzLXN1YiB7IGZpbGw6ICMwRjZFNTY7IH0KCiAgLyogR3JvdXAgNDogQW1iZXIgKi8KICAuZzQtYm94IHsgZmlsbDogI0ZBRUVEQTsgc3Ryb2tlOiAjODU0RjBCOyBzdHJva2Utd2lkdGg6IDAuNTsgfQogIC5nNC10aXRsZSB7IGZpbGw6ICM2MzM4MDY7IH0KICAuZzQtc3ViIHsgZmlsbDogIzg1NEYwQjsgfQoKICAvKiBHcm91cCA1OiBDb3JhbCAqLwogIC5nNS1ib3ggeyBmaWxsOiAjRkFFQ0U3OyBzdHJva2U6ICM5OTNDMUQ7IHN0cm9rZS13aWR0aDogMC41OyB9CiAgLmc1LXRpdGxlIHsgZmlsbDogIzcxMkIxMzsgfQogIC5nNS1zdWIgeyBmaWxsOiAjOTkzQzFEOyB9CgogIC8qIENvbm5lY3RpdmU6IEdyYXkgKi8KICAuZ2MtYm94IHsgZmlsbDogI0YxRUZFODsgc3Ryb2tlOiAjNUY1RTVBOyBzdHJva2Utd2lkdGg6IDAuNTsgfQogIC5nYy10aXRsZSB7IGZpbGw6ICM0NDQ0NDE7IH0KICAuZ2Mtc3ViIHsgZmlsbDogIzVGNUU1QTsgfQo8L3N0eWxlPgoKPCEtLSBUaXRsZSAtLT4KPHRleHQgY2xhc3M9InRoIiB4PSIzNDAiIHk9IjI4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BbmF0b215IG9mIHRoZSBOQ0JJIGhlYWRlciByZWdleDwvdGV4dD4KCjwhLS0gUmVnZXggc3RyaW5nIHdpdGggY29sb3JlZCB0b2tlbnMgLS0+CjxyZWN0IHg9IjMwIiB5PSI0NCIgd2lkdGg9IjYyMCIgaGVpZ2h0PSI1MCIgcng9IjgiIGZpbGw9IiNGMUVGRTgiIHN0cm9rZT0iI0QzRDFDNyIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KPHRleHQgeT0iNjQiIGZvbnQtZmFtaWx5PSJ1aS1tb25vc3BhY2UsICdDYXNjYWRpYSBDb2RlJywgJ1NGIE1vbm8nLCBNZW5sbywgbW9ub3NwYWNlIiBmb250LXNpemU9IjExLjUiPgo8dHNwYW4geD0iNDQiIGZpbGw9IiM4ODg3ODAiPiZndDs8L3RzcGFuPjx0c3BhbiBmaWxsPSIjMTg1RkE1IiBmb250LXdlaWdodD0iNTAwIj4oTlJfXGQrXC5cZCspPC90c3Bhbj48dHNwYW4gZmlsbD0iIzg4ODc4MCI+XHMrPC90c3Bhbj48dHNwYW4gZmlsbD0iIzBGNkU1NiIgZm9udC13ZWlnaHQ9IjUwMCI+KFtBLVpdW2Etel0rKTwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPlxzPC90c3Bhbj48dHNwYW4gZmlsbD0iIzBGNkU1NiIgZm9udC13ZWlnaHQ9IjUwMCI+KFthLXpdKyk8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODg4NzgwIj5ccytzdHJhaW5ccys8L3RzcGFuPjx0c3BhbiBmaWxsPSIjODU0RjBCIiBmb250LXdlaWdodD0iNTAwIj4oLis/KTwvdHNwYW4+PHRzcGFuIGZpbGw9IiM4ODg3ODAiPlxzKzE2Uy4qPzwvdHNwYW4+PHRzcGFuIGZpbGw9IiM5OTNDMUQiIGZvbnQtd2VpZ2h0PSI1MDAiPihwYXJ0aWFsfGNvbXBsZXRlKTwvdHNwYW4+CjwvdGV4dD4KPHRleHQgeT0iODQiIGZvbnQtc2l6ZT0iMTAiIGZvbnQtZmFtaWx5PSJ1aS1tb25vc3BhY2UsICdDYXNjYWRpYSBDb2RlJywgJ1NGIE1vbm8nLCBNZW5sbywgbW9ub3NwYWNlIj4KPHRzcGFuIHg9IjYyIiBmaWxsPSIjMTg1RkE1Ij5ncm91cCAxPC90c3Bhbj48dHNwYW4geD0iMTk2IiBmaWxsPSIjMEY2RTU2Ij5ncm91cCAyPC90c3Bhbj48dHNwYW4geD0iMzA2IiBmaWxsPSIjMEY2RTU2Ij5ncm91cCAzPC90c3Bhbj48dHNwYW4geD0iNDAwIiBmaWxsPSIjODU0RjBCIj5ncm91cCA0PC90c3Bhbj48dHNwYW4geD0iNTEwIiBmaWxsPSIjOTkzQzFEIj5ncm91cCA1PC90c3Bhbj4KPC90ZXh0PgoKPCEtLSBHcm91cCAxOiBBY2Nlc3Npb24gLS0+CjxyZWN0IGNsYXNzPSJnMS1ib3giIHg9IjQwIiB5PSIxMTAiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTAwIiByeD0iMTAiLz4KPHRleHQgY2xhc3M9InRoIGcxLXRpdGxlIiB4PSIxNTAiIHk9IjEzNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R3JvdXAgMTogYWNjZXNzaW9uPC90ZXh0Pgo8dGV4dCBjbGFzcz0idHMgZzEtc3ViIiB4PSIxNTAiIHk9IjE1NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InVpLW1vbm9zcGFjZSwgJ0Nhc2NhZGlhIENvZGUnLCAnU0YgTW9ubycsIE1lbmxvLCBtb25vc3BhY2UiPihOUl9cZCtcLlxkKyk8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnMS1zdWIiIHg9IjE1MCIgeT0iMTc2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5cZCsgPSBvbmUgb3IgbW9yZSBkaWdpdHM8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnMS1zdWIiIHg9IjE1MCIgeT0iMTkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5cLiA9IGxpdGVyYWwgZG90IChlc2NhcGVkKTwvdGV4dD4KCjwhLS0gR3JvdXBzIDIrMzogR2VudXMgKyBzcGVjaWVzIC0tPgo8cmVjdCBjbGFzcz0iZzIzLWJveCIgeD0iMjgwIiB5PSIxMTAiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTAwIiByeD0iMTAiLz4KPHRleHQgY2xhc3M9InRoIGcyMy10aXRsZSIgeD0iMzkwIiB5PSIxMzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdyb3VwcyAyKzM6IHNwZWNpZXM8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnMjMtc3ViIiB4PSIzOTAiIHk9IjE1NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InVpLW1vbm9zcGFjZSwgJ0Nhc2NhZGlhIENvZGUnLCAnU0YgTW9ubycsIE1lbmxvLCBtb25vc3BhY2UiPihbQS1aXVthLXpdKylccyhbYS16XSspPC90ZXh0Pgo8dGV4dCBjbGFzcz0idHMgZzIzLXN1YiIgeD0iMzkwIiB5PSIxNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPltBLVpdID0gb25lIGNhcGl0YWwgbGV0dGVyPC90ZXh0Pgo8dGV4dCBjbGFzcz0idHMgZzIzLXN1YiIgeD0iMzkwIiB5PSIxOTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlthLXpdKyA9IGxvd2VyY2FzZSBsZXR0ZXJzPC90ZXh0PgoKPCEtLSBHcm91cCA0OiBTdHJhaW4gLS0+CjxyZWN0IGNsYXNzPSJnNC1ib3giIHg9IjUyMCIgeT0iMTEwIiB3aWR0aD0iMTMwIiBoZWlnaHQ9IjEwMCIgcng9IjEwIi8+Cjx0ZXh0IGNsYXNzPSJ0aCBnNC10aXRsZSIgeD0iNTg1IiB5PSIxMzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdyb3VwIDQ6IHN0cmFpbjwvdGV4dD4KPHRleHQgY2xhc3M9InRzIGc0LXN1YiIgeD0iNTg1IiB5PSIxNTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJ1aS1tb25vc3BhY2UsICdDYXNjYWRpYSBDb2RlJywgJ1NGIE1vbm8nLCBNZW5sbywgbW9ub3NwYWNlIj4oLis/KTwvdGV4dD4KPHRleHQgY2xhc3M9InRzIGc0LXN1YiIgeD0iNTg1IiB5PSIxNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi4rPyA9IGxhenkgbWF0Y2g8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnNC1zdWIiIHg9IjU4NSIgeT0iMTkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5zdG9wcyBhdCBmaXJzdCAxNlM8L3RleHQ+Cgo8IS0tIEdyb3VwIDU6IENvdmVyYWdlIC0tPgo8cmVjdCBjbGFzcz0iZzUtYm94IiB4PSI0MCIgeT0iMjMwIiB3aWR0aD0iMjUwIiBoZWlnaHQ9Ijg2IiByeD0iMTAiLz4KPHRleHQgY2xhc3M9InRoIGc1LXRpdGxlIiB4PSIxNjUiIHk9IjI1NCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R3JvdXAgNTogY292ZXJhZ2U8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnNS1zdWIiIHg9IjE2NSIgeT0iMjc2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0idWktbW9ub3NwYWNlLCAnQ2FzY2FkaWEgQ29kZScsICdTRiBNb25vJywgTWVubG8sIG1vbm9zcGFjZSI+KHBhcnRpYWx8Y29tcGxldGUpPC90ZXh0Pgo8dGV4dCBjbGFzcz0idHMgZzUtc3ViIiB4PSIxNjUiIHk9IjI5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+fCA9IGFsdGVybmF0aW9uIChPUik8L3RleHQ+Cgo8IS0tIENvbm5lY3RpdmUgdGlzc3VlIC0tPgo8cmVjdCBjbGFzcz0iZ2MtYm94IiB4PSIzMTAiIHk9IjIzMCIgd2lkdGg9IjM0MCIgaGVpZ2h0PSI4NiIgcng9IjEwIi8+Cjx0ZXh0IGNsYXNzPSJ0aCBnYy10aXRsZSIgeD0iNDgwIiB5PSIyNTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNvbm5lY3RpdmUgdGlzc3VlIChncmF5KTwvdGV4dD4KPHRleHQgY2xhc3M9InRzIGdjLXN1YiIgeD0iNDgwIiB5PSIyNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJ1aS1tb25vc3BhY2UsICdDYXNjYWRpYSBDb2RlJywgJ1NGIE1vbm8nLCBNZW5sbywgbW9ub3NwYWNlIj5ccysgIHN0cmFpbiAgMTZTID0gbGl0ZXJhbHM8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0cyBnYy1zdWIiIHg9IjQ4MCIgeT0iMjk2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5tYXRjaGVkIGJ1dCBub3QgY2FwdHVyZWQ8L3RleHQ+Cgo8L3N2Zz4=" alt="" width="100%" /></p>
-
 </article></slide><slide class=""><hgroup><h2>Building a data frame from the matches</h2></hgroup><article  id="building-a-data-frame-from-the-matches">
 
 <p><code>m</code> is a list of character vectors. Each vector has the full match at <code>[1]</code> and capture groups at <code>[2:6]</code>. To get a data frame:</p>
@@ -3783,7 +3841,7 @@ names(result) &lt;- c(&quot;accession&quot;, &quot;genus&quot;, &quot;species&qu
 <ul class = 'build'>
 <li><code>lapply(m, function(x) x[2:6])</code> – loop over the list, pull out positions 2–6 (the five capture groups) from each element</li>
 <li><code>do.call(rbind, ...)</code> – take that list and stack each element as a row in a matrix</li>
-<li>Same as <code>rbind(m[[1]][2:6], m[[2]][2:6], ...)</code> but without typing every element</li>
+<li>Same as <code>rbind(m[[1]][2:6], m[[2]][2:6], ...)</code> but without all that typing</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Result</h2></hgroup><article  id="result">
@@ -3804,13 +3862,22 @@ names(result) &lt;- c(&quot;accession&quot;, &quot;genus&quot;, &quot;species&qu
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Closing</h2></hgroup><article  id="closing">
 
-</article></slide><slide class=""><hgroup><h2>Energy context</h2></hgroup><article  id="energy-context">
+</article></slide><slide class=""><hgroup><h2>Considerations for Regular Expressions</h2></hgroup><article  id="considerations-for-regular-expressions">
+
+<ul>
+<li>All dependent on how well you know your data</li>
+<li>Formatting standards are crucial</li>
+<li>Testing your regex is crucial</li>
+<li>If possible, use data frames with one variable assigned to one column</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>AI Energy Usage (approximate)</h2></hgroup><article  id="ai-energy-usage-approximate">
 
 <ul class = 'build'>
 <li>A typical Claude query: ~0.3 Wh (Epoch AI; Google, 2025)</li>
 <li>Complex reasoning queries: 7–40 Wh</li>
 <li>Five sloppy prompts = 5x the energy of one good one</li>
-<li>Asking Claude to develop the regex took an equivalent of roughly 2.6 min of laptop power.
+<li>Asking Claude to develop the regex took an equivalent of roughly 5 min of laptop power including generating a diagram showing me how it works.
 
 <ul>
 <li>Is that worth it? It would have taken me maybe <em>2 hours</em> on my laptop.</li>
@@ -3849,40 +3916,7 @@ names(result) &lt;- c(&quot;accession&quot;, &quot;genus&quot;, &quot;species&qu
 <ul>
 <li><code>(?&lt;=USGS )</code> – <strong>positive lookbehind</strong>: match digits <em>after</em> &ldquo;USGS&rdquo;</li>
 <li>Lookbehinds check what comes <em>before</em> the match</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>References</h2></hgroup><article  id="references">
-
-<table class = 'rmdtable'>
-<tr class="header">
-<th align="left">Topic</th>
-<th align="left">Source</th>
-</tr>
-<tr class="odd">
-<td align="left">Energy per query (~0.3 Wh)</td>
-<td align="left">Epoch AI, 2025; Google, 2025</td>
-</tr>
-<tr class="even">
-<td align="left">Reasoning model energy (7–40 Wh)</td>
-<td align="left">IEEE Spectrum, 2025</td>
-</tr>
-<tr class="odd">
-<td align="left">Cognitive offloading</td>
-<td align="left">Gerlich, 2025 (n=666)</td>
-</tr>
-<tr class="even">
-<td align="left">Student AI use patterns</td>
-<td align="left">Anthropic, 2025</td>
-</tr>
-<tr class="odd">
-<td align="left">Code hallucinations (~20%)</td>
-<td align="left">UT / VT / OU joint study</td>
-</tr>
-<tr class="even">
-<td align="left">Regex in R</td>
-<td align="left"><code>?regex</code>; R docs on PCRE</td>
-</tr>
-</table></article></slide>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
