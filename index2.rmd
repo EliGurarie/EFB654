@@ -69,7 +69,6 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - [Lecture 10: Data Summaries and Aggregation (Feb 25)](lectures/12-Data-Summaries/Data-Summaries-and-Aggregation.html) 
 - [Lecture 11: Merging Data (Mar 2)](lectures/13-Merging-Data/Merging_data.html)
 
-
 ## Module 3 - Effective Programming 
 ### Functions | Loops | Lists | Apply  
 - [Lecture 12: Writing Functions (Mar 4)](lectures/14-Writing-Functions/Writing-Functions.html)
@@ -92,10 +91,8 @@ Perhaps the most important immediate need is to download and install R and Rstud
 - [Lecture 18: Smart use of LLM's](lectures/20-llms/llm-lecture.Rmd)
   - [WDI data](lectures/20-llms/WDI.csv)
   - [app5.R](lectures/20-llms/app5.R)
-- Lecture 19: Regular Expressions
-  - [slides](lectures/20-Regex/Using-Claude-for-R-Work.html)
-  - [NCBI 16S Headers (txt)](lectures/21-Regex/ncbi_16S_headers.txt)  
-  - [USGS Gauges (txt)](lectures/21-Regex/usgs_gauges.txt)
+  
+
   
 ## Tools and Tricks in Reproducible Research
 
