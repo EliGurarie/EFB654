@@ -90,7 +90,7 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - [slides](lectures/19-shinyapps/shiny-slides.html)
   - [document style](lectures/19-shinyapps/shiny-lab.html)
 - Lecture 18: Smart use of LLM's
-  - [slides](lectures/20-llms/llm-lecture.Rmd)
+  - [slides](lectures/20-llms/llm-lecture.html)
   - [WDI data](lectures/20-llms/WDI.csv)
   - [app5.R](lectures/20-llms/app5.R)
 - Lecture 19: Regular Expressions
