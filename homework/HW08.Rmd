@@ -1,0 +1,102 @@
+---
+title: "Homework 8: Apply and ShinyApps"
+author: 
+date: "Assigned Apr 6, 2026; Due Apr 15, 2026"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Instructions
+**Due:** Wednesday, April 15 by 11:59 PM
+
+Complete the exercises below.  
+
+- For Part I - create an `.Rmd` file with the solutions, knit it to html or pdf, and upload both
+
+- For Part II - create and a separate script (e.g. `faithful_visualization.R`) with the working Shiny app OR, for extra credit, upload & deploy the app to `shinyapps.io`.  
+
+
+###  I. Practice being a list-ninja (**4pts**)
+
+Referring to [this lecture](https://eligurarie.github.io/EFB654/lectures/17-apply-and-lists/apply-mentality-slides.html], especially the exercises [here](https://eligurarie.github.io/EFB654/lectures/17-apply-and-lists/apply-mentality-slides.html#19):
+
+
+1. Use `sapply` to compute the number of NA values in each column of the `airquality` dataset preloaded in R. *Hint: combine `is.na()` and `sum()`.*
+
+2. Use `sapply` to extract the residual standard error from each model in fits. *Hint: this lives in  `summary(fit)$sigma`*.
+
+3. Use `split` + `sapply` to compute the maximum Ozone value for each month, handling NA.
+
+4. Perform the last operation in one line using `plyr::ddply()` and `summarize` OR `dplyr::group_by` and `summarize`.  
+
+
+### Practice with Shiny (**4pts**)
+
+See the [Shiny App lecture](https://eligurarie.github.io/EFB654/lectures/19-shinyapps/shiny-lab.html) The code for the Old Faithful Geyser visualization app is below (click on `Show`).  
+
+Add a new tab to this app that:
+    a. Plotsthe relationship between eruption duration and waiting times
+    b. Prints some summary statistics on that relationship, notably the intercept, slope, *p*-value of linear model and R^2^ value.  
+    ***Hint***  *as above, these are all located in the output of `summary(lm(eruptions~waiting, data = faithful))`.*  
+
+
+
+```{r, eval = FALSE}
+library(shiny)
+
+ui <- fluidPage(
+  titlePanel("Old Faithful Geyser Data"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins", "Number of bins:", min = 1, max = 50, value = 30),
+      selectInput("color", "Bar color:",
+                  choices = c("darkgray", "steelblue", "tomato",
+                              "forestgreen", "goldenrod"),
+                  selected = "darkgray")
+    ),
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Waiting Time",
+                 plotOutput("waitPlot"),
+                 verbatimTextOutput("waitStats")),
+        tabPanel("Eruption Duration",
+                 plotOutput("eruptPlot"),
+                 verbatimTextOutput("eruptStats"))
+      )
+    )
+  )
+)
+
+server <- function(input, output) {
+
+  output$waitPlot <- renderPlot({
+    x <- faithful$waiting
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    hist(x, breaks = bins, col = input$color, border = "white",
+         xlab = "Waiting time (mins)", main = "Waiting Time")
+  })
+
+  output$eruptPlot <- renderPlot({
+    x <- faithful$eruptions
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    hist(x, breaks = bins, col = input$color, border = "white",
+         xlab = "Eruption duration (mins)", main = "Eruption Duration")
+  })
+
+  output$waitStats  <- renderPrint({ summary(faithful$waiting) })
+  output$eruptStats <- renderPrint({ summary(faithful$eruptions) })
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+
+    
+**Extra Credit:**  Set up a free `shinyapps.io` account, add your name to the app somewhere (e.g. in the title), and share the link.  

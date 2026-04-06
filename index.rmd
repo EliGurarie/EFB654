@@ -121,6 +121,7 @@ Submit all assignments to the Blackboard page
 - [Homework 07](homework/HW07/HW07_v2.Rmd)  (due Mar 25)
   - (Note: this is an `Rmd` file which you will download, modify, knit, and upload.)
   - Here's the [nicer-looking html](homework/HW07/HW07_v2.html) 
-  
+- [Homework 08](homework/HW08.html)  (due Apr 17)
+ 
 <img src="assets/Rlogo.svg" height="50" style="margin-right: 30px;">
 <img src="assets/RStudio_logo_flat.svg" height="50">
