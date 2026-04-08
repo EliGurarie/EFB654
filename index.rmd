@@ -94,7 +94,7 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - [WDI data](lectures/20-llms/WDI.csv)
   - [app5.R](lectures/20-llms/app5.R)
 - Lecture 19: Regular Expressions
-  - [slides](lectures/20-Regex/Using-Claude-for-R-Work.html)
+  - [slides](lectures/21-Regex/Using-Claude-for-R-Work.html)
   - [NCBI 16S Headers (txt)](lectures/21-Regex/ncbi_16S_headers.txt)  
   - [USGS Gauges (txt)](lectures/21-Regex/usgs_gauges.txt)
   
