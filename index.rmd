@@ -99,7 +99,7 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - [USGS Gauges (txt)](lectures/21-Regex/usgs_gauges.txt)
 - Lecture 20: Building R Packages
   - [slides](lectures/22-Rpackages/Rpackages-slides.html)
-  - [document-style](lectures/22-Rpackages/Rpackages-lab.Rmd)
+  - [document-style](lectures/22-Rpackages/Rpackages-lab.html)
   - content for `combinatoR` package: 
     - [single.csv](lectures/22-Rpackages/content/single.csv), 
     - [mixture.csv](lectures/22-Rpackages/content/mixture.csv)
