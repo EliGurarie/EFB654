@@ -97,6 +97,13 @@ Perhaps the most important immediate need is to download and install R and Rstud
   - [slides](lectures/21-Regex/Using-Claude-for-R-Work.html)
   - [NCBI 16S Headers (txt)](lectures/21-Regex/ncbi_16S_headers.txt)  
   - [USGS Gauges (txt)](lectures/21-Regex/usgs_gauges.txt)
+- Lecture 20: Building R Packages
+  - [slides](lectures/22-Rpackages/Rpackages-slides.html)
+  - [document-style](lectures/22-Rpackages/Rpackages-lab.Rmd)
+  - content for `combinatoR` package: 
+    - [single.csv](lectures/22-Rpackages/content/single.csv), 
+    - [mixture.csv](lectures/22-Rpackages/content/mixture.csv)
+    - [fittingfunctions.R](lectures/22-Rpackages/content/fittingfunctions.R)
   
 ## Tools and Tricks in Reproducible Research
 

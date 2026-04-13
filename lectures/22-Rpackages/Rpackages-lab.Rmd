@@ -1,0 +1,496 @@
+---
+title: "Making Your Own R Package"
+subtitle: "will transform your life | [EFB 654: R and Reproducible Research](https://eligurarie.github.io/EFB654/)"
+author: "Elie Gurarie"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      fig.align = "center", dpi = 200)
+```
+
+```{r echo = FALSE}
+pars <- function(...){
+  par(mar = c(3,3,2,2), bty = "l", mgp = c(1.5,.25,0),
+      tck = 0.01, cex.lab = 1.2, ...)
+}
+```
+
+> Note: This lab was rendered by Clade Sonnet 4.6 directly from the slides [here](Rpackages-slides.html). 
+
+# Why build an R package?
+
+Building your own R package is one of the most powerful habits you can develop as an R programmer. It lets you:
+
+- Conquer and permanently tame confusing folder soups of data and R scripts
+- Make code **ultra-compact**, **well-documented**, and **highly replicable**
+- Dramatically shorten the time it takes to get back on track after a break from a project
+
+And ultimately, to truly publish (i.e. make public and available) your tools and methods in a form others can install and use.  In particular by uploading to [CRAN](https://cran.r-project.org/web/packages/available_packages_by_date.html) or other repositories. 
+
+
+---
+
+## A motivating example: Sonoran Pronghorn
+
+Here's a concrete example: I helped out on an analysis of data from an intense conservation effort for Sonoran pronghorn (*Antilocapra americana sonoriensis*).  These are highly endangered (at one point a few dozen in the wild), and a core portion of their range overlaps with a large artillery range in Arizona.  Data have been collected, in large part by the Army Corps of Engineers, and was sent to me in a hard drive with thousands of files. It was a total mess.  But we got through it and eventually published a paper ([Barbour et al 2024](https://wildlife.onlinelibrary.wiley.com/doi/full/10.1002/jwmg.22675)). 
+
+Here are some pronghorn:
+
+![](images/pronghorn.jpg)
+
+---
+
+### Processing data
+
+Below is a small snippet of a data processing step:
+
+```{r, eval = FALSE}
+gps.dir <- "data/SonoranPronghorn/Locations_GPSCollarTelemetry/"
+pronghorn <- read.csv(paste0(gps.dir, f.v1[i])) %>% 
+  processRaw_v1(id = id.v1[i], filename = f.v1[i])
+
+pronghorn.sf <- st_as_sf(df.raw, 
+    coords = c("ECEF_X..m.", "ECEF_Y..m.", "ECEF_Z..m.")) %>% 
+  st_set_crs(4978) %>% st_transform(4326) %>% st_coordinates
+
+with(df.raw, 
+     data.frame(
+       File     = filename, 
+       ID       = CollarID,
+       DateTime = mdy_hms(paste(UTC_Date, UTC_Time)),
+       Latitude = ll[,"Y"], 
+       Longitude = ll[,"X"],
+       Elevation = ll[,"Z"])) %>% 
+  subset(!is.na(DateTime))
+
+# important: need to convert from windows-1252 to UTF8 in order to read:
+#  find *.csv -exec sh -c "iconv -f Windows-1252 -t UTF8 {} > {}v2" \; 
+
+f.v2 <- f[grepl("GPS_Collar", f)]
+
+pronghorn_gps_v2 <- data.frame()
+for(i in 1:length(f.v2)){
+  if(f.v2[i] != badf){
+    print(f.v2[i])
+    df <- read.csv(paste0(gps.dir, "encoded/", f.v2[i])) %>% 
+      subset(!is.na(ECEF_X..m.)) %>% 
+      processRaw_v2(filename = f.v2[i])
+    pronghorn_gps_v2 <- rbind(pronghorn_gps_v2, df)
+  }
+}
+```
+
+That's a lot of fussy code to keep track of and replicate. 
+
+But once the data and functions are bundled into a package, the entire workflow reduces to:
+
+```{r, eval = TRUE}
+require(pronghorn)
+data("pronghorn_gps")
+str(pronghorn_gps)
+```
+
+It all just there.  And the accompanying help file contains all the infromation about these data, as well as handy code (directly in the help file) to visualize. 
+
+```{r, echo = -1}
+pars()
+ require(gplots)
+  cols <- rich.colors(length(unique(pronghorn_gps$ID)))
+  with(pronghorn_gps, plot(Longitude, Latitude, type = "n"))
+  d_ply(pronghorn_gps, "ID", function(df) lines(df$Longitude, df$Latitude, col = cols[as.integer(df$ID[1])]))
+```
+
+Note the other datasets here:
+
+```{r eval = FALSE}
+data(package = "pronghorn")
+```
+
+```
+Data sets in package ‘pronghorn’:
+
+burn (pronghorn_shapefiles)
+                          
+enclosure (pronghorn_shapefiles)
+                          
+forage_plots (pronghorn_shapefiles)
+                          
+home_range (pronghorn_shapefiles)
+                          
+homerange                 Area-Corrected AKDE Home Ranges for Processed,
+                          Regularized GPS data of Sonoran Pronghorn
+landscape                 Landscape data for the BMGR
+observation_points (pronghorn_shapefiles)
+                          
+pronghorn_aerial          Pronghorn Aerial Observations
+pronghorn_ctmm_edited     Processed, regularized GPS data of Sonoran pronghorn
+pronghorn_flight          Pronghorn Flight Observations
+pronghorn_gps             GPS data of Sonoran pronghorn
+pronghorn_gps_new         
+pronghorn_ground          Pronghorn Ground Observations
+pronghorn_ground_all      Pronghorn Ground Observations - All Years
+                          (1997-2020)
+pronghorn_ground_early    Pronghorn Ground Observations - Early Years
+                          (2003-2007)
+pronghorn_mortality_sex   Pronghorn GPS Collar Mortality and Sex Data
+pronghorn_wild            Ground observations of wild pronghorn
+recovery_pen (pronghorn_shapefiles)
+                          Shape files
+semicaptive_enclosures (pronghorn_shapefiles)
+                          
+targets                   Target practice data from USAF
+wildlife_water (pronghorn_shapefiles)
+```
+
+all of these are documented and traceable back to original "raw" files. 
+
+---
+
+## R package structure
+
+In a nutshell, an R package is a folder with a specific structure that R knows how to install, load, and document. The key components are:
+
+- `R/` — contains your R function scripts
+- `data/` — contains datasets saved as `.rda` files
+- `man/` — contains documentation (auto-generated by Roxygen)
+- `DESCRIPTION` — a plain-text file with essential metadata about the package
+- `NAMESPACE` — a file that controls which functions, data and other opjects are exported (*mainly automated*)
+
+![Package folder structure](images/packagestructure.png)
+
+### The `DESCRIPTION` file
+
+The `DESCRIPTION` file is a plain-text file that lives in the root of your package directory and contains essential metadata. It is required — a folder without a valid `DESCRIPTION` is not a package. Below is the one from our internal Sonoran pronghorn project:
+
+```
+Package: pronghorn
+Type: Package
+Title: Sonoran pronghorn analysis project
+Version: 0.1.0
+Author: Elie, Nicki, others
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: The pronghorn package is a PRIVATE collaborative package 
+             containing processed data, code and results for analysis 
+             of Sonoran pronghorn.
+License: PRIVATE
+Encoding: UTF-8
+LazyData: false
+Depends: lubridate, magrittr, plyr, dplyr, ggplot2, ggpubr, sp, sf, stringr
+Suggests: mapview 
+RoxygenNote: 7.1.1
+```
+
+The key fields:
+
+- **`Package`** — the name of your package, no spaces. This is what goes inside `library()`.
+- **`Title`** — a short, human-readable one-liner. Used in documentation indexes.
+- **`Version`** — follows `major.minor.patch` convention (e.g., `0.1.0`). Increment this when you make changes, especially if others depend on your package.
+- **`Author` / `Maintainer`** — who wrote it and who to contact about it. For a personal or small-team package these can be the same person.
+- **`Description`** — a paragraph describing what the package does. Required for CRAN submission; for private packages it's just good practice.
+- **`License`** — how others may use your code. Common choices are `GPL-3`, `MIT`, or `CC BY 4.0`. For a private internal package, `PRIVATE` is a reasonable placeholder that signals it is not for redistribution.
+- **`Depends`** — packages that must be installed and *attached* (i.e., loaded via `library()`) for yours to work. Use sparingly — everything listed here gets loaded automatically when someone loads your package, which can cause conflicts.
+- **`Imports`** (not shown above, but worth knowing) — packages your code calls but that don't need to be fully attached. Preferred over `Depends` for most dependencies.
+- **`Suggests`** — packages that are useful but not required (e.g., for running examples or vignettes).
+- **`Encoding`** — almost always `UTF-8`.
+- **`LazyData`** — if `true`, datasets are only loaded into memory when first accessed rather than at `library()` time. Fine to leave `true` for most packages; set to `false` if your data loading has side effects.
+- **`RoxygenNote`** — automatically updated by `roxygen2` to record which version generated the documentation. Don't edit this by hand.
+
+### Documentation and Roxygen
+
+R package documentation lives in the `man/` folder as `.Rd` files. These are auto-generated from specially formatted comments in your R scripts using the `roxygen2` package. For example, the Roxygen comment block for a dataset looks like this:
+
+```{r, eval = FALSE}
+#' GPS data of Sonoran pronghorn
+#'
+#' 43 GPS collared pronghorn collared between 2008 and 2020
+#' 
+#' @usage data(pronghorn_gps)
+#'
+#' @format Contains only five columns:
+#' \describe{
+#'   \item{File}{Original file name}
+#'   \item{ID}{ID of animal}
+#'   \item{DateTime}{Date and time in POSIXct}
+#'   \item{Longitude,Latitude}{}
+#' }
+#' @example examples/pronghorn_gps_examples.R
+#' @source Arizona DFG, via Andy Goodwin. 
+#' @keywords data
+```
+
+Every comment line begins with `#'`. When you build the package, Roxygen converts these blocks into the `.Rd` help files that appear when you run `?pronghorn_gps`.
+
+---
+
+# How to create a package
+
+There are four main approaches:
+
+1. By hand (not recommended)
+2. `base::package.skeleton()`
+3. `usethis::create_package()` ← **recommended**
+4. Build directly off an existing GitHub project
+
+---
+
+## Step-by-step: building the `combinator` package
+
+To make this concrete, we will take the functions in [`fittingfunctions.R`](content/fittingfunctions.R) and the datasets [`single.csv`](content/single.csv) and [`mixture.csv`](content/mixture.csv) and bundle them into a package called `combinator`.
+
+The package fits a logistic growth model and allows exploration of a classic two-species competition experiment by Georgi Gause (1934). The data show the population growth of *Paramecium aurelia* and *P. caudatum* grown separately and together.
+
+```{r, echo = FALSE, out.width = "60%"}
+source("content/fittingfunctions.R")
+single  <- read.csv("content/single.csv")
+mixture <- read.csv("content/mixture.csv")
+pars()
+plot(aurelia ~ Day, data = single, col = 1, type = "o")
+lines(caudatum ~ Day, data = single, col = 2, type = "o")
+legend("bottomright", legend = c("aurelia", "caudatum"), 
+       col = 1:2, pch = 1, lty = 1)
+fit1 <- fitLogistic(single, y = "aurelia",  time = "Day", 1, 200, .75)
+fit2 <- fitLogistic(single, y = "caudatum", time = "Day", 1, 200, .75)
+linesLogistic(fit1, lwd = 3)
+linesLogistic(fit2, col = 2, lwd = 3)
+```
+
+---
+
+### Step I: Build a skeleton (empty) package
+
+First, know your working directory — your package will be created as a subfolder of it.
+
+```{r}
+getwd()
+```
+
+If you are on Windows and have not done so already, install the Rtools compilation bundle:
+
+```{r eval = FALSE}
+installR::install.Rtools()
+```
+
+Then create the package skeleton using `usethis`:
+
+```{r, eval = FALSE}
+require(usethis)
+create_package("combinator")
+```
+
+This creates a `combinator/` folder with the correct structure and opens a new RStudio project inside it. You need to be working inside that project for the build tools to work correctly. The initial `DESCRIPTION` file will look like:
+
+```
+Package: combinator
+Title: What the Package Does
+Version: 0.0.0.9000
+Authors@R (parsed):
+  * First Last <first.last@example.com> [aut, cre]
+Description: What the package does.
+License: use_mit_license() or friends
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
+```
+
+---
+
+### Step II: Edit the `DESCRIPTION` file
+
+Open `DESCRIPTION` and fill in your name, a title, a brief description, and a license. A convenient way to set the license is:
+
+```{r, eval = FALSE}
+use_gpl3_license("combinator")
+```
+
+which produces:
+
+```
+✓ Setting active project to '.../combinator'
+✓ Setting License field in DESCRIPTION to 'GPL-3'
+✓ Writing 'LICENSE.md'
+✓ Adding '^LICENSE\.md$' to '.Rbuildignore'
+```
+
+For a personal-use package, the license choice is not critical, but it is good practice.
+
+---
+
+### Step III: Save some data
+
+Read the two data files and save them into the package `data/` directory using the `.rda` format:
+
+```{r, eval = FALSE}
+single  <- read.csv("content/single.csv")
+mixture <- read.csv("content/mixture.csv")
+
+save(single,  file = "data/single.rda")
+save(mixture, file = "data/mixture.rda")
+```
+
+The `.rda` format is R's native binary format. You can always load these files directly (outside of the package context) with:
+
+```{r, eval = FALSE}
+load("data/single.rda")
+load("data/mixture.rda")
+```
+
+---
+
+### Step IV: Save some code
+
+Take the following three functions from `fittingfunctions.R` and save each into a **separate** `.R` file in the `R/` directory: `logistic.R`, `fitLogistic.R`, and `linesLogistic.R`. Separating functions into individual files is cleaner and better practice than putting everything in one file.
+
+```{r}
+logistic <- function(x, N0, K, r0){ 
+  K / (1 + ((K - N0) / N0) * exp(-r0 * x))
+}
+
+fitLogistic <- function(data, y = "N", time = "Day", 
+                        N0 = 1, K = 200, r0 = 0.75){
+  Y <- with(data, get(y))
+  X <- with(data, get(time))
+  myfit <- nls(Y ~ logistic(X, N0, K, r0),  
+               start = list(N0 = N0, K = K, r0 = r0))
+  summary(myfit)
+}
+
+linesLogistic <- function(au.fit, ...){
+  curve(logistic(x, 
+    N0 = au.fit$coefficients[1,1],
+    K  = au.fit$coefficients[2,1],
+    r0 = au.fit$coefficients[3,1]), add = TRUE, ...)
+}
+```
+
+---
+
+### Step V: Set up and use Roxygen documentation
+
+Roxygen2 allows you to write documentation as structured comments directly in your function scripts, which are then automatically converted into help files when you build the package.
+
+First, install the package:
+
+```{r, eval = FALSE}
+install.packages("roxygen2")
+```
+
+Then, in RStudio, go to `Build > Configure Build Tools`, click `Configure`, and check the box next to `Build and Restart` to enable Roxygen.
+
+Now modify `logistic.R` to add a documentation block above the function:
+
+```{r, eval = FALSE}
+#' Logistic function
+#'
+#' Computes the logistic growth function, which grows from an initial value
+#' toward a carrying capacity K.
+#'
+#' @param x time
+#' @param N0 initial population size
+#' @param K carrying capacity
+#' @param r0 intrinsic growth rate
+#' @examples curve(logistic(x, .01, 1, 10))
+#'
+#' @export
+logistic <- function(x, N0, K, r0){ 
+  K / (1 + ((K - N0) / N0) * exp(-r0 * x))
+}
+```
+
+Every comment line begins with `#'`. The `@export` tag is essential — it tells R to make this function available when the package is loaded.
+
+---
+
+### Step VI: Build the package
+
+Press `Ctrl+Shift+B` or go to `Build > Clean and Rebuild`. R will compile the package and restart the session, ending with:
+
+```
+Restarting R session...
+
+> library(combinator)
+```
+
+Type `?logistic` to see your first help file. Click `index` at the bottom of the help page to see all documented objects.
+
+> **Exercise:** Add a title, description, and `@param` tags to `fitLogistic.R` and `linesLogistic.R`, then rebuild the package.
+
+---
+
+### Step VII: Document the data
+
+Data objects require their own documentation. The slightly unusual convention is to create a new R script (e.g., `R/datadocumentation.R`) that contains the Roxygen block followed by the dataset name as a quoted string:
+
+```{r, eval = FALSE}
+#' Single separate paramecium growth
+#'
+#' Population growth of two species of paramecium, 
+#' \emph{P. aurelia} and \emph{P. caudatum}, grown separately.
+#'
+#' @usage data(single)
+#'
+#' @format A data frame with three columns:
+#' \describe{
+#'   \item{Day}{Day of experiment}
+#'   \item{caudatum}{Volume of \emph{P. caudatum}}
+#'   \item{aurelia}{Volume of \emph{P. aurelia}}
+#' }
+#'
+#' @examples
+#' data(single)
+#' plot(aurelia ~ Day, data = single)
+#'
+#' @source Gause (1934) \emph{The Struggle for Existence}
+#' @keywords data
+"single"
+```
+
+Rebuild the package and try `?single`.
+
+---
+
+### Step VIII: Separate example files
+
+For complex functions or datasets, it is often cleaner to store example code in a separate script file rather than inline in the Roxygen block. Save the following as `examples/logisticFitExample.R`:
+
+```{r, eval = FALSE}
+require(combinator)
+data(single)
+
+plot(aurelia ~ Day, data = single, col = 1)
+points(caudatum ~ Day, data = single, col = 2)
+
+fit1 <- fitLogistic(single, y = "aurelia",  time = "Day", 1, 200, .75)
+fit2 <- fitLogistic(single, y = "caudatum", time = "Day", 1, 200, .75)
+
+linesLogistic(fit1, lwd = 3)
+linesLogistic(fit2, col = 2, lwd = 3)
+```
+
+Then add the following line to the Roxygen block in `fitLogistic.R`:
+
+```{r, eval = FALSE}
+#' @example examples/fitLogisticExample.R
+```
+
+Note: `@example` (singular) links to a script file; `@examples` (plural) takes inline code directly in the comment block.
+
+---
+
+## The rest is gravy
+
+Once you have the basic structure working, everything else is refinement: adding more functions, adding vignettes, putting the package on GitHub so others can install it with `devtools::install_github()`, or eventually submitting to CRAN.
+
+Further resources:
+
+- http://web.mit.edu/insong/www/pdf/rpackage_instructions.pdf
+- https://learn.gencore.bio.nyu.edu/building-r-packages/
+- https://bookdown.org/rdpeng/RProgDA/building-r-packages.html
