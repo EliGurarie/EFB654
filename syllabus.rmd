@@ -89,7 +89,7 @@ Submit your source document (.Rmd) and knitted output as either a Word document 
 
 ### Final Project (40%)
 
-Your final project demonstrates your ability to apply R skills to a real problem. Choose one of two formats:
+Your final project demonstrates your ability to apply R skills to a real problem. Choose one of three formats:
 
 **Option A: R Package**
 Build an R package that includes at least three custom functions. Your package should include proper documentation (roxygen2 comments), a working NAMESPACE, and a README explaining the package's purpose and usage.

@@ -9,10 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Hyatt Green and Elie Gurarie" />
 
 
-<title>Intro to R and Reproducible Research</title>
+<title>Final Project Grading Rubrics</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1468,6 +1467,12 @@ font-size: 0.90em;
 .tocify .list-group-item {
 border-radius: 0px;
 }
+.tocify-subheader {
+display: inline;
+}
+.tocify-subheader .tocify-item {
+font-size: 0.95em;
+}
 </style>
 
 
@@ -1496,248 +1501,200 @@ border-radius: 0px;
 
 
 
-<h1 class="title toc-ignore"><strong>Intro to R and Reproducible
-Research</strong></h1>
-<h3 class="subtitle">EFB 645: Spring 2026</h3>
-<h4 class="author"><a href="https://www.esf.edu/faculty/green/index.php">Hyatt Green</a> and
-<a href="https://eligurarie.github.io/">Elie Gurarie</a></h4>
+<h1 class="title toc-ignore">Final Project Grading Rubrics</h1>
+<h3 class="subtitle">EFB 645/496: Introduction to R and Reproducible
+Research — Spring 2026</h3>
 
 </div>
 
 
-<img role="img" aria-label="banner" src="data:image/png;base64,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" alt="banner" style="position:absolute; top:0; right:0; padding:10px; width:100px" />
+<p>Each final project is scored on four categories, OK (1) / Good (2) /
+Excellent (3), for a total of <strong>12 points</strong>. Pick the
+section below that matches your chosen project format.</p>
+<hr />
+<div id="option-a-r-package" class="section level2">
+<h2>Option A: R Package</h2>
+<ul>
+<li><p>Upload a “Source Bundle” of the package
+(<code>&gt; Build &gt; Build Source Package</code>) to Blackboard. This
+will be an <code>tar.gz</code> file another person can install.</p></li>
+<li><p>Aim for the function to contain at least three functions (with at
+least 2 arguments in each function).</p></li>
+<li><p>Provide a detailed description of the package inside of the
+<code>DESCRIPTION</code> file. You can check that it works with:
+<code>help(package = &quot;mypackage&quot;)</code>.</p></li>
+</ul>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>OK (1)</th>
+<th>Good (2)</th>
+<th>Excellent (3)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Purpose &amp; scope</strong></td>
+<td>Unclear what the package does or why it exists.</td>
+<td>Purpose stated; scope unclear or too broad.</td>
+<td>Clear, focused purpose.</td>
+</tr>
+<tr class="even">
+<td><strong>Custom functions (≥3 required)</strong></td>
+<td>Fewer than three functions, or trivial wrappers.</td>
+<td>Three functions present but uneven in functionality.</td>
+<td>Three or more useful functions with sensible arguments and
+names.</td>
+</tr>
+<tr class="odd">
+<td><strong>Documentation</strong></td>
+<td>Missing or incomplete roxygen2 comments; no README.</td>
+<td>Roxygen on each function; README present but sparse.</td>
+<td>Roxygen on each function with a working example; README explains
+purpose and how to install/use.</td>
+</tr>
+<tr class="even">
+<td><strong>Package builds &amp; runs</strong></td>
+<td>Package does not install or load.</td>
+<td>Installs with minor fixes; functions work.</td>
+<td>Installs cleanly; functions work as documented.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total: __ / 12</strong></p>
+<hr />
+</div>
+<div id="option-b-shiny-app" class="section level2">
+<h2>Option B: Shiny App</h2>
+<ul>
+<li><p>Upload an <code>.R</code> or <code>.Rmd</code> that runs a
+working Shiny App to Blackboard.</p></li>
+<li><p>Provide a document – or, preferred, embed into a Markdown that
+includes the Shiny App – describing the context, purpose, data behind
+the app, focusing on why it was helpful / useful to create an
+interactive tool.</p></li>
+</ul>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>OK (1)</th>
+<th>Good (2)</th>
+<th>Excellent (3)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Purpose &amp; problem</strong></td>
+<td>Unclear purpose or audience.</td>
+<td>Purpose stated but motivation thin.</td>
+<td>Clear problem and clear reason for an interactive tool.</td>
+</tr>
+<tr class="even">
+<td><strong>UI design</strong></td>
+<td>Cluttered, unclear controls, no labels.</td>
+<td>Functional; layout could be improved.</td>
+<td>Clean layout, labeled inputs, appropriate widget choices.</td>
+</tr>
+<tr class="odd">
+<td><strong>App works as intended</strong></td>
+<td>App crashes or inputs don’t update outputs correctly.</td>
+<td>Works; minor glitches or slow spots.</td>
+<td>Runs smoothly; all inputs produce the expected outputs.</td>
+</tr>
+<tr class="even">
+<td><strong>Documentation &amp; reproducibility</strong></td>
+<td>No in-app explanation or README; won’t run elsewhere.</td>
+<td>Some in-app guidance or minimal README; runs with minor tweaks.</td>
+<td>In-app instructions plus README; instructor can
+<code>runApp()</code> without edits.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total: __ / 12</strong></p>
 <blockquote>
-<h2 id="course-materials">Course Materials</h2>
-<p>This page contains lectures,assignments and other resources, and will
-expand as the semester progresses. For Homework Submissions and
-Discussion Boards see the <a href="https://blackboard.syracuse.edu/ultra/courses/_564691_1/outline">Blackboard
-Course Page</a></p>
+<p><strong>Notes:</strong> Upload (or email to professors) a “Source
+Bundle” of the package
+(<code>&gt; Build &gt; Build Source Package</code>) to Blackboard.</p>
 </blockquote>
-<p><strong>Instructors:</strong> <a href="https://www.esf.edu/faculty/green/index.php"><strong>Dr. Hyatt
-Green</strong></a> (Illick 201) and <a href="https://www.esf.edu/faculty/gurarie/"><strong>Dr. Elie
-Gurarie</strong></a> (Illick 206)</p>
-<p><strong>Locations and Times:</strong> Baker 309; MW 10:35-11:30</p>
-<div id="overview" class="section level1">
-<h1>Overview</h1>
-<p>This is a broad, practical, introduction to R Programming. Here is a
-detailed <a href="syllabus.html">Syllabus</a>.</p>
-<p>Perhaps the most important immediate need is to download and install
-R and Rstudio:</p>
+<hr />
+</div>
+<div id="option-c-research-report" class="section level2">
+<h2>Option C: Research Report</h2>
 <ul>
-<li>To download R visit: <a href="http://www.r-project.org/" class="uri">http://www.r-project.org/</a><br />
-</li>
-<li>To download R Studio visit: <a href="https://posit.co/products/open-source/rstudio/?sid=1" class="uri">https://posit.co/products/open-source/rstudio/?sid=1</a></li>
+<li><p>Upload a well-documented and organized reproducible report to
+Blackboard, both an Rmd file and a compiled pdf.</p></li>
+<li><p>Make it clear what the purpose of the report is: is it moving
+research forward, it is exploratory, is it a summary of advanced R tools
+for data analysis.</p></li>
+<li><p>Provide a clear scientific motivation for the inquiry.</p></li>
 </ul>
-</div>
-<div id="lectures-and-labs" class="section level1">
-<h1>Lectures and Labs</h1>
-<div id="module-1---introduction" class="section level2">
-<h2>Module 1 - Introduction</h2>
-<div id="operators-data-types-data-structures" class="section level3">
-<h3>Operators | Data Types | Data Structures</h3>
-<ul>
-<li><a href="lectures/01-R-Intro/R-Intro.html">Lecture 0: Intro to
-R</a></li>
-<li><a href="lectures/02-R%20Operators/R_Operators.html">Lecture 1:
-Operators</a></li>
-<li><a href="lectures/03-Data-Classes/Data-Classes.html">Lecture 2: Data
-Classes</a>
-<ul>
-<li>Lecture for Jan 21 <em>and</em> 26 (remote).</li>
-<li><a href="https://syracuseuniversity.zoom.us/j/91687106324">Link for
-remote access</a></li>
-<li><a href="functions/quant_prog.R">quant_prog.R function</a></li>
-</ul></li>
-<li><a href="lectures/04-Data-Structures/Data-Structures.html">Lecture
-3: Data Structures (Jan 28)</a>
-<ul>
-<li><a href="lectures/04-Data-Structures/Birds.R">Birds.R
-function</a></li>
-</ul></li>
-</ul>
-</div>
-</div>
-<div id="module-2---working-with-data" class="section level2">
-<h2>Module 2 - Working with data</h2>
-<div id="indexing-importingexporting-plotting-summarizing" class="section level3">
-<h3>Indexing | Importing/Exporting | Plotting | Summarizing</h3>
-<ul>
-<li><a href="lectures/05-Indexing-Vectors/Indexing-Vectors.html">Lecture
-4: Indexing Vectors (Feb 2)</a>
-<ul>
-<li><a href="lectures/05-Indexing-Vectors/Top300MF_names.Rdata">Top300MF_names.Rdata</a></li>
-</ul></li>
-<li><a href="lectures/06-Indexing-Dataframes/Indexing-Dataframes.html">Lecture
-5: Indexing Dataframes (Feb 4)</a></li>
-<li><a href="lectures/08-Importing-Exporting-Data/Importing-Exporting-Data.html">Lecture
-6: Importing and Exporting Data (Feb 9)</a>
-<ul>
-<li><a href="lectures/08-Importing-Exporting-Data/Puromycin_data.csv">Puromycin_data
-(csv)</a></li>
-<li><a href="lectures/08-Importing-Exporting-Data/qPCR-data.txt">qPCR
-data (txt)</a></li>
-</ul></li>
-<li><a href="lectures/09-Plotting-Basics/Plotting_basics.pdf">Lecture 7:
-Plotting Basics (Feb 11)</a></li>
-<li>Lecture 8: Plotting Part II (Feb 18):
-<ul>
-<li><a href="lectures/10-Plotting-Part-II/PlottingPartII.html">slides</a></li>
-<li><a href="lectures/10-Plotting-Part-II/PlottingPartII_lab.html">document
-style</a></li>
-<li><a href="lectures/10-Plotting-Part-II/WDI.csv">World Development
-Index data (csv)</a></li>
-</ul></li>
-<li>Lecture 9: Plotting Part III (Feb 23):
-<ul>
-<li><a href="lectures/11-Plotting-Part-III/PlottingPartIII_slides.html">slides</a></li>
-<li><a href="lectures/11-Plotting-Part-III/PlottingPartIII_lab.html">document
-style</a></li>
-<li><a href="lectures/11-Plotting-Part-III/PlottingPartIII_lab.html">Rmarkdown</a></li>
-</ul></li>
-<li><a href="lectures/12-Data-Summaries/Data-Summaries-and-Aggregation.html">Lecture
-10: Data Summaries and Aggregation (Feb 25)</a></li>
-<li><a href="lectures/13-Merging-Data/Merging_data.html">Lecture 11:
-Merging Data (Mar 2)</a></li>
-</ul>
-</div>
-</div>
-<div id="module-3---effective-programming" class="section level2">
-<h2>Module 3 - Effective Programming</h2>
-<div id="functions-loops-lists-apply" class="section level3">
-<h3>Functions | Loops | Lists | Apply</h3>
-<ul>
-<li><a href="lectures/14-Writing-Functions/Writing-Functions.html">Lecture 12:
-Writing Functions (Mar 4)</a></li>
-<li><a href="lectures/15-Mainly%20Loops/loops_slides.html">Lecture 13:
-Mainly Loops!</a></li>
-<li>Lecture 14: HW Feedback, <code>ifelse()</code>, and
-<code>ddply()</code> (March 18):
-<ul>
-<li><a href="lectures/16a-HW-Review/HW_Feedback_Slides.html">HW feedback
-slides</a></li>
-<li><a href="lectures/16b-if-else-and-ifelse/If-Else-Statements.html"><code>if</code>,
-<code>else</code>, and <code>ifelse()</code> slides</a></li>
-<li><a href="lectures/16c-ddply/15c-ddply.html"><code>ddply()</code>
-slides</a></li>
-</ul></li>
-<li><a href="lectures/17-apply-and-lists/apply-mentality-slides.html">Lecture
-15: apply mentality and becoming a list ninja</a></li>
-<li>Lecture 16: Working with Dates and <code>ddply()</code>
-<ul>
-<li><a href="lectures/18-ddply-Dates/ddply-and-Dates.html">slides</a></li>
-<li><a href="lectures/18-ddply-Dates/ACW-met.csv">ACW-met data
-(csv)</a></li>
-</ul></li>
-</ul>
-</div>
-</div>
-<div id="module-4---advanced-tools" class="section level2">
-<h2>Module 4 - Advanced tools</h2>
-<div id="shiny-llms-building-packages" class="section level3">
-<h3>Shiny | LLM’s | Building Packages</h3>
-<ul>
-<li>Lecture 17: Creating R-Shiny Apps
-<ul>
-<li><a href="lectures/19-shinyapps/shiny-slides.html">slides</a></li>
-<li><a href="lectures/19-shinyapps/shiny-lab.html">document
-style</a></li>
-</ul></li>
-<li>Lecture 18: Smart use of LLM’s
-<ul>
-<li><a href="lectures/20-llms/llm-lecture.html">slides</a></li>
-<li><a href="lectures/20-llms/WDI.csv">WDI data</a></li>
-<li><a href="lectures/20-llms/app5.R">app5.R</a></li>
-</ul></li>
-<li>Lecture 19: Regular Expressions
-<ul>
-<li><a href="lectures/21-Regex/Using-Claude-for-R-Work.html">slides</a></li>
-<li><a href="lectures/21-Regex/ncbi_16S_headers.txt">NCBI 16S Headers
-(txt)</a><br />
-</li>
-<li><a href="lectures/21-Regex/usgs_gauges.txt">USGS Gauges
-(txt)</a></li>
-</ul></li>
-<li>Lecture 20: Building R Packages
-<ul>
-<li><a href="lectures/22-Rpackages/Rpackages-slides.html">slides</a></li>
-<li><a href="lectures/22-Rpackages/Rpackages-lab.html">document-style</a></li>
-<li>content for <code>combinatoR</code> package:
-<ul>
-<li><a href="lectures/22-Rpackages/content/single.csv">single.csv</a>,</li>
-<li><a href="lectures/22-Rpackages/content/mixture.csv">mixture.csv</a></li>
-<li><a href="lectures/22-Rpackages/content/fittingfunctions.R">fittingfunctions.R</a></li>
-</ul></li>
-</ul></li>
-<li>Lecture 21: Spatial Data
-<ul>
-<li><a href="lectures/23-spatial-data/spatial-data.html">slides</a></li>
-<li><a href="lectures/23-spatial-data/spatial-data-lab.html">document
-style</a></li>
-<li>Syracuse land cover raster: <a href="lectures/23-spatial-data/syr_nlcd.tif"><code>syr_nlcd.tif</code></a></li>
-</ul></li>
-</ul>
-</div>
-</div>
-<div id="tools-and-tricks-in-reproducible-research" class="section level2">
-<h2>Tools and Tricks in Reproducible Research</h2>
-<ul>
-<li><a href="lectures/04-Rmarkdown/04_BasicsOfRmarkdown.html">Markdown
-Basics</a></li>
-<li><a href="lectures/04-Rmarkdown/04b_AdvancedMarkdown.html">YAML and
-chunks</a></li>
-</ul>
-</div>
-</div>
-<div id="final-project" class="section level1">
-<h1>Final Project</h1>
-<ul>
-<li>The final project is described in the <a href="https://eligurarie.github.io/EFB654/syllabus.html#Final_Project_(40%)">syllabus</a>.</li>
-<li>A detailed grading rubric is <a href="final-project/final-project-rubrics.html">here</a>.</li>
-</ul>
-</div>
-<div id="homeworks" class="section level1">
-<h1>Homeworks</h1>
-<p>Submit all assignments to the Blackboard page</p>
-<ul>
-<li><a href="homework/HW01.Rmd">Homework 01</a> (due Jan 21)
-<ul>
-<li>(Note: this is an <code>Rmd</code> file which you will download,
-modify, knit, and upload.)<br />
-</li>
-</ul></li>
-<li><a href="homework/HW02.html">Homework 02</a> (due Jan 28)
-<ul>
-<li>(Note: this is an <code>html</code> file. You will start your
-<em>own</em> <code>Rmd</code> file from scratch to complete the
-questions. Then you will knit and upload.)</li>
-</ul></li>
-<li><a href="homework/HW03.html">Homework 03</a> (due Feb 4)</li>
-<li><a href="homework/HW04.html">Homework 04</a> (due Feb 11)
-<ul>
-<li><a href="homework/enlightenment_thinkers.csv">Elightenment Thinkers
-Data</a></li>
-</ul></li>
-<li><a href="homework/HW05.html">Homework 05</a> (due Feb 25)
-<ul>
-<li><a href="lectures/10-Plotting%20Part%20II/WDI.csv">World Development
-Index Data</a></li>
-</ul></li>
-<li><a href="homework/HW06.Rmd">Homework 06</a> (due Mar 04)
-<ul>
-<li>(Note: this is an <code>Rmd</code> file which you will download,
-modify, knit, and upload.)</li>
-</ul></li>
-<li><a href="homework/HW07/HW07_v2.Rmd">Homework 07</a> (due Mar 25)
-<ul>
-<li>(Note: this is an <code>Rmd</code> file which you will download,
-modify, knit, and upload.)</li>
-<li>Here’s the <a href="homework/HW07/HW07_v2.html">nicer-looking
-html</a></li>
-</ul></li>
-<li><a href="homework/HW08.html">Homework 08</a> (due Apr 17)</li>
-</ul>
-<p><img role="img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCIgd2lkdGg9IjcyNCIgaGVpZ2h0PSI1NjEiIHZpZXdCb3g9IjAgMCA3MjQgNTYxIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnRGaWxsLTEiIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgc3ByZWFkTWV0aG9kPSJwYWQiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9InJnYigyMDMsMjA2LDIwOCkiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9InJnYigxMzIsMTMxLDEzOSkiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnRGaWxsLTIiIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgc3ByZWFkTWV0aG9kPSJwYWQiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9InJnYigzOSwxMDksMTk1KSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0icmdiKDIyLDkyLDE3MCkiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZD0iTTM2MS40NTMsNDg1LjkzNyBDMTYyLjMyOSw0ODUuOTM3IDAuOTA2LDM3Ny44MjggMC45MDYsMjQ0LjQ2OSBDMC45MDYsMTExLjEwOSAxNjIuMzI5LDMuMDAwIDM2MS40NTMsMy4wMDAgQzU2MC41NzgsMy4wMDAgNzIyLjAwMCwxMTEuMTA5IDcyMi4wMDAsMjQ0LjQ2OSBDNzIyLjAwMCwzNzcuODI4IDU2MC41NzgsNDg1LjkzNyAzNjEuNDUzLDQ4NS45MzcgWk00MTYuNjQxLDk3LjQwNiBDMjY1LjI4OSw5Ny40MDYgMTQyLjU5NCwxNzEuMzE0IDE0Mi41OTQsMjYyLjQ4NCBDMTQyLjU5NCwzNTMuNjU0IDI2NS4yODksNDI3LjU2MiA0MTYuNjQxLDQyNy41NjIgQzU2Ny45OTIsNDI3LjU2MiA2NzkuNjg3LDM3Ny4wMzMgNjc5LjY4NywyNjIuNDg0IEM2NzkuNjg3LDE0Ny45NzEgNTY3Ljk5Miw5Ny40MDYgNDE2LjY0MSw5Ny40MDYgWiIgZmlsbD0idXJsKCNncmFkaWVudEZpbGwtMSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPgogIDxwYXRoIGQ9Ik01NTAuMDAwLDM3Ny4wMDAgQzU1MC4wMDAsMzc3LjAwMCA1NzEuODIyLDM4My41ODUgNTg0LjUwMCwzOTAuMDAwIEM1ODguODk5LDM5Mi4yMjYgNTk2LjUxMCwzOTYuNjY4IDYwMi4wMDAsNDAyLjUwMCBDNjA3LjM3OCw0MDguMjEyIDYxMC4wMDAsNDE0LjAwMCA2MTAuMDAwLDQxNC4wMDAgTDY5Ni4wMDAsNTU5LjAwMCBMNTU3LjAwMCw1NTkuMDYyIEw0OTIuMDAwLDQzNy4wMDAgQzQ5Mi4wMDAsNDM3LjAwMCA0NzguNjkwLDQxNC4xMzEgNDcwLjUwMCw0MDcuNTAwIEM0NjMuNjY4LDQwMS45NjkgNDYwLjc1NSw0MDAuMDAwIDQ1NC4wMDAsNDAwLjAwMCBDNDQ5LjI5OCw0MDAuMDAwIDQyMC45NzQsNDAwLjAwMCA0MjAuOTc0LDQwMC4wMDAgTDQyMS4wMDAsNTU4Ljk3NCBMMjk4LjAwMCw1NTkuMDI2IEwyOTguMDAwLDE1Mi45MzggTDU0NS4wMDAsMTUyLjkzOCBDNTQ1LjAwMCwxNTIuOTM4IDY1Ny41MDAsMTU0Ljk2NyA2NTcuNTAwLDI2Mi4wMDAgQzY1Ny41MDAsMzY5LjAzMyA1NTAuMDAwLDM3Ny4wMDAgNTUwLjAwMCwzNzcuMDAwIFpNNDk2LjUwMCwyNDEuMDI0IEw0MjIuMDM3LDI0MC45NzYgTDQyMi4wMDAsMzEwLjAyNiBMNDk2LjUwMCwzMTAuMDAyIEM0OTYuNTAwLDMxMC4wMDIgNTMxLjAwMCwzMDkuODk1IDUzMS4wMDAsMjc0Ljg3NyBDNTMxLjAwMCwyMzkuMTU1IDQ5Ni41MDAsMjQxLjAyNCA0OTYuNTAwLDI0MS4wMjQgWiIgZmlsbD0idXJsKCNncmFkaWVudEZpbGwtMikiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPgo8L3N2Zz4=" height="50" style="margin-right: 30px;">
-<img role="img" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIyLjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAxNzg0LjEgNjI1LjkiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE3ODQuMSA2MjUuOTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtmaWxsOiM3NUFBREI7fQoJLnN0MXtmaWxsOiM0RDRENEQ7fQoJLnN0MntmaWxsOiNGRkZGRkY7fQoJLnN0M3tmaWxsOnVybCgjU1ZHSURfMV8pO30KCS5zdDR7ZmlsbDp1cmwoI1NWR0lEXzJfKTt9Cgkuc3Q1e2ZpbGw6dXJsKCNTVkdJRF8zXyk7fQoJLnN0NntmaWxsOnVybCgjU1ZHSURfNF8pO30KCS5zdDd7ZmlsbDp1cmwoI1NWR0lEXzVfKTt9Cgkuc3Q4e2ZpbGw6dXJsKCNTVkdJRF82Xyk7fQoJLnN0OXtmaWxsOnVybCgjU1ZHSURfN18pO30KCS5zdDEwe2ZpbGw6dXJsKCNTVkdJRF84Xyk7fQoJLnN0MTF7ZmlsbDp1cmwoI1NWR0lEXzlfKTt9Cgkuc3QxMntmaWxsOnVybCgjU1ZHSURfMTBfKTt9Cgkuc3QxM3tvcGFjaXR5OjAuMTg7ZmlsbDp1cmwoI1NWR0lEXzExXyk7fQoJLnN0MTR7b3BhY2l0eTowLjM7fQo8L3N0eWxlPgo8ZyBpZD0iR3JheV9Mb2dvIj4KPC9nPgo8ZyBpZD0iQmxhY2tfTGV0dGVycyI+CjwvZz4KPGcgaWQ9IkJsdWVfR3JhZGllbnRfTGV0dGVycyI+Cgk8Zz4KCQkKCQkJPGVsbGlwc2UgdHJhbnNmb3JtPSJtYXRyaXgoMC43MDcxIC0wLjcwNzEgMC43MDcxIDAuNzA3MSAtMTI3LjkyNjUgMzE3LjAzMTcpIiBjbGFzcz0ic3QwIiBjeD0iMzE4LjciIGN5PSIzMTIuOSIgcng9IjMwOS44IiByeT0iMzA5LjgiLz4KCQk8Zz4KCQkJPHBhdGggY2xhc3M9InN0MSIgZD0iTTY5NC40LDQwNC44YzE2LjEsMTAuMywzOS4xLDE4LjEsNjMuOSwxOC4xYzM2LjcsMCw1OC4xLTE5LjQsNTguMS00Ny40YzAtMjUuNS0xNC44LTQwLjgtNTIuMy01NC44ICAgICBjLTQ1LjMtMTYuNS03My4zLTQwLjQtNzMuMy03OS4xYzAtNDMuMywzNS44LTc1LjQsODkuOC03NS40YzI4LDAsNDksNi42LDYxLDEzLjZsLTkuOSwyOS4zYy04LjctNS40LTI3LjItMTMuMi01Mi4zLTEzLjIgICAgIGMtMzcuOSwwLTUyLjMsMjIuNy01Mi4zLDQxLjZjMCwyNiwxNi45LDM4LjcsNTUuMiw1My42YzQ3LDE4LjEsNzAuNSw0MC44LDcwLjUsODEuNmMwLDQyLjgtMzEuMyw4MC4zLTk2LjgsODAuMyAgICAgYy0yNi44LDAtNTYtOC4yLTcwLjktMTguMUw2OTQuNCw0MDQuOHoiLz4KCQkJPHBhdGggY2xhc3M9InN0MSIgZD0iTTk0My4zLDIwMS4zdjQ3LjhoNTEuOXYyNy42aC01MS45djEwNy41YzAsMjQuNyw3LDM4LjcsMjcuMiwzOC43YzkuOSwwLDE1LjctMC44LDIxLTIuNWwxLjYsMjcuNiAgICAgYy03LDIuNS0xOC4xLDQuOS0zMi4xLDQuOWMtMTYuOSwwLTMwLjUtNS44LTM5LjEtMTUuMmMtOS45LTExLjEtMTQtMjguOC0xNC01Mi4zVjI3Ni43aC0zMC45di0yNy42aDMwLjlWMjEyTDk0My4zLDIwMS4zeiIvPgoJCQk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTIwMi44LDM5My43YzAsMjEsMC40LDM5LjEsMS42LDU0LjhoLTMyLjFsLTIuMS0zMi41aC0wLjhjLTkuMSwxNi4xLTMwLjUsMzcuMS02NS45LDM3LjEgICAgIGMtMzEuMywwLTY4LjgtMTcuNy02OC44LTg3LjNWMjQ5LjFoMzYuM3YxMTBjMCwzNy45LDExLjksNjMuOSw0NC41LDYzLjljMjQuMywwLDQxLjItMTYuOSw0Ny44LTMzLjRjMi4xLTQuOSwzLjMtMTEuNSwzLjMtMTguNSAgICAgdi0xMjJoMzYuM1YzOTMuN3oiLz4KCQkJPHBhdGggY2xhc3M9InN0MSIgZD0iTTE0MzQuOCwxNTZ2MjQxYzAsMTcuNywwLjgsMzcuOSwxLjYsNTEuNWgtMzIuMWwtMS42LTM0LjZoLTEuMmMtMTAuNywyMi4yLTM0LjYsMzkuMS02Ny4yLDM5LjEgICAgIGMtNDguMiwwLTg1LjctNDAuOC04NS43LTEwMS40Yy0wLjQtNjYuMyw0MS4yLTEwNi43LDg5LjQtMTA2LjdjMzAuOSwwLDUxLjEsMTQuNCw2MC4yLDMwLjFoMC44VjE1NkgxNDM0Ljh6IE0xMzk4LjksMzMwLjIgICAgIGMwLTQuNS0wLjQtMTAuNy0xLjYtMTUuMmMtNS40LTIyLjctMjUuMS00MS42LTUyLjMtNDEuNmMtMzcuNSwwLTU5LjcsMzMtNTkuNyw3Ni42YzAsNDAuNCwyMC4yLDczLjgsNTguOSw3My44ICAgICBjMjQuMywwLDQ2LjYtMTYuNSw1My4xLTQzLjNjMS4yLTQuOSwxLjYtOS45LDEuNi0xNS43VjMzMC4yeiIvPgoJCQk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTUzNS43LDE5M2MwLDEyLjQtOC43LDIyLjItMjMuMSwyMi4yYy0xMy4yLDAtMjEuOC05LjktMjEuOC0yMi4yYzAtMTIuNCw5LjEtMjIuNywyMi43LTIyLjcgICAgIEMxNTI2LjYsMTcwLjQsMTUzNS43LDE4MC4zLDE1MzUuNywxOTN6IE0xNDk1LjMsNDQ4LjVWMjQ5LjFoMzYuM3YxOTkuNEgxNDk1LjN6Ii8+CgkJCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xNzcyLjIsMzQ3LjFjMCw3My43LTUxLjUsMTA1LjktOTkuMywxMDUuOWMtNTMuNiwwLTk1LjYtMzkuNi05NS42LTEwMi42YzAtNjYuMyw0NC4xLTEwNS41LDk4LjktMTA1LjUgICAgIEMxNzMzLjUsMjQ1LDE3NzIuMiwyODYuNiwxNzcyLjIsMzQ3LjF6IE0xNjE0LjQsMzQ5LjJjMCw0My43LDI0LjcsNzYuNiw2MC4yLDc2LjZjMzQuNiwwLDYwLjYtMzIuNSw2MC42LTc3LjUgICAgIGMwLTMzLjgtMTYuOS03Ni4yLTU5LjctNzYuMkMxNjMyLjksMjcyLjEsMTYxNC40LDMxMS43LDE2MTQuNCwzNDkuMnoiLz4KCQk8L2c+CgkJPGc+CgkJCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik00MjQuNyw0MTEuOGgzMy42djI2LjFoLTUxLjNMMzIyLDMxMC41aC00NS4zdjEwMS4zaDQ0LjN2MjYuMUgyMDkuNXYtMjYuMWgzOC4zVjE4Ny4zbC0zOC4zLTQuN3YtMjQuNyAgICAgYzE0LjUsMy4zLDI3LjEsNS42LDQyLjksNS42YzIzLjgsMCw0OC4xLTUuNiw3MS45LTUuNmM0Ni4yLDAsODkuMSwyMSw4OS4xLDcyLjNjMCwzOS43LTIzLjgsNjQuOS02MC43LDc1LjZMNDI0LjcsNDExLjh6ICAgICAgTTI3Ni43LDI4NS4zbDI0LjMsMC41YzU5LjMsMC45LDgyLjEtMjEuOSw4Mi4xLTUyLjNjMC0zNS41LTI1LjctNDkuNS01OC4zLTQ5LjVjLTE1LjQsMC0zMS4zLDEuNC00OC4xLDMuM1YyODUuM3oiLz4KCQk8L2c+CgkJPGc+CgkJCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xNzUxLjgsMTcwLjRjLTEyLjksMC0yMy40LDEwLjUtMjMuNCwyMy40YzAsMTIuOSwxMC41LDIzLjQsMjMuNCwyMy40YzEyLjksMCwyMy40LTEwLjUsMjMuNC0yMy40ICAgICBDMTc3NS4yLDE4MC45LDE3NjQuNywxNzAuNCwxNzUxLjgsMTcwLjR6IE0xNzcxLjQsMTkzLjhjMCwxMC44LTguOCwxOS41LTE5LjUsMTkuNWMtMTAuOCwwLTE5LjUtOC44LTE5LjUtMTkuNSAgICAgYzAtMTAuOCw4LjgtMTkuNSwxOS41LTE5LjVDMTc2Mi42LDE3NC4yLDE3NzEuNCwxODMsMTc3MS40LDE5My44eiIvPgoJCQk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTc2MC4xLDIwMy4zbC01LjgtOC41YzMuMy0xLjIsNS0zLjYsNS03YzAtNS4xLTQuMy02LjktOC40LTYuOWMtMS4xLDAtMi4yLDAuMS0zLjIsMC4zICAgICBjLTEsMC4xLTIuMSwwLjItMy4xLDAuMmMtMS40LDAtMi41LTAuMi0zLjctMC41bC0wLjYtMC4xdjMuM2wzLjQsMC40djE4LjhoLTMuNHYzLjRoMTAuOXYtMy40aC0zLjl2LTcuOWgzLjJsNy4zLDExbDAuMiwwLjJoNS4zICAgICB2LTMuNEgxNzYwLjF6IE0xNzU1LjYsMTg4LjFjMCwxLjItMC41LDIuMi0xLjQsMi45Yy0xLjEsMC44LTIuOCwxLjItNSwxLjJsLTEuOSwwdi03LjdjMS40LTAuMSwyLjYtMC4yLDMuNy0wLjIgICAgIEMxNzUzLjEsMTg0LjMsMTc1NS42LDE4NSwxNzU1LjYsMTg4LjF6Ii8+CgkJPC9nPgoJPC9nPgo8L2c+CjxnIGlkPSJXaGl0ZV9MZXR0ZXJzIj4KPC9nPgo8ZyBpZD0iUl9CYWxsIj4KPC9nPgo8L3N2Zz4=" height="50"></p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>OK (1)</th>
+<th>Good (2)</th>
+<th>Excellent (3)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Background &amp; data</strong></td>
+<td>Little description of the scientific question; no description of how
+data were collected.</td>
+<td>Some background and data description; missing references or
+reproducibility details.</td>
+<td>Thorough introduction with references; data collection described in
+enough detail for an outside group to reproduce.</td>
+</tr>
+<tr class="even">
+<td><strong>Data summary</strong></td>
+<td>No summary, or summary missing key elements.</td>
+<td>Summary present but incomplete.</td>
+<td>Thorough summary: dimensions, meaning of entries, missing-data
+reasoning.</td>
+</tr>
+<tr class="odd">
+<td><strong>Analysis &amp; R code shown</strong></td>
+<td>Methods not described; no R code visible in the report, or code is
+inefficient / non-reproducible.</td>
+<td>Methods described; some R code shown in the analysis section; could
+be tighter.</td>
+<td>Methods fully described; efficient, understandable R code embedded
+in the analysis section generates all results reproducibly.</td>
+</tr>
+<tr class="even">
+<td><strong>Results, discussion &amp; conclusions</strong></td>
+<td>Incomplete results; no figures or tables; no discussion or
+inaccurate conclusions.</td>
+<td>Good results and some discussion of implications or caveats.</td>
+<td>Thorough results with well-chosen figures and tables; thorough
+discussion of implications, caveats, and future work; accurate
+conclusions.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total: __ / 12</strong></p>
 </div>
 
 
@@ -1789,7 +1746,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2,h3,h4",
+      selectors: "h1,h2",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
@@ -1798,7 +1755,7 @@ $(document).ready(function ()  {
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
     };
-    options.showAndHide = true;
+    options.showAndHide = false;
     options.smoothScroll = true;
 
     // tocify

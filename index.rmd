@@ -20,8 +20,6 @@ htmltools::img(src = "assets/esflogo.png", alt = 'banner', style = 'position:abs
 
 **Instructors:** [**Dr. Hyatt Green**](https://www.esf.edu/faculty/green/index.php) (Illick 201) and [**Dr. Elie Gurarie**](https://www.esf.edu/faculty/gurarie/) (Illick 206)
 
-**Office hours:**  TBD
-
 **Locations and Times:** Baker 309; MW 10:35-11:30
 
 # Overview
@@ -114,6 +112,13 @@ Perhaps the most important immediate need is to download and install R and Rstud
 
 - [Markdown Basics](lectures/04-Rmarkdown/04_BasicsOfRmarkdown.html)
 - [YAML and chunks](lectures/04-Rmarkdown/04b_AdvancedMarkdown.html)
+
+
+# Final Project
+
+- The final project is described in the [syllabus](https://eligurarie.github.io/EFB654/syllabus.html#Final_Project_(40%)).
+- A detailed grading rubric is [here](final-project/final-project-rubrics.html).
+
 
 # Homeworks 
 
