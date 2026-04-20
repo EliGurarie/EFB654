@@ -1,0 +1,243 @@
+---
+title: "Brief intro to Spatial Data in R"
+subtitle: "[EFB 654: R and Reproducible Research](https://eligurarie.github.io/EFB654/)"
+author: "Elie Gurarie"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      fig.align = "center", dpi = 200)
+```
+
+```{r echo = FALSE}
+pars <- function(...){
+  par(mar = c(3,3,2,2), bty = "l", mgp = c(1.5,.25,0),
+      tck = 0.01, cex.lab = 1.2, ...)
+}
+```
+
+# Key packages
+
+### Vector data
+
+- **`sf`** — *simple features*
+  - points, lines, polygons
+  - all functions prefixed `st_`
+  - reads (GIS) shape files
+
+### Raster data
+
+- **`terra`** — modern raster (and vector)
+  - successor to `raster`
+  - faster, actively developed
+- **`raster`** — older, still widely used, still has features not available in terra
+
+### Visualization
+
+- **`mapview`** — quick, interactive leaflet maps (one-liner)
+- **`ggplot2::geom_sf()`** — static maps in the grammar of graphics
+- **`maps`** — base R country/state outlines
+
+> Older vector packages (`sp`, `rgdal`, `rgeos`) are **retired** as of 2023, but will come up often ... especially as dependencies in other packages.
+
+---
+
+# Simple Features (`sf`)
+
+## What is a "simple feature"?
+
+A **simple feature** is a "standard" for 2D vector geometry. Every `sf` object is a **data frame with a geometry column**:
+
+- **POINT** — e.g., a GPS fix, a nest, a city
+- **LINESTRING** — a track, a river, a road
+- **POLYGON** — a home range, a lake, a park
+- ... plus `MULTI*` versions
+
+Each row is one feature; the `geometry` column holds its coordinates. Every `sf` function starts with `st_` (*spatial / temporal*).
+
+![](https://r-spatial.github.io/sf/articles/sf_xfig.png){width=60%}
+
+*source: r-spatial.github.io/sf*
+
+---
+
+## Data frame to `sf`
+
+Four Syracuse landmarks:
+
+```{r}
+syr <- data.frame(
+  name = c("Great Law of Peace Center", "SUNY-ESF", "Barry Park", "Onondaga Lake"),
+  lon  = c(-76.1967, -76.1356, -76.1149, -76.2175),
+  lat  = c( 43.0936,  43.0354, 43.0267,  43.0967)
+)
+syr
+```
+
+The key function is `st_as_sf`:
+
+```{r}
+require(sf)
+syr_sf <- st_as_sf(syr, coords = c("lon", "lat"), crs = 4326)
+```
+
+`crs = 4326` → **WGS84 lon/lat** (default for GPS data). `coords =` specifies the column names with lon-lat (NOT lat-lon!).
+
+```{r}
+syr_sf
+```
+
+Note the **`geometry`** list-column.
+
+---
+
+## `st_geometry` and `st_coordinates`
+
+**`st_geometry()`** extracts just the geometry column (a list of POINTs, a.k.a. an `sfc`):
+
+```{r}
+st_geometry(syr_sf)
+```
+
+**`st_coordinates()`** returns a plain numeric matrix of coordinates, handy for base R or for passing to non-spatial functions:
+
+```{r}
+st_coordinates(syr_sf)
+```
+
+Compare: `st_drop_geometry()` goes the other way — returns the attribute table only.
+
+---
+
+## Base plot
+
+```{r, fig.width = 6, fig.height = 5, echo = -1}
+pars()
+plot(st_geometry(syr_sf), pch = 19, col = "darkred", cex = 2)
+text(st_coordinates(syr_sf), labels = syr_sf$name, pos = 4, cex = 0.8)
+```
+
+## `ggplot` (`geom_sf`)
+
+```{r, fig.width = 6, fig.height = 5, out.width = "80%"}
+require(ggplot2)
+ggplot(syr_sf) + 
+  geom_sf(color = "darkred", size = 3) +
+  geom_sf_text(aes(label = name), nudge_y = 0.001, size = 3)
+```
+
+`geom_sf()` auto-handles the CRS and aspect ratio.
+
+---
+
+## `mapview`
+
+One line, fully interactive (pan, zoom, basemap, popups):
+
+```{r}
+require(mapview)
+mapview(syr_sf, label = "name", col.regions = "darkred", cex = 6)
+```
+
+Works inline in any RMarkdown.
+
+---
+
+# Rasters
+
+## What is a raster?
+
+A **raster** is a regular grid of cells, each holding a value.
+
+- **Continuous** — elevation, temperature, NDVI
+- **Categorical** — land cover, soil type, habitat class
+
+Defined by:
+
+- **extent** (xmin, xmax, ymin, ymax)
+- **resolution** (cell size)
+- **CRS** (projection)
+- **values** (one or more layers / bands)
+
+### `terra` vs. `raster`
+
+- `terra` is the modern replacement — faster, C++ backend, unified vector + raster
+- Core class is `SpatRaster` (vs. `RasterLayer` in `raster`)
+- Most function names carry over: `rast()`, `crop()`, `extract()`, `project()`, `plot()`
+
+---
+
+## Loading and plotting
+
+```{r}
+require(terra)
+syr_nlcd <- rast("syr_nlcd.tif")
+syr_nlcd
+```
+
+Note the CRS: **Albers Equal Area Conic / NAD83** — the native NLCD projection (units: meters), *not* lon/lat.
+
+```{r, fig.width = 6, fig.height = 6, out.width = "70%"}
+plot(syr_nlcd, plg = list(cex = 0.6))
+```
+
+> **National Land Cover Database** — 30 m categorical land cover for the U.S., updated every 2–3 years.
+
+---
+
+## Interactive view with `mapview`
+
+```{r}
+require(mapview)
+mapview(syr_nlcd)
+```
+
+`mapview` reprojects on the fly to web-mercator (EPSG:3857) and overlays on an interactive basemap — good for sanity-checking extent and alignment.
+
+---
+
+## Extracting values: align CRS first
+
+`terra::extract()` pulls raster values at vector locations — but **the CRS must match**. Our points are in **WGS84 lon/lat** (EPSG:4326); the raster is in **Albers NAD83**.
+
+```{r}
+st_crs(syr_sf)
+crs(syr_nlcd, describe = TRUE)$name
+```
+
+Transform the points into the raster's CRS:
+
+```{r}
+syr_sf <- st_transform(syr_sf, crs(syr_nlcd))
+```
+
+Coordinates are now in meters (Albers), matching the raster.
+
+Extract land cover at each point:
+
+```{r}
+syr_sf$nlcd <- extract(syr_nlcd, syr_sf)[,2]
+syr_sf
+```
+
+### Overlay on the raster
+
+```{r, fig.width = 6, fig.height = 6, out.width = "70%"}
+plot(syr_nlcd, plg = list(cex = 0.6))
+plot(st_geometry(syr_sf), add = TRUE, pch = 21, bg = "yellow")
+```
+
+---
+
+# Some spatial take-aways
+
+- Easy and powerful and fast.
+- When you combine vector data with raster data ... ALWAYS transform the *vector*, never the *raster*.

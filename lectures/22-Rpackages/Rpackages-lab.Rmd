@@ -24,8 +24,6 @@ pars <- function(...){
 }
 ```
 
-> Note: This lab was rendered by Clade Sonnet 4.6 directly from the slides [here](Rpackages-slides.html). 
-
 # Why build an R package?
 
 Building your own R package is one of the most powerful habits you can develop as an R programmer. It lets you:
@@ -491,6 +489,7 @@ Once you have the basic structure working, everything else is refinement: adding
 
 Further resources:
 
+- https://r-pkgs.org/
 - http://web.mit.edu/insong/www/pdf/rpackage_instructions.pdf
 - https://learn.gencore.bio.nyu.edu/building-r-packages/
 - https://bookdown.org/rdpeng/RProgDA/building-r-packages.html

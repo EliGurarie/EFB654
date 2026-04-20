@@ -541,6 +541,9 @@ class: inverse
 ## Further resources
 .large[
 
+
+- https://r-pkgs.org/
+
 - http://web.mit.edu/insong/www/pdf/rpackage_instructions.pdf
 
 - https://learn.gencore.bio.nyu.edu/building-r-packages/

@@ -104,6 +104,11 @@ Perhaps the most important immediate need is to download and install R and Rstud
     - [single.csv](lectures/22-Rpackages/content/single.csv), 
     - [mixture.csv](lectures/22-Rpackages/content/mixture.csv)
     - [fittingfunctions.R](lectures/22-Rpackages/content/fittingfunctions.R)
+- Lecture 21: Spatial Data
+    - [slides](lectures/23-spatial-data/spatial-data.html)
+    - [document style](lectures/23-spatial-data/spatial-data-lab.html)
+    - Syracuse land cover raster: [`syr_nlcd.tif`](lectures/23-spatial-data/syr_nlcd.tif) 
+
   
 ## Tools and Tricks in Reproducible Research
 
