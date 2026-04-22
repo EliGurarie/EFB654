@@ -51,8 +51,6 @@ Each final project is scored on four categories, OK (1) / Good (2) / Excellent (
 
 **Total: __ / 12**
 
-> **Notes:**  Upload  (or email to professors) a "Source Bundle" of the package (`> Build > Build Source Package`) to Blackboard.  
-
 ---
 
 ## Option C: Research Report
